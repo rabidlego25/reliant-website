@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-export const Header = styled.header``;
-
 export const Nav = styled.nav`
   display: flex;
   align-items: center;
@@ -11,6 +9,7 @@ export const Nav = styled.nav`
   background: white;
   position: fixed;
   z-index: 100;
+  opacity: ${({ opacity }) => opacity};
 
   .logo {
     height: 48px;
@@ -47,6 +46,7 @@ export const DivRight = styled.div`
       cursor: default;
       border-radius: 40%;
       transition: 0.3s;
+      text-decoration: none;
 
       &:hover {
         color: white;
