@@ -4,6 +4,7 @@ export const Div = styled.div`
   padding-top: 60px;
   background: greenyellow;
   height: calc(100vh);
+  flex-direction: column;
 `;
 
 export const Form = styled.form`
@@ -35,4 +36,9 @@ export const Form = styled.form`
     height: 25%;
     flex: 1 1 1;
   }
+`;
+
+export const ErrorBox = styled.div`
+  height: 50px;
+  color: lightcoral;
 `;
