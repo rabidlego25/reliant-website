@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useNavigate, useLocation } from "react-router";
+
 import { Div, Form, ErrorBox } from "./auth-register.styles";
 
 import axios from "axios";
@@ -16,7 +18,11 @@ const RegisterPage = () => {
   const [formData, updateFormData] = useState(initialFormData);
   //eslint-disable-next-line
   const [status, setStatus] = useState([]);
+  const [success, setIsSuccess] = useState(false);
   const [submit, setSubmit] = useState(false);
+
+  let navigate = useNavigate();
+  let location = useLocation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +44,8 @@ const RegisterPage = () => {
         .post("http://localhost:8080/api/auth/register", { formData })
         .then((res) => {
           setStatus(res.data);
+          console.log("STATUS: ", status);
+          setIsSuccess(true);
         })
         .catch((err) => {
           console.log(err.response);
@@ -46,8 +54,20 @@ const RegisterPage = () => {
     };
     setSubmit(false);
     registrationPost();
+    return () => {};
     //eslint-disable-next-line
   }, [submit]);
+
+  useEffect(() => {
+    console.log("success");
+    if (!success) return;
+    navigate("/login", { state: null, replace: true });
+    console.log("window.location: ", window.location);
+    console.log("location: ", location);
+
+    return () => {};
+    //eslint-disable-next-line
+  }, [success]);
 
   return (
     <Div className="center-flex">

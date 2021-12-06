@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { Div, ErrorBox, Form } from "./auth-login.styles";
 import axios from "axios";
@@ -12,6 +13,8 @@ const LoginPage = () => {
   const [formData, updateFormData] = useState(initialFormData);
   const [status, setStatus] = useState([]);
   const [submit, setSubmit] = useState(false);
+  //eslint-disable-next-line
+  let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,14 +31,18 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    console.log("useeffect");
     if (!submit) return;
     const loginPost = async () => {
       axios
         .post("http://localhost:8080/api/auth/signin", { formData })
         .then((res) => {
           console.log(res);
-          setStatus(res.data.message);
+          console.log(res.data.user);
+          if (res.data.status === "success") {
+            const user = res.data.user;
+            navigate("/dashboard", { state: user, replace: true });
+          }
+          setStatus(res.data.status);
         })
         .catch((err) => {
           console.log(err.response);
@@ -44,6 +51,7 @@ const LoginPage = () => {
     };
     setSubmit(false);
     loginPost();
+    return () => {};
     //eslint-disable-next-line
   }, [submit]);
 
