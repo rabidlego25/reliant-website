@@ -1,14 +1,27 @@
 import styled from "styled-components";
 
-export const Div = styled.div`
+export const DashContainer = styled.div`
   width: 100%;
-  height: 150vh;
+  height: 100vh;
   background: lightgreen;
   padding-top: 60px;
   color: white;
+  display: flex;
+  position: relative;
 
-  > * {
-    margin: 2rem;
+  .dash-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    &.blur-background {
+      filter: blur(2px);
+    }
+
+    .dash-item {
+      width: 400px;
+    }
   }
 `;
 
