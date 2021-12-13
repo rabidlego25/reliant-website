@@ -1,14 +1,13 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 
 import { useLocation, useNavigate } from "react-router";
-import { useEffect } from "react/cjs/react.development";
 
 import axios from "axios";
 
-import { DashContainer, ErrorBox } from "./user-dashboard.styles";
+import { DashContainer } from "./user-dashboard.styles";
 
-import AddModal from "./add-modal.component";
-import CompaniesTable from "./companies-table.component";
+import AddModal from "../../components/dashboard/add-modal.component";
+import CompaniesTable from "./../../components/dashboard/companies-table.component";
 
 const Dashboard = () => {
   const [initialLoad, setInitialLoad] = useState(true);
@@ -107,7 +106,6 @@ const Dashboard = () => {
     }
 
     if (!addModal) {
-      console.log("No Add Modal: ", addModal);
       return () => window.removeEventListener("click", handleWindowClick);
     }
 

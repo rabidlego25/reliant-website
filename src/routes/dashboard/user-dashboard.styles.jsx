@@ -24,8 +24,3 @@ export const DashContainer = styled.div`
     }
   }
 `;
-
-export const ErrorBox = styled.div`
-  height: 50px;
-  color: lightcoral;
-`;

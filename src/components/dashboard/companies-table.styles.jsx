@@ -20,21 +20,23 @@ export const Div = styled.div`
         align-items: center;
         height: 100%;
 
-        .icon {
+        .icon-container {
           margin: 0 1rem;
           height: 20px;
           width: 20px;
 
-          &:hover {
-            cursor: pointer;
-          }
+          .icon {
+            &:hover {
+              cursor: pointer;
+            }
 
-          &.edit {
-            color: blue;
-          }
+            &.edit {
+              color: blue;
+            }
 
-          &.trash {
-            color: orange;
+            &.trash {
+              color: orange;
+            }
           }
         }
       }

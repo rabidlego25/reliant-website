@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Wrapper,
-  Title,
-  Form,
-  CloseIcon,
-  IconContainer,
-  ErrorBox,
-} from "./add-modal.styles";
+import { Wrapper, Title, Form, CloseIcon, ErrorBox } from "./add-modal.styles";
 
 import axios from "axios";
 
