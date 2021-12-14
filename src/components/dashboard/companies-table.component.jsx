@@ -6,17 +6,25 @@ import { MdEdit } from "react-icons/md";
 
 import { Div, Loading } from "./companies-table.styles";
 
-import { deleteCompany, loadCompanies } from "../../services/user.service";
+import {
+  deleteCompany,
+  loadCompanies,
+  getCompany,
+} from "../../services/user.service";
 
 import EditModal from "./edit-modal.component";
 
 const CompaniesTable = ({ companies }) => {
-  const deleteRef = useRef([]);
-  const editRef = useRef([]);
-  const [status, setStatus] = useState(null);
-  const [company, setCompany] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [editModal, setEditModal] = useState(false);
+  const deleteRef = useRef([]); //Delete icon on company row
+  const editRef = useRef([]); // Edit icon on company row
+  const closeEditRef = useRef(); // Close icon on editModal
+
+  const [status, setStatus] = useState(null); // success or failure display after action
+  const [company, setCompany] = useState([]); // all companies
+  const [isLoaded, setIsLoaded] = useState(false); // set to true after all companies rendered
+  const [editModal, setEditModal] = useState(false); // true when editModal is active
+  const [editData, setEditData] = useState([]);
+  const [editLoaded, setEditLoaded] = useState(false); // after editModal mounted
 
   const handleDeleteClick = (e) => {
     console.log("handleDeleteClick");
@@ -40,24 +48,37 @@ const CompaniesTable = ({ companies }) => {
 
   const handleEditClick = (e) => {
     console.log("handleEditClick");
-    setEditModal(true);
+    const companyId = e.target.closest(".company").id;
+    getCompany(companyId)
+      .then((res) => {
+        setEditData({ ...res });
+        console.log("getCompany res: ", res);
+      })
+      .then((res) => setEditModal(true))
+      .catch((err) => console.log(err));
   };
 
+  const handleEditCloseClick = (e) => {
+    setEditModal(false);
+    setEditLoaded(false);
+  };
+
+  // when companies is not empty, set company state
   useEffect(() => {
     if (companies === undefined) return;
     setCompany([...companies]);
   }, [companies]);
 
+  //adding event listeners to delete and edit icons on company
   useEffect(() => {
     console.log("isLoaded useEffect");
     if (!isLoaded) return;
-    console.log("isLoaded refs: ", deleteRef.current); // returning []
     deleteRef.current.forEach((icon) => {
       if (icon) icon.addEventListener("click", handleDeleteClick);
     });
-    editRef.current.forEach((icon) =>
-      icon.addEventListener("click", handleEditClick)
-    );
+    editRef.current.forEach((icon) => {
+      if (icon) icon.addEventListener("click", handleEditClick);
+    });
     return () => {
       //eslint-disable-next-line
       deleteRef.current.forEach((icon) => {
@@ -69,6 +90,13 @@ const CompaniesTable = ({ companies }) => {
       });
     };
   }, [isLoaded]);
+
+  //editModal useEffect
+  useEffect(() => {
+    console.log("editModal useEffect");
+    if (!editLoaded) return;
+    closeEditRef.current.addEventListener("click", handleEditCloseClick);
+  }, [editLoaded]);
 
   if (company === undefined || company.length === 0) {
     return (
@@ -116,7 +144,13 @@ const CompaniesTable = ({ companies }) => {
         })}
       </div>
       <div className="status-box center-flex">{status}</div>
-      {editModal ? <EditModal /> : null}
+      {editModal ? (
+        editLoaded ? (
+          <EditModal editData={editData} closeRef={closeEditRef} />
+        ) : (
+          setEditLoaded(true)
+        )
+      ) : null}
     </Div>
   );
 };

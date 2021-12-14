@@ -23,3 +23,28 @@ export const loadCompanies = async () => {
     })
     .catch((err) => console.log(err.response));
 };
+
+export const getCompany = async (id) => {
+  console.log("user util getCompany id: ", id);
+  return axios
+    .get(BASE_URL + `/company/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err.response);
+    });
+};
+
+export const updateCompany = async (formData) => {
+  console.log("formData: ", formData);
+  const { id } = formData;
+  return axios
+    .patch(BASE_URL + `/updateCompany/${id}`, formData)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
