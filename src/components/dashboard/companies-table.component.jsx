@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { IoTrashBin } from "react-icons/io5";
 
@@ -6,29 +6,71 @@ import { MdEdit } from "react-icons/md";
 
 import { Div, Loading } from "./companies-table.styles";
 
+import { deleteCompany, loadCompanies } from "../../services/user.service";
+
+import EditModal from "./edit-modal.component";
+
 const CompaniesTable = ({ companies }) => {
   const deleteRef = useRef([]);
+  const editRef = useRef([]);
+  const [status, setStatus] = useState(null);
+  const [company, setCompany] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const handleDeleteClick = (e) => {
-    console.log(e.target.closest(".company").id);
-    const deleteCompany = async () => {};
-    deleteCompany();
+    console.log("handleDeleteClick");
+    const companyElement = e.target.closest(".company");
+    const companyId = companyElement.id;
+    deleteCompany(companyElement, companyId)
+      .then((res) => {
+        console.log("deleteCompany res:", res);
+        res.status === 204
+          ? setStatus("Deletion Successful")
+          : setStatus("Deletion Failed");
+        loadCompanies()
+          .then(({ data }) => {
+            setIsLoaded(false);
+            setCompany(data);
+          })
+          .catch((err) => console.log("loadCompanies error"));
+      })
+      .catch((err) => console.log("deleteCompany error"));
+  };
+
+  const handleEditClick = (e) => {
+    console.log("handleEditClick");
+    setEditModal(true);
   };
 
   useEffect(() => {
-    deleteRef.current.forEach((icon) =>
-      icon.addEventListener("click", handleDeleteClick)
-    );
-
-    return () => {
-      //eslint-disable-next-line
-      deleteRef.current.forEach((icon) =>
-        icon.removeEventListener("click", handleDeleteClick)
-      );
-    };
+    if (companies === undefined) return;
+    setCompany([...companies]);
   }, [companies]);
 
-  if (companies === undefined) {
+  useEffect(() => {
+    console.log("isLoaded useEffect");
+    if (!isLoaded) return;
+    console.log("isLoaded refs: ", deleteRef.current); // returning []
+    deleteRef.current.forEach((icon) => {
+      if (icon) icon.addEventListener("click", handleDeleteClick);
+    });
+    editRef.current.forEach((icon) =>
+      icon.addEventListener("click", handleEditClick)
+    );
+    return () => {
+      //eslint-disable-next-line
+      deleteRef.current.forEach((icon) => {
+        if (icon) icon.removeEventListener("click", handleDeleteClick);
+      });
+      //eslint-disable-next-line
+      editRef.current.forEach((icon) => {
+        if (icon) icon.removeEventListener("click", handleEditClick);
+      });
+    };
+  }, [isLoaded]);
+
+  if (company === undefined || company.length === 0) {
     return (
       <Div>
         <Loading>Still Loading...</Loading>
@@ -38,18 +80,28 @@ const CompaniesTable = ({ companies }) => {
 
   return (
     <Div>
-      <h2>Company Amount: {companies.length}</h2>
+      {" "}
+      <h2>Company Amount: {company.length}</h2>
       <div className="main-container">
-        {companies.map((data, idx) => {
-          if (idx === companies.length - 1) {
+        {company.map((data, idx) => {
+          if (idx === company.length - 1 && isLoaded === false) {
+            setIsLoaded(true);
           }
           return (
-            <div className="company" key={idx} id={data.companyId}>
+            <div
+              className="company"
+              name={`${data.companyName}`}
+              key={idx}
+              id={data.companyId}
+            >
               <div>
                 {idx + 1}. {data.companyName}
               </div>{" "}
               <div className="icons">
-                <div className="icon-container">
+                <div
+                  className="icon-container"
+                  ref={(el) => (editRef.current[idx] = el)}
+                >
                   <MdEdit className="icon edit" alt="edit" />
                 </div>
                 <div
@@ -63,6 +115,8 @@ const CompaniesTable = ({ companies }) => {
           );
         })}
       </div>
+      <div className="status-box center-flex">{status}</div>
+      {editModal ? <EditModal /> : null}
     </Div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useLocation, useNavigate } from "react-router";
 
@@ -15,8 +15,8 @@ const Dashboard = () => {
   const [addModal, setAddModal] = useState(false);
   const [companies, setCompanies] = useState();
 
-  const companyModalRef = createRef();
-  const companyModalCloseRef = createRef();
+  const companyModalRef = useRef();
+  const companyModalCloseRef = useRef();
 
   let location = useLocation();
   let navigate = useNavigate();
@@ -54,46 +54,15 @@ const Dashboard = () => {
     //eslint-disable-next-line
   }, []);
 
-  // useEffect(() => {
-  //   if (!addButton) return;
-  //   // const addCompany = async () => {
-  //   //   axios
-  //   //     .post("http://localhost:8080/api/admin/addCompany", {
-  //   //       addInput,
-  //   //     })
-  //   //     .then((res) => {
-  //   //       setAddMessage("Successfully Added!");
-  //   //       const loadCompanies = async () => {
-  //   //         axios
-  //   //           .get("http://localhost:8080/api/admin/company")
-  //   //           .then((res) => {
-  //   //             setCompanies(res.data);
-  //   //           })
-  //   //           .catch((err) => {
-  //   //             console.log("Errorr");
-  //   //           });
-  //   //       };
-  //   //       loadCompanies();
-  //   //     })
-  //   //     .catch((err) => {
-  //   //       setAddMessage(err.response.data.message);
-  //   //       console.log(err.response);
-  //   //     });
-  //   // };
-  //   // addCompany();
-  //   setAddButton(false);
-  //   //eslint-disable-next-line
-  // }, [addButton]);
-
   useEffect(() => {
     if (!initialLoad) return;
     const loadCompanies = async () => {
       axios
-        .get("http://localhost:8080/api/admin/company")
+        .get("http://localhost:8080/api/admin/companies")
         .then((res) => {
           setCompanies(res.data);
         })
-        .catch((err) => console.log("Error"));
+        .catch((err) => console.log(err.response));
     };
     loadCompanies();
     setInitialLoad(false);

@@ -10,6 +10,10 @@ export const Div = styled.div`
   color: black;
 
   .main-container {
+    height: 200px;
+    background: yellow;
+    overflow: scroll;
+
     .company {
       display: flex;
       align-items: center;
@@ -41,6 +45,13 @@ export const Div = styled.div`
         }
       }
     }
+  }
+
+  .status-box {
+    width: 100%;
+    height: 50px;
+    font-size: 125%;
+    color: lightcoral;
   }
 `;
 
