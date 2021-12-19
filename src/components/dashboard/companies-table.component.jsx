@@ -13,18 +13,19 @@ import {
 } from "../../services/user.service";
 
 import EditModal from "./edit-modal.component";
+import AddModal from "./add-modal.component";
 
-const CompaniesTable = ({ companies }) => {
+const CompaniesTable = () => {
   const deleteRef = useRef([]); //Delete icon on company row
   const editRef = useRef([]); // Edit icon on company row
-  const closeEditRef = useRef(); // Close icon on editModal
 
   const [status, setStatus] = useState(null); // success or failure display after action
   const [company, setCompany] = useState([]); // all companies
   const [isLoaded, setIsLoaded] = useState(false); // set to true after all companies rendered
-  const [editModal, setEditModal] = useState(false); // true when editModal is active
-  const [editData, setEditData] = useState([]);
-  const [editLoaded, setEditLoaded] = useState(false); // after editModal mounted
+  const [editData, setEditData] = useState([]); // data sent to edit modal
+  const [editModal, setEditModal] = useState(false); // if true display modal
+  const [addModal, setAddModal] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const handleDeleteClick = (e) => {
     console.log("handleDeleteClick");
@@ -52,33 +53,52 @@ const CompaniesTable = ({ companies }) => {
     getCompany(companyId)
       .then((res) => {
         setEditData({ ...res });
-        console.log("getCompany res: ", res);
+        setEditModal(true);
       })
-      .then((res) => setEditModal(true))
       .catch((err) => console.log(err));
   };
 
-  const handleEditCloseClick = (e) => {
-    setEditModal(false);
-    setEditLoaded(false);
+  const toggleAddModal = (e) => {
+    console.log("toggleAddModal");
+    setAddModal(true);
   };
 
   // when companies is not empty, set company state
   useEffect(() => {
-    if (companies === undefined) return;
-    setCompany([...companies]);
-  }, [companies]);
+    console.log("companies useEffect");
+    if (!initialLoad) return;
+    loadCompanies()
+      .then(({ data }) => {
+        setCompany(data);
+        setInitialLoad(false);
+      })
+      .catch((err) => {
+        console.log("initial load error");
+      });
+  }, [initialLoad]);
+
+  useEffect(() => {
+    console.log("company useEffect: ", company);
+  }, [company]);
 
   //adding event listeners to delete and edit icons on company
   useEffect(() => {
     console.log("isLoaded useEffect");
-    if (!isLoaded) return;
+    if (!isLoaded) {
+      console.log("!isLoaded");
+      return;
+    }
     deleteRef.current.forEach((icon) => {
-      if (icon) icon.addEventListener("click", handleDeleteClick);
+      if (icon) {
+        icon.addEventListener("click", handleDeleteClick);
+      }
     });
     editRef.current.forEach((icon) => {
       if (icon) icon.addEventListener("click", handleEditClick);
     });
+
+    setIsLoaded(false);
+
     return () => {
       //eslint-disable-next-line
       deleteRef.current.forEach((icon) => {
@@ -88,20 +108,26 @@ const CompaniesTable = ({ companies }) => {
       editRef.current.forEach((icon) => {
         if (icon) icon.removeEventListener("click", handleEditClick);
       });
+
+      setIsLoaded(false);
     };
   }, [isLoaded]);
 
-  //editModal useEffect
-  useEffect(() => {
-    console.log("editModal useEffect");
-    if (!editLoaded) return;
-    closeEditRef.current.addEventListener("click", handleEditCloseClick);
-  }, [editLoaded]);
-
-  if (company === undefined || company.length === 0) {
+  if (company.length === 0) {
     return (
       <Div>
-        <Loading>Still Loading...</Loading>
+        <div className="title-row">
+          <h2>Company Amount: {company.length}</h2>
+          <div className="btn-container">
+            <button className="center-flex" onClick={toggleAddModal}>
+              Add Company
+            </button>
+          </div>
+        </div>
+        <Loading>No Companies to Load...</Loading>
+        {addModal ? (
+          <AddModal setAddModal={setAddModal} setCompany={setCompany} />
+        ) : null}
       </Div>
     );
   }
@@ -109,11 +135,18 @@ const CompaniesTable = ({ companies }) => {
   return (
     <Div>
       {" "}
-      <h2>Company Amount: {company.length}</h2>
+      <div className="title-row">
+        <h2>Company Amount: {company.length}</h2>
+        <div className="btn-container">
+          <button className="center-flex" onClick={toggleAddModal}>
+            Add Company
+          </button>
+        </div>
+      </div>
       <div className="main-container">
         {company.map((data, idx) => {
           if (idx === company.length - 1 && isLoaded === false) {
-            setIsLoaded(true);
+            setIsLoaded(!isLoaded);
           }
           return (
             <div
@@ -145,11 +178,19 @@ const CompaniesTable = ({ companies }) => {
       </div>
       <div className="status-box center-flex">{status}</div>
       {editModal ? (
-        editLoaded ? (
-          <EditModal editData={editData} closeRef={closeEditRef} />
-        ) : (
-          setEditLoaded(true)
-        )
+        <EditModal
+          setCompany={setCompany}
+          editData={editData}
+          setEditModal={setEditModal}
+          setStatus={setStatus}
+        />
+      ) : null}
+      {addModal ? (
+        <AddModal
+          setAddModal={setAddModal}
+          setCompany={setCompany}
+          setUpdate={setStatus}
+        />
       ) : null}
     </Div>
   );

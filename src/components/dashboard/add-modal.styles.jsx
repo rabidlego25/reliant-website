@@ -2,18 +2,17 @@ import styled from "styled-components";
 import { GrClose } from "react-icons/gr";
 
 export const Wrapper = styled.div`
-  height: 400px;
-  width: 300px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: none;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  /* background: yellow; */
   position: absolute;
-  color: black;
+  top: 60px;
+  left: 0;
 
   .modal-container {
-    width: 100%;
-    height: 100%;
+    width: 300px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -96,4 +95,5 @@ export const CloseIcon = styled(GrClose)`
 
 export const ErrorBox = styled.div`
   color: lightcoral;
+  height: 25px;
 `;

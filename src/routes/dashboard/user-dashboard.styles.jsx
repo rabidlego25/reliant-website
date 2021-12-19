@@ -8,6 +8,7 @@ export const DashContainer = styled.div`
   color: white;
   display: flex;
   position: relative;
+  flex-wrap: wrap;
 
   .dash-container {
     width: 100%;

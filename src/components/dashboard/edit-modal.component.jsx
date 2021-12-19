@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 
-import { Div, CloseIcon, StatusBox } from "./edit-modal.styles";
+import { Div, CloseIcon } from "./edit-modal.styles";
 
-import { updateCompany } from "../../services/user.service";
+import { updateCompany, loadCompanies } from "../../services/user.service";
 
 const initialFormData = Object.freeze({
   companyName: "",
@@ -10,11 +10,9 @@ const initialFormData = Object.freeze({
   owner: "",
 });
 
-const EditModal = ({ editData, closeRef }) => {
+const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
   const [formData, setFormData] = useState(initialFormData);
-  const [submit, setSubmit] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
-  const [status, setStatus] = useState("");
 
   const name = useRef(editData.companyName);
   const id = useRef(editData.companyId);
@@ -22,13 +20,27 @@ const EditModal = ({ editData, closeRef }) => {
     editData.type === "Agricultural" ? "Agricultural" : "Industrial"
   );
   const numOfEmp = useRef(editData.numOfEmployees);
+  const closeIcon = useRef();
+  const industrialRadio = useRef();
+  const agriculturalRadio = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("handleSubmit");
     updateCompany(formData)
-      .then((res) => console.log("yay"))
-      .catch((err) => console.log("boo"));
+      .then((res) => {
+        console.log("successful handle submit");
+        console.log(res);
+        setEditModal(false);
+        setStatus("Update Successful");
+        loadCompanies().then(({ data }) => {
+          console.log(data);
+          setCompany(data);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleInputChange = (e) => {
@@ -40,6 +52,11 @@ const EditModal = ({ editData, closeRef }) => {
     setFormData({ ...formData, type: e.target.value });
   };
 
+  const handleCloseClick = (e) => {
+    e.preventDefault();
+    setEditModal(false);
+  };
+
   useEffect(() => {
     if (!initialLoad) return;
     setFormData({
@@ -47,21 +64,18 @@ const EditModal = ({ editData, closeRef }) => {
       type: type.current,
       id: id.current,
     });
+    closeIcon.current.addEventListener("click", handleCloseClick);
+    type.current === "Agricultural"
+      ? (agriculturalRadio.current.checked = true)
+      : (industrialRadio.current.checked = true);
     setInitialLoad(false);
+    //eslint-disable-next-line
   }, [initialLoad]);
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
-  useEffect(() => {
-    if (!submit) return;
-  }, [submit]);
 
   return (
     <Div className="center-flex">
       <div className="modal">
-        <div className="close-icon" ref={closeRef}>
+        <div ref={closeIcon} className="close-icon">
           <CloseIcon />
         </div>
         <form onSubmit={handleSubmit}>
@@ -88,7 +102,8 @@ const EditModal = ({ editData, closeRef }) => {
                   name="type"
                   value="Agricultural"
                   onChange={handleRadioChange}
-                  checked={type.current === "Agricultural" ? "checked" : null}
+                  ref={agriculturalRadio}
+                  // checked={type.current === "Agricultural" ? "checked" : null}
                 />{" "}
                 <label htmlFor="agricultural">Agricultural</label>
               </div>
@@ -99,7 +114,8 @@ const EditModal = ({ editData, closeRef }) => {
                   name="type"
                   value="Industrial"
                   onChange={handleRadioChange}
-                  checked={type.current === "Industrial" ? "checked" : null}
+                  ref={industrialRadio}
+                  // checked={type.current === "Industrial" ? "checked" : null}
                 />{" "}
                 <label htmlFor="industrial">Industrial</label>
               </div>
@@ -108,11 +124,10 @@ const EditModal = ({ editData, closeRef }) => {
           <div className="btn-container center-flex">
             <button type="submit">Submit Changes</button>
           </div>
-          <StatusBox className="center-flex">{status}</StatusBox>
         </form>
       </div>
     </Div>
   );
 };
 
-export default EditModal;
+export default React.memo(EditModal);

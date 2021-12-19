@@ -25,7 +25,6 @@ export const loadCompanies = async () => {
 };
 
 export const getCompany = async (id) => {
-  console.log("user util getCompany id: ", id);
   return axios
     .get(BASE_URL + `/company/${id}`)
     .then((res) => {
@@ -41,6 +40,18 @@ export const updateCompany = async (formData) => {
   const { id } = formData;
   return axios
     .patch(BASE_URL + `/updateCompany/${id}`, formData)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
+export const addCompany = async (formData) => {
+  console.log("formData: ", formData);
+  return axios
+    .post(BASE_URL + `/addCompany`, formData)
     .then((res) => {
       return res;
     })

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { Wrapper, Title, Form, CloseIcon, ErrorBox } from "./add-modal.styles";
 
-import axios from "axios";
+import { addCompany, loadCompanies } from "../../services/user.service";
 
 const initialFormData = Object.freeze({
   companyName: "",
@@ -10,16 +10,29 @@ const initialFormData = Object.freeze({
   owner: "",
 });
 
-const AddModal = ({ modalRef, closeRef }) => {
+const AddModal = ({
+  submitRef,
+  modalRef,
+  setAddModal,
+  setCompany,
+  setUpdate,
+}) => {
   const [formData, setFormData] = useState(initialFormData);
   const [submit, setSubmit] = useState(false);
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState("");
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  const closeRef = useRef();
 
   const onValueChange = (e) => {
+    console.log(e.target.value);
     setFormData({ ...formData, type: e.target.value });
   };
 
-  const handleCloseClick = (e) => {};
+  const handleCloseClick = (e) => {
+    console.log("close click");
+    setAddModal(false);
+  };
 
   const handleInputChange = (e) => {
     e.preventDefault();
@@ -33,32 +46,33 @@ const AddModal = ({ modalRef, closeRef }) => {
 
   useEffect(() => {
     if (!submit) return;
-    console.log(formData);
+    console.log("formData");
     if (formData.companyName === "" || formData.type === "") {
       setStatus("Make sure all fields are entered!");
       return;
     }
-    const addCompany = async () => {
-      axios
-        .post("http://localhost:8080/api/admin/addCompany", {
-          formData,
-        })
-        .then((res) => {
-          setStatus("Creation Successful!");
-        })
-        .catch((err) => {
-          console.log(err.response);
-          setStatus(err.response.data.message);
-          setSubmit(false);
+    addCompany(formData)
+      .then((res) => {
+        setAddModal(false);
+        loadCompanies().then(({ data }) => {
+          setCompany(data);
+          setUpdate("Update Successful");
         });
-    };
-    addCompany();
+      })
+      .catch((err) => setStatus(err.response));
     //eslint-disable-next-line
   }, [submit]);
 
+  useEffect(() => {
+    if (!initialLoad) return;
+    closeRef.current.addEventListener("click", handleCloseClick);
+    setInitialLoad(false);
+    //eslint-disable-next-line
+  }, [initialLoad]);
+
   return (
-    <Wrapper>
-      <div ref={modalRef} className="modal-container">
+    <Wrapper className="center-flex">
+      <div className="modal-container">
         <div className="icon-container">
           <div ref={closeRef} className="icon">
             <CloseIcon onClick={handleCloseClick} />

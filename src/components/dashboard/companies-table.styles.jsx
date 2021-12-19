@@ -1,23 +1,50 @@
 import styled from "styled-components";
 
 export const Div = styled.div`
-  height: 300px;
-  width: 400px;
+  height: 350px;
+  width: 450px;
   border: 2px solid black;
   background: #fff;
   padding: 1rem;
-  overflow: scroll;
   color: black;
+
+  .title-row {
+    width: 100%;
+    display: flex;
+    margin-bottom: 1rem;
+
+    h2 {
+      /* display: inline-block; */
+      width: 100%;
+    }
+
+    .btn-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40%;
+
+      button {
+        height: 75%;
+        padding: 0.5rem;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
 
   .main-container {
     height: 200px;
-    background: yellow;
     overflow: scroll;
+    background: yellow;
 
     .company {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin: 0.5rem;
 
       .icons {
         display: flex;
@@ -46,7 +73,6 @@ export const Div = styled.div`
       }
     }
   }
-
   .status-box {
     width: 100%;
     height: 50px;
