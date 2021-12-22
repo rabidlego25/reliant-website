@@ -65,7 +65,6 @@ const CompaniesTable = () => {
 
   // when companies is not empty, set company state
   useEffect(() => {
-    console.log("companies useEffect");
     if (!initialLoad) return;
     loadCompanies()
       .then(({ data }) => {
@@ -77,13 +76,8 @@ const CompaniesTable = () => {
       });
   }, [initialLoad]);
 
-  useEffect(() => {
-    console.log("company useEffect: ", company);
-  }, [company]);
-
   //adding event listeners to delete and edit icons on company
   useEffect(() => {
-    console.log("isLoaded useEffect");
     if (!isLoaded) {
       console.log("!isLoaded");
       return;

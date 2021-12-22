@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router";
 import { DashContainer } from "./user-dashboard.styles";
 
 import CompaniesTable from "./../../components/dashboard/companies-table.component";
+import EmployeesTable from "../../components/dashboard/employees-table.component";
 
 const Dashboard = () => {
   const [firstName, setFirstName] = useState("");
@@ -30,7 +31,12 @@ const Dashboard = () => {
         <h1>Hello {firstName}</h1>
         <button onClick={handleLogoutClick}>Logout</button>
       </div>
-      <CompaniesTable className="dash-item" />
+      <div className="dash-item company-container">
+        <CompaniesTable />
+      </div>
+      <div className="dash-item employee-container">
+        <EmployeesTable />
+      </div>
     </DashContainer>
   );
 };

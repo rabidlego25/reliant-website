@@ -3,25 +3,27 @@ import styled from "styled-components";
 export const DashContainer = styled.div`
   width: 100%;
   height: 100vh;
-  background: lightgreen;
+  background: linear-gradient(to top left, #3389b8, #1699b4);
   padding-top: 60px;
   color: white;
   display: flex;
   position: relative;
   flex-wrap: wrap;
 
-  .dash-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
+  .dash-item {
+    width: 50%;
+    padding: 1.5rem;
 
-    &.blur-background {
-      filter: blur(2px);
+    &.company-container {
+      display: flex;
+      justify-content: center;
     }
 
-    .dash-item {
-      width: 400px;
+    &.employee-container {
+      width: 100%;
+      height: 100%;
+      background: white;
+      padding: 5rem;
     }
   }
 `;
