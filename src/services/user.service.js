@@ -59,15 +59,3 @@ export const addCompany = async (formData) => {
       return err.response;
     });
 };
-
-export const addEmployee = async (formData) => {
-  console.log("formData: ", formData);
-  return axios
-    .post(BASE_URL + `/addEmployee`, formData)
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      return err.response;
-    });
-};

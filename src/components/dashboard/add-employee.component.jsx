@@ -1,5 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Wrapper, CloseIcon, AddSign, MinusSign } from "./add-employee.styles";
+import {
+  Wrapper,
+  CloseIcon,
+  AddSign,
+  MinusSign,
+  ErrorBox,
+} from "./add-employee.styles";
+
+import { addEmployee } from "../../services/employee.service";
 
 const initialFormData = Object.freeze({
   firstName: "",
@@ -43,8 +51,24 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
   const [addArray, setAddArray] = useState([
     <AdditionalEmployee index={index} />,
   ]);
+  const [status, setStatus] = useState("");
 
   const handleCloseClick = (e) => {
+    setAddEmpModal(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    addEmployee(formData)
+      .then((res) => {
+        console.log(res);
+        setAddEmpModal(false);
+      })
+      .catch((err) => {
+        console.log("ERROR: ", err);
+        setStatus(err);
+      });
     setAddEmpModal(false);
   };
 
@@ -61,12 +85,6 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
     setIndex(index - 1);
     setAddArray([...addArray.slice(0, index)]);
     setFormData([...formData.slice(0, index)]);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    setAddEmpModal(false);
   };
 
   const handleInputChange = (e) => {
@@ -124,8 +142,8 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
     let arr = formData.map((data, idx) => {
       return {
         ...data,
-        companyId: company.id,
-        companyName: company.companyName,
+        companyId: company?.id,
+        companyName: company?.companyName,
       };
     });
     setFormData((data) => [...arr]);
@@ -194,6 +212,7 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
             </div>
           </div>
         </form>
+        <ErrorBox>{status}</ErrorBox>
       </div>
     </Wrapper>
   );

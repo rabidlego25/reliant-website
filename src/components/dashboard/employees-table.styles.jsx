@@ -30,13 +30,12 @@ export const TableWrapper = styled.div`
   }
   .table-main {
     width: 100%;
+    height: calc(100% - 60px);
     overflow: scroll;
 
     table {
-      th {
-        padding: 0 15px;
-        font-size: 100%;
-      }
+      border-collapse: collapse;
+      overflow: scroll;
     }
   }
 `;

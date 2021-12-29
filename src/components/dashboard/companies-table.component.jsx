@@ -19,7 +19,7 @@ const CompaniesTable = () => {
   const deleteRef = useRef([]); //Delete icon on company row
   const editRef = useRef([]); // Edit icon on company row
 
-  const [status, setStatus] = useState(null); // success or failure display after action
+  const [status, setStatus] = useState(""); // success or failure display after action
   const [company, setCompany] = useState([]); // all companies
   const [isLoaded, setIsLoaded] = useState(false); // set to true after all companies rendered
   const [editData, setEditData] = useState([]); // data sent to edit modal
@@ -70,6 +70,7 @@ const CompaniesTable = () => {
       .then(({ data }) => {
         setCompany(data);
         setInitialLoad(false);
+        setStatus("");
       })
       .catch((err) => {
         console.log("initial load error");
@@ -120,7 +121,11 @@ const CompaniesTable = () => {
         </div>
         <Loading>No Companies to Load...</Loading>
         {addModal ? (
-          <AddModal setAddModal={setAddModal} setCompany={setCompany} />
+          <AddModal
+            setAddModal={setAddModal}
+            setCompany={setCompany}
+            setStatus={setStatus}
+          />
         ) : null}
       </Div>
     );
@@ -170,7 +175,7 @@ const CompaniesTable = () => {
           );
         })}
       </div>
-      <div className="status-box center-flex">{status}</div>
+      <div className="status-box center-flex">{status ? status : null}</div>
       {editModal ? (
         <EditModal
           setCompany={setCompany}
@@ -182,8 +187,8 @@ const CompaniesTable = () => {
       {addModal ? (
         <AddModal
           setAddModal={setAddModal}
+          setStatus={setStatus}
           setCompany={setCompany}
-          setUpdate={setStatus}
         />
       ) : null}
     </Div>

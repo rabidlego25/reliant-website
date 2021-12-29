@@ -171,3 +171,8 @@ export const MinusSign = styled(AiOutlineMinusCircle)`
     cursor: pointer;
   }
 `;
+
+export const ErrorBox = styled.div`
+  color: lightcoral;
+  height: 25px;
+`;

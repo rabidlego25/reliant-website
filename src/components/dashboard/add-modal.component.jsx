@@ -14,12 +14,12 @@ const AddModal = ({
   submitRef,
   modalRef,
   setAddModal,
+  setStatus,
   setCompany,
-  setUpdate,
 }) => {
   const [formData, setFormData] = useState(initialFormData);
   const [submit, setSubmit] = useState(false);
-  const [status, setStatus] = useState("");
+  const [secondStatus, setSecondStatus] = useState("");
   const [initialLoad, setInitialLoad] = useState(true);
 
   const closeRef = useRef();
@@ -48,23 +48,26 @@ const AddModal = ({
     if (!submit) return;
     console.log("formData");
     if (formData.companyName === "" || formData.type === "") {
-      setStatus("Make sure all fields are entered!");
+      setSecondStatus("Make sure all fields are entered!");
+      setSubmit(false);
       return;
     }
     addCompany(formData)
       .then((res) => {
         setAddModal(false);
         loadCompanies().then(({ data }) => {
+          console.log(setStatus, setCompany, setAddModal);
           setCompany(data);
-          setUpdate("Update Successful");
+          setStatus("Company successfully added!");
         });
       })
-      .catch((err) => setStatus(err.response));
+      .catch((err) => setSecondStatus(err.response));
     //eslint-disable-next-line
   }, [submit]);
 
   useEffect(() => {
     if (!initialLoad) return;
+    console.log(setStatus);
     closeRef.current.addEventListener("click", handleCloseClick);
     setInitialLoad(false);
     //eslint-disable-next-line
@@ -111,7 +114,7 @@ const AddModal = ({
             <button type="submit">Submit Request</button>
           </div>
         </Form>
-        <ErrorBox>{status}</ErrorBox>
+        <ErrorBox>{secondStatus}</ErrorBox>
       </div>
     </Wrapper>
   );
