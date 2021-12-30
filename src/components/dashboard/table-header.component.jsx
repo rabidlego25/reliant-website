@@ -13,12 +13,39 @@ const TableHeader = ({ columns }) => {
 
   return (
     <React.Fragment>
-      <TableHead>
+      <colgroup>
+        {columnData
+          ? columnData.map((data, idx) => {
+              return (
+                <col
+                  key={idx}
+                  style={
+                    idx === 0 || idx === 3
+                      ? { width: "60px", padding: "8px" }
+                      : idx < 4
+                      ? { width: "115px", padding: "0px" }
+                      : { width: "95px", padding: "8px" }
+                  }
+                />
+              );
+            })
+          : null}
+      </colgroup>
+      <TableHead style={{ zIndex: 1 }}>
         <TableRow>
           {columnData
             ? columnData.map((head, idx) => {
                 return (
-                  <TableCell sx={{ color: "blue", align: "center" }} key={idx}>
+                  <TableCell
+                    sx={{
+                      color: "blue",
+                      fontWeight: "bold",
+                      textAlign: "start",
+                      bgcolor: "lightgreen",
+                      padding: 1,
+                    }}
+                    key={idx}
+                  >
                     {head}
                   </TableCell>
                 );

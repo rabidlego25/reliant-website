@@ -47,13 +47,14 @@ const EmployeesTable = () => {
         setInitialLoad(false);
       })
       .catch((err) => console.log(err));
-    getEmployees().then(({ data }) => {
-      // console.log("line41: ", data);
-      arr = generateHeaders(Object.keys(data[0]));
-      setColumnData(arr);
-      setEmployeeData(data);
-    });
-    console.log("END EFFECT");
+    getEmployees()
+      .then(({ data }) => {
+        // console.log("line41: ", data);
+        arr = generateHeaders(Object.keys(data[0]));
+        setColumnData(arr);
+        setEmployeeData(data);
+      })
+      .catch((err) => console.log(err));
   }, [initalLoad]);
 
   return (
@@ -84,8 +85,8 @@ const EmployeesTable = () => {
       </div>
 
       <div className="table-main">
-        <Table>
-          <TableHeader stickyHeader columns={columnData} />
+        <Table stickyHeader style={{ tableLayout: "fixed", zIndex: 1 }}>
+          <TableHeader columns={columnData} />
           <TableBod employees={employeeData} />
         </Table>
       </div>

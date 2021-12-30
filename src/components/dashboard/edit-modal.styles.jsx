@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { GrClose } from "react-icons/gr";
 
 export const Div = styled.div`
-  position: absolute;
-  background: yellow;
+  position: fixed;
+  height: calc(100% - 60px);
   width: 100vw;
-  height: 100vh;
-  top: 0;
+  top: 60px;
   left: 0;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
 
   .modal {
     display: flex;

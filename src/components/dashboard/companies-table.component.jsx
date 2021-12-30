@@ -80,7 +80,6 @@ const CompaniesTable = () => {
   //adding event listeners to delete and edit icons on company
   useEffect(() => {
     if (!isLoaded) {
-      console.log("!isLoaded");
       return;
     }
     deleteRef.current.forEach((icon) => {

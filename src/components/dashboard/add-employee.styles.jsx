@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
   position: fixed;
   top: 60px;
   left: 0;
+  z-index: 2;
 
   .modal {
     width: 480px;
