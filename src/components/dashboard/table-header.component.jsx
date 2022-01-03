@@ -8,23 +8,22 @@ const TableHeader = ({ columns }) => {
 
   useEffect(() => {
     if (!columns) return;
+
     setColumnData(columns);
   }, [columns]);
 
   return (
     <React.Fragment>
-      <colgroup>
+      <colgroup style={{ minWidth: "100%" }}>
         {columnData
-          ? columnData.map((data, idx) => {
+          ? columnData.map((column, idx) => {
               return (
                 <col
-                  key={idx}
+                  key={column.index}
                   style={
-                    idx === 0 || idx === 3
-                      ? { width: "60px", padding: "8px" }
-                      : idx < 4
-                      ? { width: "115px", padding: "0px" }
-                      : { width: "95px", padding: "8px" }
+                    column.header === "Emp No" || column.header === "Comp Id"
+                      ? { width: "45px" }
+                      : { width: "115px" }
                   }
                 />
               );
@@ -34,19 +33,30 @@ const TableHeader = ({ columns }) => {
       <TableHead style={{ zIndex: 1 }}>
         <TableRow>
           {columnData
-            ? columnData.map((head, idx) => {
+            ? columnData.map((column, idx) => {
                 return (
                   <TableCell
-                    sx={{
-                      color: "blue",
-                      fontWeight: "bold",
-                      textAlign: "start",
-                      bgcolor: "lightgreen",
-                      padding: 1,
-                    }}
-                    key={idx}
+                    sx={
+                      column.attribute === "empNo" ||
+                      column.attribute === "companyId"
+                        ? {
+                            color: "blue",
+                            fontWeight: "bold",
+                            bgcolor: "lightgreen",
+                            textAlign: "start",
+                            padding: 0,
+                          }
+                        : {
+                            color: "blue",
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            bgcolor: "lightgreen",
+                            padding: 1,
+                          }
+                    }
+                    key={column.index}
                   >
-                    {head}
+                    {column.header}
                   </TableCell>
                 );
               })

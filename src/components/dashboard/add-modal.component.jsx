@@ -56,7 +56,6 @@ const AddModal = ({
       .then((res) => {
         setAddModal(false);
         loadCompanies().then(({ data }) => {
-          console.log(setStatus, setCompany, setAddModal);
           setCompany(data);
           setStatus("Company successfully added!");
         });

@@ -1,10 +1,5 @@
-export const generateHeaders = (columnData) => {
-  //   console.log("generateHeaders: ", columnData);
-  let arr = [];
-  columnData.forEach((head) => {
-    let newWords = head.replace(/([a-z](?=[A-Z]))/g, "$1 ");
-    newWords = newWords[0].toUpperCase() + newWords.slice(1);
-    arr.push(newWords);
-  });
-  return arr;
+export const generateHeaders = (head) => {
+  let newWord = head.replace(/([a-z](?=[A-Z]))/g, "$1 ");
+  newWord = newWord[0].toUpperCase() + newWord.slice(1);
+  return newWord;
 };

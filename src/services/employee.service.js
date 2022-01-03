@@ -15,14 +15,13 @@ export const addEmployee = async (formData) => {
 };
 
 export const getEmployees = async () => {
-  console.log("getEmployee");
+  console.log("getEmployees");
   return axios
     .get(BASE_URL + `/employees`)
     .then((res) => {
       return res;
     })
     .catch((err) => {
-      console.log(err);
       return err.response;
     });
 };

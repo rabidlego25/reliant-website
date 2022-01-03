@@ -21,7 +21,6 @@ const CompaniesTable = () => {
 
   const [status, setStatus] = useState(""); // success or failure display after action
   const [company, setCompany] = useState([]); // all companies
-  const [isLoaded, setIsLoaded] = useState(false); // set to true after all companies rendered
   const [editData, setEditData] = useState([]); // data sent to edit modal
   const [editModal, setEditModal] = useState(false); // if true display modal
   const [addModal, setAddModal] = useState(false);
@@ -39,7 +38,6 @@ const CompaniesTable = () => {
           : setStatus("Deletion Failed");
         loadCompanies()
           .then(({ data }) => {
-            setIsLoaded(false);
             setCompany(data);
           })
           .catch((err) => console.log("loadCompanies error"));
@@ -77,36 +75,6 @@ const CompaniesTable = () => {
       });
   }, [initialLoad]);
 
-  //adding event listeners to delete and edit icons on company
-  useEffect(() => {
-    if (!isLoaded) {
-      return;
-    }
-    deleteRef.current.forEach((icon) => {
-      if (icon) {
-        icon.addEventListener("click", handleDeleteClick);
-      }
-    });
-    editRef.current.forEach((icon) => {
-      if (icon) icon.addEventListener("click", handleEditClick);
-    });
-
-    setIsLoaded(false);
-
-    return () => {
-      //eslint-disable-next-line
-      deleteRef.current.forEach((icon) => {
-        if (icon) icon.removeEventListener("click", handleDeleteClick);
-      });
-      //eslint-disable-next-line
-      editRef.current.forEach((icon) => {
-        if (icon) icon.removeEventListener("click", handleEditClick);
-      });
-
-      setIsLoaded(false);
-    };
-  }, [isLoaded]);
-
   if (company.length === 0) {
     return (
       <Div>
@@ -143,9 +111,6 @@ const CompaniesTable = () => {
       </div>
       <div className="main-container">
         {company.map((data, idx) => {
-          if (idx === company.length - 1 && isLoaded === false) {
-            setIsLoaded(!isLoaded);
-          }
           return (
             <div
               className="company"
@@ -161,13 +126,21 @@ const CompaniesTable = () => {
                   className="icon-container"
                   ref={(el) => (editRef.current[idx] = el)}
                 >
-                  <MdEdit className="icon edit" alt="edit" />
+                  <MdEdit
+                    onClick={handleEditClick}
+                    className="icon edit"
+                    alt="edit"
+                  />
                 </div>
                 <div
                   ref={(el) => (deleteRef.current[idx] = el)}
                   className="icon-container"
                 >
-                  <IoTrashBin className="icon trash" alt="delete" />
+                  <IoTrashBin
+                    onClick={handleDeleteClick}
+                    className="icon trash"
+                    alt="delete"
+                  />
                 </div>
               </div>
             </div>
