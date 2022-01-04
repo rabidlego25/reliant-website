@@ -153,6 +153,24 @@ const EmployeesTable = () => {
         <div className="btn-container">
           <button onClick={handleAddClick}>Add Employee</button>
           <button onClick={handleConductClick}>Conduct Training</button>
+          <FormControl sx={{ width: 300, bgcolor: "white" }}>
+            <InputLabel id="sort-by-company">Sort by Company: </InputLabel>
+            <Select
+              labelId="sort-by-company"
+              value={currentCompany}
+              onChange={handleSelectCompany}
+              input={<OutlinedInput label="Sort by Company:" />}
+            >
+              <MenuItem value="All">All</MenuItem>
+              {companyData.map((comp, idx) => {
+                return (
+                  <MenuItem key={comp.id} value={comp}>
+                    {comp.companyName}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
           <FormControl sx={{ width: 300, height: "100%", bgcolor: "white" }}>
             <InputLabel id="sort-by-training">Sort by Training: </InputLabel>
             <Select
@@ -171,24 +189,6 @@ const EmployeesTable = () => {
                     value={column.attribute}
                   >
                     {column.header}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ width: 300, bgcolor: "white" }}>
-            <InputLabel id="sort-by-company">Sort by Company: </InputLabel>
-            <Select
-              labelId="sort-by-company"
-              value={currentCompany}
-              onChange={handleSelectCompany}
-              input={<OutlinedInput label="Sort by Company:" />}
-            >
-              <MenuItem value="All">All</MenuItem>
-              {companyData.map((comp, idx) => {
-                return (
-                  <MenuItem key={comp.id} value={comp}>
-                    {comp.companyName}
                   </MenuItem>
                 );
               })}

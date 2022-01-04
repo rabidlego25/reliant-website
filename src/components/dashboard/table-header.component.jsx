@@ -14,7 +14,7 @@ const TableHeader = ({ columns }) => {
 
   return (
     <React.Fragment>
-      <colgroup style={{ minWidth: "100%" }}>
+      <colgroup>
         {columnData
           ? columnData.map((column, idx) => {
               return (
@@ -44,14 +44,14 @@ const TableHeader = ({ columns }) => {
                             fontWeight: "bold",
                             bgcolor: "lightgreen",
                             textAlign: "start",
-                            padding: 0,
+                            padding: 0.5,
                           }
                         : {
                             color: "blue",
                             fontWeight: "bold",
                             textAlign: "center",
                             bgcolor: "lightgreen",
-                            padding: 1,
+                            padding: 0.5,
                           }
                     }
                     key={column.index}

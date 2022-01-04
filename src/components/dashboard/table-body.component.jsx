@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
@@ -8,36 +8,62 @@ import { format, parseISO } from "date-fns";
 
 const TableBod = ({ employees, company, training }) => {
   const [rowData, setRowData] = useState(null);
+  const [trainings, setTrainings] = useState(null);
 
   useEffect(() => {
     if (!employees) return;
     setRowData(employees);
   }, [employees]);
 
+  useEffect(() => {
+    if (!training) return;
+    let result = training.map((a) => {
+      let obj = {};
+      obj["index"] = a.index;
+      obj["attribute"] = a.attribute;
+      // {index: #, attribute: S}
+      return obj;
+    });
+    // result: [obj1, obj2, ... objn]
+    setTrainings(result);
+  }, [training]);
+
   return (
     <React.Fragment>
       <TableBody>
-        {rowData
+        {rowData && trainings
           ? // eslint-disable-next-line array-callback-return
             rowData.map((row, idx) => {
               let arr = Object.keys(row);
+              // row: {empNo: #, firstName: S, ...}
+              console.log(row);
+              // trainings [{index: #, attribute: S}... {}]
               if (company === "All")
                 return (
                   <TableRow key={row.empNo}>
-                    {arr.map((cell, idex) => {
+                    {trainings.map((cell, idex) => {
+                      // cell is a string - ex: "empNo" or "aerialLift"
                       return (
                         <TableCell
                           key={idex}
                           sx={
-                            idex === 1 || idex === 2 || idex === 4
-                              ? { textAlign: "center", padding: 0 }
-                              : { textAlign: "start", padding: 1 }
+                            cell.attribute === "firstName" ||
+                            cell.attribute === "lastName" ||
+                            cell.attribute === "companyName"
+                              ? { textAlign: "center", padding: 1 }
+                              : cell.attribute === "empNo" ||
+                                cell.attribute === "companyId"
+                              ? { textAlign: "start", padding: 0.5 }
+                              : { textAlign: "center", padding: 0.5 }
                           }
                         >
                           {idex < 5
-                            ? row[cell]
-                            : row[cell]
-                            ? format(parseISO(row[cell]), "MM/dd/yyyy")
+                            ? row[cell.attribute]
+                            : row[cell.attribute]
+                            ? format(
+                                parseISO(row[cell.attribute]),
+                                "MM/dd/yyyy"
+                              )
                             : // null
                               null}
                         </TableCell>
@@ -48,21 +74,29 @@ const TableBod = ({ employees, company, training }) => {
               else {
                 if (row.companyName === company.companyName)
                   return (
-                    <TableRow key={idx}>
-                      {arr.map((cell, idex) => {
+                    <TableRow key={row.empNo}>
+                      {trainings.map((cell, idex) => {
                         return (
                           <TableCell
                             key={idex}
                             sx={
-                              idex === 1 || idex === 2 || idex === 4
-                                ? { textAlign: "center", padding: 0 }
-                                : { textAlign: "start", padding: 1 }
+                              cell.attribute === "firstName" ||
+                              cell.attribute === "lastName" ||
+                              cell.attribute === "companyName"
+                                ? { textAlign: "center", padding: 1 }
+                                : cell.attribute === "empNo" ||
+                                  cell.attribute === "companyId"
+                                ? { textAlign: "start", padding: 0.5 }
+                                : { textAlign: "center", padding: 0.5 }
                             }
                           >
                             {idex < 5
-                              ? row[cell]
-                              : row[cell]
-                              ? format(parseISO(row[cell]), "MM/dd/yyyy")
+                              ? row[cell.attribute]
+                              : row[cell.attribute]
+                              ? format(
+                                  parseISO(row[cell.attribute]),
+                                  "MM/dd/yyyy"
+                                )
                               : // null
                                 null}
                           </TableCell>
