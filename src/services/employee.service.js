@@ -25,3 +25,15 @@ export const getEmployees = async () => {
       return err.response;
     });
 };
+
+export const updateEmployees = async (...props) => {
+  console.log("updateEmployees");
+  return axios
+    .patch(BASE_URL + "/updateEmployees", { ...props })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};

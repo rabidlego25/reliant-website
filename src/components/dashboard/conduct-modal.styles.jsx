@@ -11,21 +11,45 @@ export const Wrapper = styled.div`
   z-index: 10;
 
   .modal {
+    background: white;
     width: 480px;
     height: 600px;
-    background: white;
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
     padding: 1rem;
     overflow-x: scroll;
+    position: relative;
+    border-radius: 25px;
+    box-shadow: 0px 0px 10px 5px rgba(66, 135, 245, 1);
 
     .icon-container {
-      width: 100%;
+      width: calc(100% - 2rem);
       height: 50px;
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      position: absolute;
+    }
+
+    .title-container {
+      width: calc(100% - 2rem);
+      margin-top: 30px;
+    }
+
+    .data-container {
+      margin-top: 50px;
+
+      .form-item {
+        margin: 1rem 0;
+
+        &:focus {
+          background: yellow;
+        }
+
+        &.btn-container {
+          width: 100%;
+        }
+      }
     }
   }
 `;
@@ -37,4 +61,25 @@ export const CloseIcon = styled(GrClose)`
   &:hover {
     cursor: pointer;
   }
+`;
+
+export const SubmitButton = styled.button`
+  height: 25px;
+  width: 100px;
+  height: 33px;
+  border-radius: 10px;
+  border: none;
+  background: #4c8bf5;
+  color: #fff;
+  transition: transform 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    background: #344ceb;
+  }
+`;
+
+export const ErrorBox = styled.div`
+  color: "red" !important;
 `;

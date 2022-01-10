@@ -3,13 +3,17 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import DateAdapter from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <LocalizationProvider dateAdapter={DateAdapter}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </LocalizationProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

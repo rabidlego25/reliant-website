@@ -1,55 +1,52 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
 
 import { NavLink } from "react-router-dom";
 
 import { Nav, DivLeft, DivRight, HeaderLink } from "./Navbar.styles";
 
 const Navbar = () => {
-  const [opacity, setOpacity] = useState(1);
-  const [prevY, setPrevY] = useState(0);
-  const [fadeMarker, setFadeMarker] = useState(0);
-  const [mouseEnter, setMouseEnter] = useState(false);
+  // const [opacity, setOpacity] = useState(1);
+  // const [prevY, setPrevY] = useState(0);
+  // const [fadeMarker, setFadeMarker] = useState(0);
+  // const [mouseEnter, setMouseEnter] = useState(false);
 
   // eslint-disable-next-line
   const handleScroll = (e) => {
-    const scrollY = window.scrollY; // get current Y value
-
+    // const scrollY = window.scrollY; // get current Y value
     //Scrolling down
-    if (prevY < scrollY) {
-      mouseEnter
-        ? setFadeMarker(scrollY)
-        : setOpacity((1 - (scrollY - fadeMarker) / 500).toFixed(2));
-      setPrevY(scrollY);
-      if (scrollY - fadeMarker > 500) setFadeMarker(scrollY - 500);
-    }
-
+    // if (prevY < scrollY) {
+    //   mouseEnter
+    //     ? setFadeMarker(scrollY)
+    //     : setOpacity((1 - (scrollY - fadeMarker) / 500).toFixed(2));
+    //   setPrevY(scrollY);
+    //   if (scrollY - fadeMarker > 500) setFadeMarker(scrollY - 500);
+    // }
     //Scrolling upwards
-    if (prevY > scrollY) {
-      setPrevY(scrollY);
-      setFadeMarker(scrollY);
-      return setOpacity(1);
-    }
+    // if (prevY > scrollY) {
+    // setPrevY(scrollY);
+    // setFadeMarker(scrollY);
+    // return setOpacity(1);
+    // }
   };
 
   const handleHover = () => {
-    setMouseEnter(true);
-    setOpacity(1);
+    // setMouseEnter(true);
+    // setOpacity(1);
   };
 
   const handleMouseExit = () => {
-    setMouseEnter(false);
+    // setMouseEnter(false);
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-    // eslint-disable-next-line
-  }, [prevY, opacity, fadeMarker]);
+  // useEffect(() => {
+  // window.addEventListener("scroll", handleScroll);
+  // return () => window.removeEventListener("scroll", handleScroll);
+  // eslint-disable-next-line
+  // }, [prevY, opacity, fadeMarker]);
 
   return (
     <Nav
-      opacity={opacity}
+      // opacity={opacity}
       onMouseEnter={handleHover}
       onMouseLeave={handleMouseExit}
     >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
@@ -9,6 +9,10 @@ import { format, parseISO } from "date-fns";
 const TableBod = ({ employees, company, training }) => {
   const [rowData, setRowData] = useState(null);
   const [trainings, setTrainings] = useState(null);
+
+  const handleEditClick = (e) => {
+    console.log(e.currentTarget.getAttribute("data-emp"));
+  };
 
   useEffect(() => {
     if (!employees) return;
@@ -34,26 +38,43 @@ const TableBod = ({ employees, company, training }) => {
         {rowData && trainings
           ? // eslint-disable-next-line array-callback-return
             rowData.map((row, idx) => {
-              let arr = Object.keys(row);
               // row: {empNo: #, firstName: S, ...}
-              console.log(row);
               // trainings [{index: #, attribute: S}... {}]
               if (company === "All")
                 return (
-                  <TableRow key={row.empNo}>
+                  <TableRow key={row.empNo} onClick={handleEditClick}>
                     {trainings.map((cell, idex) => {
                       // cell is a string - ex: "empNo" or "aerialLift"
                       return (
                         <TableCell
                           key={idex}
+                          onClick={
+                            cell.attribute === "empNo" ? handleEditClick : null
+                          }
+                          data-emp={
+                            cell.attribute === "empNo" ? row[cell] : null
+                          }
+                          style={
+                            cell.attribute === "firstName" ||
+                            cell.attribute === "lastName" ||
+                            cell.attribute === "companyName"
+                              ? { padding: "0 1rem" }
+                              : null
+                          }
                           sx={
                             cell.attribute === "firstName" ||
                             cell.attribute === "lastName" ||
                             cell.attribute === "companyName"
-                              ? { textAlign: "center", padding: 1 }
+                              ? {
+                                  textAlign: "start",
+                                }
                               : cell.attribute === "empNo" ||
                                 cell.attribute === "companyId"
-                              ? { textAlign: "start", padding: 0.5 }
+                              ? {
+                                  textAlign: "start",
+                                  padding: 0.5,
+                                  cursor: "pointer",
+                                }
                               : { textAlign: "center", padding: 0.5 }
                           }
                         >
@@ -79,11 +100,20 @@ const TableBod = ({ employees, company, training }) => {
                         return (
                           <TableCell
                             key={idex}
+                            style={
+                              cell.attribute === "firstName" ||
+                              cell.attribute === "lastName" ||
+                              cell.attribute === "companyName"
+                                ? { padding: "0 1rem" }
+                                : null
+                            }
                             sx={
                               cell.attribute === "firstName" ||
                               cell.attribute === "lastName" ||
                               cell.attribute === "companyName"
-                                ? { textAlign: "center", padding: 1 }
+                                ? {
+                                    textAlign: "start",
+                                  }
                                 : cell.attribute === "empNo" ||
                                   cell.attribute === "companyId"
                                 ? { textAlign: "start", padding: 0.5 }

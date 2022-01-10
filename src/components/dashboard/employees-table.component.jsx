@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect, useLayoutEffect, useMemo } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import Table from "@mui/material/Table";
 import FormControl from "@mui/material/FormControl";
@@ -21,11 +21,11 @@ import { getEmployees } from "../../services/employee.service";
 import { generateHeaders } from "../../services/helpers.service";
 
 let columnArray = [
-  { header: "Emp No", attribute: "empNo", index: 0 },
-  { header: "First Name", attribute: "firstName", index: 1 },
-  { header: "Last Name", attribute: "lastName", index: 2 },
-  { header: "Comp Id", attribute: "companyId", index: 3 },
-  { header: "Comp Name", attribute: "companyName", index: 4 },
+  { header: "Emp No", attribute: "empNo", index: 0, type: "main" },
+  { header: "First Name", attribute: "firstName", index: 1, type: "main" },
+  { header: "Last Name", attribute: "lastName", index: 2, type: "main" },
+  { header: "Comp Id", attribute: "companyId", index: 3, type: "main" },
+  { header: "Comp Name", attribute: "companyName", index: 4, type: "main" },
 ];
 
 const EmployeesTable = () => {
@@ -113,7 +113,16 @@ const EmployeesTable = () => {
           header: display,
           attribute: att,
           index: idx + activeLength,
+          type: "training",
         };
+        if (row.attribute === "createdAt" || row.attribute === "updatedAt") {
+          row = {
+            header: display,
+            attribute: att,
+            index: idx + activeLength,
+            type: "main",
+          };
+        }
         copy.push(row);
       });
       // console.log(copy);
@@ -145,14 +154,19 @@ const EmployeesTable = () => {
     console.log(trainingArray);
     //eslint-disable-next-line
     setColumnData(columnArray.concat(trainingArray));
+    //eslint-disable-next-line
   }, [selectTrainings]);
 
   return (
     <TableWrapper>
       <HeaderSection>
         <div className="btn-container">
-          <button onClick={handleAddClick}>Add Employee</button>
-          <button onClick={handleConductClick}>Conduct Training</button>
+          <button className="btn-modal-toggle" onClick={handleAddClick}>
+            Add Employee
+          </button>
+          <button className="btn-modal-toggle" onClick={handleConductClick}>
+            Conduct Training
+          </button>
           <FormControl sx={{ width: 300, bgcolor: "white" }}>
             <InputLabel id="sort-by-company">Sort by Company: </InputLabel>
             <Select
@@ -212,7 +226,9 @@ const EmployeesTable = () => {
       ) : null}
       {conductModal ? (
         <ConductModal
-          compNames={companyData}
+          compData={companyData}
+          empData={employeeData}
+          trainData={originalColumns}
           setConductModal={setConductModal}
         />
       ) : null}
