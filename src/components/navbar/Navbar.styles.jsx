@@ -34,7 +34,7 @@ export const DivRight = styled.div`
     width: 75%;
     font-weight: bolder;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
 
     .nav-link {
       display: flex;
@@ -47,10 +47,10 @@ export const DivRight = styled.div`
       border-radius: 40%;
       transition: 0.3s;
       text-decoration: none;
+      position: relative;
 
       &:hover {
-        color: white;
-        background: #13a71f;
+        cursor: pointer;
       }
     }
   }

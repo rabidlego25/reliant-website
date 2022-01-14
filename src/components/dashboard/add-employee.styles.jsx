@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   height: calc(100% - 60px);
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
-  /* background: yellow; */
+  backdrop-filter: blur(2px);
   position: fixed;
   top: 60px;
   left: 0;

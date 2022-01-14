@@ -4,14 +4,26 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
+// import { getEmployee } from "../../services/employee.service";
+
 import { format, parseISO } from "date-fns";
 
-const TableBod = ({ employees, company, training }) => {
+const TableBod = ({
+  employees,
+  company,
+  training,
+  setEditEmpModal,
+  setEditEmpData,
+}) => {
   const [rowData, setRowData] = useState(null);
   const [trainings, setTrainings] = useState(null);
 
   const handleEditClick = (e) => {
-    console.log(e.currentTarget.getAttribute("data-emp"));
+    let emp = e.currentTarget.dataset.emp;
+    console.log("empNo: ", emp);
+    const employee = employees.find((employee) => employee.empNo === emp);
+    setEditEmpData(employee);
+    setEditEmpModal(true);
   };
 
   useEffect(() => {
@@ -42,17 +54,15 @@ const TableBod = ({ employees, company, training }) => {
               // trainings [{index: #, attribute: S}... {}]
               if (company === "All")
                 return (
-                  <TableRow key={row.empNo} onClick={handleEditClick}>
+                  <TableRow key={row.empNo}>
                     {trainings.map((cell, idex) => {
                       // cell is a string - ex: "empNo" or "aerialLift"
                       return (
                         <TableCell
                           key={idex}
+                          data-emp={row.empNo}
                           onClick={
                             cell.attribute === "empNo" ? handleEditClick : null
-                          }
-                          data-emp={
-                            cell.attribute === "empNo" ? row[cell] : null
                           }
                           style={
                             cell.attribute === "firstName" ||
@@ -78,8 +88,10 @@ const TableBod = ({ employees, company, training }) => {
                               : { textAlign: "center", padding: 0.5 }
                           }
                         >
-                          {idex < 5
+                          {idex < 5 && cell.attribute !== "companyName"
                             ? row[cell.attribute]
+                            : cell.attribute === "companyName"
+                            ? row[cell.attribute].slice(0, 9).concat("", "...")
                             : row[cell.attribute]
                             ? format(
                                 parseISO(row[cell.attribute]),
@@ -100,6 +112,12 @@ const TableBod = ({ employees, company, training }) => {
                         return (
                           <TableCell
                             key={idex}
+                            data-emp={row.empNo}
+                            onClick={
+                              cell.attribute === "empNo"
+                                ? handleEditClick
+                                : null
+                            }
                             style={
                               cell.attribute === "firstName" ||
                               cell.attribute === "lastName" ||
@@ -116,7 +134,11 @@ const TableBod = ({ employees, company, training }) => {
                                   }
                                 : cell.attribute === "empNo" ||
                                   cell.attribute === "companyId"
-                                ? { textAlign: "start", padding: 0.5 }
+                                ? {
+                                    textAlign: "start",
+                                    padding: 0.5,
+                                    cursor: "pointer",
+                                  }
                                 : { textAlign: "center", padding: 0.5 }
                             }
                           >

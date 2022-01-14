@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   height: calc(100% - 60px);
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
   position: fixed;
   top: 60px;
   left: 0;
@@ -20,7 +21,8 @@ export const Wrapper = styled.div`
     overflow-x: scroll;
     position: relative;
     border-radius: 25px;
-    box-shadow: 0px 0px 10px 5px rgba(66, 135, 245, 1);
+    /* box-shadow: 0px 0px 10px 5px rgba(66, 135, 245, 1); */
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 1);
 
     .icon-container {
       width: calc(100% - 2rem);

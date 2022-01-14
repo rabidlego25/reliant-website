@@ -8,7 +8,14 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
-import { TableWrapper, HeaderSection } from "./employees-table.styles";
+import EditEmpModal from "./edit-employee.component";
+
+import {
+  TableWrapper,
+  HeaderSection,
+  Hammer,
+  EmpAdd,
+} from "./employees-table.styles";
 
 import TableHeader from "./table-header.component";
 import TableBod from "./table-body.component";
@@ -38,6 +45,8 @@ const EmployeesTable = () => {
   const [currentCompany, setCurrentCompany] = useState("All");
   const [addEmpModal, setAddEmpModal] = useState(false);
   const [conductModal, setConductModal] = useState(false);
+  const [editEmpModal, setEditEmpModal] = useState(false);
+  const [editEmpData, setEditEmpData] = useState(null);
   const [sectionStatus, setSectionStatus] = useState(null);
 
   const handleAddClick = (e) => {
@@ -162,10 +171,11 @@ const EmployeesTable = () => {
       <HeaderSection>
         <div className="btn-container">
           <button className="btn-modal-toggle" onClick={handleAddClick}>
+            <EmpAdd />
             Add Employee
           </button>
           <button className="btn-modal-toggle" onClick={handleConductClick}>
-            Conduct Training
+            <Hammer /> Conduct Training
           </button>
           <FormControl sx={{ width: 300, bgcolor: "white" }}>
             <InputLabel id="sort-by-company">Sort by Company: </InputLabel>
@@ -210,7 +220,6 @@ const EmployeesTable = () => {
           </FormControl>
         </div>
       </HeaderSection>
-
       <div className="table-main">
         <Table stickyHeader style={{ tableLayout: "fixed", zIndex: 1 }}>
           <TableHeader columns={columnData} />
@@ -218,6 +227,8 @@ const EmployeesTable = () => {
             employees={employeeData}
             company={currentCompany}
             training={columnData}
+            setEditEmpModal={setEditEmpModal}
+            setEditEmpData={setEditEmpData}
           />
         </Table>
       </div>
@@ -230,6 +241,12 @@ const EmployeesTable = () => {
           empData={employeeData}
           trainData={originalColumns}
           setConductModal={setConductModal}
+        />
+      ) : null}
+      {editEmpModal ? (
+        <EditEmpModal
+          setEditEmpModal={setEditEmpModal}
+          editEmpData={editEmpData}
         />
       ) : null}
       <div className="center-flex">{sectionStatus}</div>

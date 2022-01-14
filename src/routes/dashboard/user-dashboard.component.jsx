@@ -1,24 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useLocation, useNavigate } from "react-router";
 
-import { DashContainer } from "./user-dashboard.styles";
+import {
+  DashContainer,
+  SideNav,
+  ToggleSideNav,
+  Tab,
+} from "./user-dashboard.styles";
 
 import CompaniesTable from "./../../components/dashboard/companies-table.component";
 import EmployeesTable from "../../components/dashboard/employees-table.component";
 
 const Dashboard = () => {
   const [firstName, setFirstName] = useState("");
+  // const [sideNav, setSideNav] = useState(true);
+  const [activeComponent, setActiveComponent] = useState("employees");
+
+  const menu = useRef();
 
   let location = useLocation();
   let navigate = useNavigate();
 
-  const handleLogoutClick = () => {
-    navigate("/login", { state: null, replace: true });
+  const handleToggleSideNav = () => {
+    menu.current.classList.toggle("hidden");
+  };
+
+  const handleNavClick = (e) => {
+    let target = e.target.closest(".tab");
+    if (!target) return;
+    let data = target.dataset.active;
+    setActiveComponent(data);
   };
 
   //eslint-disable-next-line
   useEffect(() => {
+    console.log("dashboard useEffect");
+    console.log("firstName: ", firstName);
     if (location.state === null) {
       navigate("/login", { state: null, replace: true });
     } else setFirstName(location.state.firstName);
@@ -27,16 +45,26 @@ const Dashboard = () => {
 
   return (
     <DashContainer>
-      <div className="dash-item">
-        <h1>Hello {firstName}</h1>
-        <button onClick={handleLogoutClick}>Logout</button>
-      </div>
-      <div className="dash-item company-container">
-        <CompaniesTable />
-      </div>
-      <div className="dash-item employee-container">
+      <SideNav ref={menu} className="">
+        <ToggleSideNav onClick={handleToggleSideNav}>&#9654;</ToggleSideNav>
+        <Tab className="tab" data-active="main">
+          <h4 onClick={handleNavClick}>Admin Hub</h4>
+        </Tab>
+        <Tab className="tab" data-active="user">
+          <h4 onClick={handleNavClick}>User Management</h4>
+        </Tab>
+        <Tab className="tab" data-active="company">
+          <h4 onClick={handleNavClick}>Company Data</h4>
+        </Tab>
+        <Tab className="tab active" data-active="employees">
+          <h4 onClick={handleNavClick}>Employee Trainings</h4>
+        </Tab>
+      </SideNav>
+      {activeComponent === "employees" ? (
         <EmployeesTable />
-      </div>
+      ) : activeComponent === "company" ? (
+        <CompaniesTable />
+      ) : null}
     </DashContainer>
   );
 };

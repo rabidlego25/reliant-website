@@ -30,7 +30,7 @@ const TableHeader = ({ columns }) => {
             })
           : null}
       </colgroup>
-      <TableHead style={{ zIndex: 1 }}>
+      <TableHead>
         <TableRow>
           {columnData
             ? columnData.map((column, idx) => {
