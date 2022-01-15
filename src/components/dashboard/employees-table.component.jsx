@@ -177,9 +177,12 @@ const EmployeesTable = () => {
           <button className="btn-modal-toggle" onClick={handleConductClick}>
             <Hammer /> Conduct Training
           </button>
-          <FormControl sx={{ width: 300, bgcolor: "white" }}>
-            <InputLabel id="sort-by-company">Sort by Company: </InputLabel>
+          <FormControl sx={{ width: 300 }}>
+            <InputLabel sx={{ color: "blue" }} id="sort-by-company">
+              Sort by Company:{" "}
+            </InputLabel>
             <Select
+              sx={{ bgcolor: "white", height: 50 }}
               labelId="sort-by-company"
               value={currentCompany}
               onChange={handleSelectCompany}
@@ -195,9 +198,12 @@ const EmployeesTable = () => {
               })}
             </Select>
           </FormControl>
-          <FormControl sx={{ width: 300, height: "100%", bgcolor: "white" }}>
-            <InputLabel id="sort-by-training">Sort by Training: </InputLabel>
+          <FormControl sx={{ width: 300, height: "100%" }}>
+            <InputLabel sx={{ color: "blue" }} id="sort-by-training">
+              Sort by Training:{" "}
+            </InputLabel>
             <Select
+              sx={{ bgcolor: "white", height: 50 }}
               labelId="sort-by-training"
               multiple
               value={selectTrainings}

@@ -13,18 +13,6 @@ export const DashContainer = styled.div`
 export const SideNav = styled.div`
   width: 270px;
   height: 100%;
-  /* background: rgb(71, 119, 191);
-  background: linear-gradient(
-    135deg,
-    rgba(71, 119, 191, 1) 25%,
-    rgba(0, 161, 255, 1) 75%
-  ); */
-  /* background: rgb(145, 71, 191);
-  background: linear-gradient(
-    90deg,
-    rgba(145, 71, 191, 1) 25%,
-    rgba(139, 0, 255, 1) 75%
-  ); */
   background: rgb(145, 71, 191);
   background: linear-gradient(
     90deg,
@@ -60,6 +48,11 @@ export const ToggleSideNav = styled.div`
   }
 `;
 
+export const TabContainer = styled.div`
+  width: 100%;
+  height: auto;
+`;
+
 export const Tab = styled.div`
   width: 100%;
   height: 48px;
@@ -69,7 +62,8 @@ export const Tab = styled.div`
   padding: 4px;
 
   &.active {
-    color: #fff;
+    /* color: #fff; */
+    color: yellow;
   }
 
   h4 {

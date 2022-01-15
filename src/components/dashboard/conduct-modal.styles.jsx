@@ -20,9 +20,7 @@ export const Wrapper = styled.div`
     padding: 1rem;
     overflow-x: scroll;
     position: relative;
-    border-radius: 25px;
     /* box-shadow: 0px 0px 10px 5px rgba(66, 135, 245, 1); */
-    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 1);
 
     .icon-container {
       width: calc(100% - 2rem);

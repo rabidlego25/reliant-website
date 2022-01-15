@@ -1,7 +1,0 @@
-              {columnData.map((training, idx) => {
-                return (
-                  <MenuItem key={idx} value={training}>
-                    {training}
-                  </MenuItem>
-                );
-              })}

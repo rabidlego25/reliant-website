@@ -72,15 +72,22 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
         companyId: company,
         employees: employeeSelect,
         trainings: trainingSelect,
-      }).then((res) => {
-        console.log(res);
-        if (res.status === 204) {
-          setDate(null);
-          setCompany(comp);
-          setTrainingSelect([]);
-          setConductModal(false);
-        } else setStatus("Failure");
-      });
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 204) {
+            // setDate(null);
+            // setCompany(comp);
+            // setTrainingSelect([]);
+            setConductModal(false);
+          } else setStatus(res.data.message);
+        })
+        .catch((err) => {
+          console.log("error: ", err);
+          setStatus(
+            "Backend Failure. Please Wait. If the problem persists contact the Administrator"
+          );
+        });
     }
     // .catch((err) => console.log)("updateEmployees ERROR");
   };
