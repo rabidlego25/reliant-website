@@ -106,40 +106,42 @@ const EmployeesTable = () => {
 
   useLayoutEffect(() => {
     console.log("useLayoutEffect");
-    getEmployees().then(({ data }) => {
-      if (data.err) {
-        setSectionStatus(data.message);
-        return;
-      }
-      const copy = columnArray.slice();
-      const activeLength = copy.length;
-      const mapEmployeeColumns = Object.keys(data[0]).slice(activeLength);
-      // eslint-disable-next-line array-callback-return
-      mapEmployeeColumns.map((att, idx) => {
-        let display = generateHeaders(att);
-        // console.log(att, display, idx + activeLength);
-        let row = {
-          header: display,
-          attribute: att,
-          index: idx + activeLength,
-          type: "training",
-        };
-        if (row.attribute === "createdAt" || row.attribute === "updatedAt") {
-          row = {
+    getEmployees()
+      .then(({ data }) => {
+        if (data.err) {
+          setSectionStatus(data.message);
+          return;
+        }
+        const copy = columnArray.slice();
+        const activeLength = copy.length;
+        const mapEmployeeColumns = Object.keys(data[0]).slice(activeLength);
+        // eslint-disable-next-line array-callback-return
+        mapEmployeeColumns.map((att, idx) => {
+          let display = generateHeaders(att);
+          // console.log(att, display, idx + activeLength);
+          let row = {
             header: display,
             attribute: att,
             index: idx + activeLength,
-            type: "main",
+            type: "training",
           };
-        }
-        copy.push(row);
-      });
-      // console.log(copy);
-      // console.log("columnData: ", columnData);
-      setColumnData(copy);
-      setOriginalColumns(copy);
-      setEmployeeData(data);
-    });
+          if (row.attribute === "createdAt" || row.attribute === "updatedAt") {
+            row = {
+              header: display,
+              attribute: att,
+              index: idx + activeLength,
+              type: "main",
+            };
+          }
+          copy.push(row);
+        });
+        // console.log(copy);
+        // console.log("columnData: ", columnData);
+        setColumnData(copy);
+        setOriginalColumns(copy);
+        setEmployeeData(data);
+      })
+      .catch((err) => console.log("err: ", err));
   }, []);
 
   useEffect(() => {

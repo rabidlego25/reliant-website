@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api/admin";
+import BASE_URL from "./config";
 
 export const addEmployee = async (formData) => {
   console.log("addEmployee axios: ");
   return axios
-    .post(BASE_URL + `/addEmployee`, formData)
+    .post(BASE_URL + `admin/addEmployee`, formData)
     .then((res) => {
       return res;
     })
@@ -17,7 +17,7 @@ export const addEmployee = async (formData) => {
 export const getEmployees = async () => {
   console.log("getEmployees");
   return axios
-    .get(BASE_URL + `/employees`)
+    .get(BASE_URL + `admin/employees`)
     .then((res) => {
       return res;
     })
@@ -29,7 +29,7 @@ export const getEmployees = async () => {
 export const getEmployee = async (empNo) => {
   console.log("getEmployee");
   return axios
-    .get(BASE_URL + `/employee/${empNo}`)
+    .get(BASE_URL + `admin/employee/${empNo}`)
     .then((res) => {
       return res;
     })
@@ -41,7 +41,7 @@ export const getEmployee = async (empNo) => {
 export const updateEmployee = async (emp) => {
   console.log("updateEmployees");
   return axios
-    .patch(BASE_URL + `/updateEmployee/${emp.empNo}`, { emp })
+    .patch(BASE_URL + `admin/updateEmployee/${emp.empNo}`, { emp })
     .then((res) => {
       return res;
     })
@@ -53,7 +53,19 @@ export const updateEmployee = async (emp) => {
 export const updateEmployees = async (...props) => {
   console.log("updateEmployees");
   return axios
-    .patch(BASE_URL + "/updateEmployees", { ...props })
+    .patch(BASE_URL + "admin/updateEmployees", { ...props })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
+export const deleteEmployee = async (empNo) => {
+  let obj = { id: empNo };
+  return axios
+    .delete(BASE_URL + "admin/deleteEmployee", { data: obj })
     .then((res) => {
       return res;
     })

@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 
 import { Wrapper, CloseIcon } from "./edit-employee.styles";
 
-import { updateEmployee } from "../../services/employee.service";
+import {
+  updateEmployee,
+  deleteEmployee,
+} from "../../services/employee.service";
 
 const initialFormData = Object.freeze({
   empNo: "",
@@ -73,6 +76,12 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
 
   const handleDeleteConfirmation = (e) => {
     console.log("handleDeleteConfirmation");
+    deleteEmployee(editEmpData.empNo)
+      .then((res) => {
+        console.log(res);
+        setEditEmpModal(false);
+      })
+      .catch((err) => console.log("ERROR"));
   };
 
   useEffect(() => {

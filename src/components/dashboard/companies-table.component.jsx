@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { IoTrashBin } from "react-icons/io5";
 
@@ -16,8 +16,6 @@ import EditModal from "./edit-modal.component";
 import AddModal from "./add-modal.component";
 
 const CompaniesTable = () => {
-  const deleteRef = useRef([]); //Delete icon on company row
-  const editRef = useRef([]); // Edit icon on company row
 
   const [status, setStatus] = useState(""); // success or failure display after action
   const [company, setCompany] = useState([]); // all companies
@@ -124,7 +122,6 @@ const CompaniesTable = () => {
               <div className="icons">
                 <div
                   className="icon-container"
-                  ref={(el) => (editRef.current[idx] = el)}
                 >
                   <MdEdit
                     onClick={handleEditClick}
@@ -133,7 +130,6 @@ const CompaniesTable = () => {
                   />
                 </div>
                 <div
-                  ref={(el) => (deleteRef.current[idx] = el)}
                   className="icon-container"
                 >
                   <IoTrashBin

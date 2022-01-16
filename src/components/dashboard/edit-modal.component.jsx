@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 
-import { Div, CloseIcon } from "./edit-modal.styles";
+import { CloseIcon, Wrapper, StatusBox } from "./edit-modal.styles";
 
 import { updateCompany, loadCompanies } from "../../services/user.service";
 
@@ -12,6 +12,7 @@ const initialFormData = Object.freeze({
 
 const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
   const [formData, setFormData] = useState(initialFormData);
+  const [editStatus, setEditStatus] = useState("");
   const [initialLoad, setInitialLoad] = useState(true);
 
   const name = useRef(editData.companyName);
@@ -19,7 +20,6 @@ const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
   const type = useRef(
     editData.type === "Agricultural" ? "Agricultural" : "Industrial"
   );
-  const numOfEmp = useRef(editData.numOfEmployees);
   const closeIcon = useRef();
   const industrialRadio = useRef();
   const agriculturalRadio = useRef();
@@ -27,6 +27,10 @@ const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("handleSubmit");
+    if (formData.companyName === undefined || formData.companyName === "") {
+      setEditStatus("Must have a non-empty value");
+      return;
+    }
     updateCompany(formData)
       .then((res) => {
         console.log("successful handle submit");
@@ -64,7 +68,6 @@ const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
       type: type.current,
       id: id.current,
     });
-    closeIcon.current.addEventListener("click", handleCloseClick);
     type.current === "Agricultural"
       ? (agriculturalRadio.current.checked = true)
       : (industrialRadio.current.checked = true);
@@ -73,13 +76,16 @@ const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
   }, [initialLoad]);
 
   return (
-    <Div className="center-flex">
+    <Wrapper className="center-flex">
       <div className="modal">
-        <div ref={closeIcon} className="close-icon">
-          <CloseIcon />
+        <div className="icon-container">
+          <CloseIcon onClick={handleCloseClick} />
+        </div>
+        <div className="title-container">
+          <h2 className="title">Edit Company</h2>
+          <span>Company ID: {editData.companyId}</span>
         </div>
         <form onSubmit={handleSubmit}>
-          <h1>Edit Company</h1>
           <div className="form-item">
             <h2 id="name-header">Name: </h2>
             <input
@@ -88,10 +94,7 @@ const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-item">
-            <h2>Num of Employees: </h2>
-            <h3>{numOfEmp.current ? numOfEmp.current : 0}</h3>
-          </div>
+
           <div className="form-item">
             <h2>Type: </h2>
             <div className="radio-container">
@@ -125,8 +128,9 @@ const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
             <button type="submit">Submit Changes</button>
           </div>
         </form>
+        <StatusBox className="center-flex">{editStatus}</StatusBox>
       </div>
-    </Div>
+    </Wrapper>
   );
 };
 

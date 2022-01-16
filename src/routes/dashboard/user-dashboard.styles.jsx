@@ -22,7 +22,7 @@ export const SideNav = styled.div`
   transform: translateX(-2.5rem);
   padding: 1rem 0;
   position: relative;
-  transition: 1s;
+  transition: 0.7s ease-in-out;
   border-radius: 0 25px 25px 0;
   color: #ccc;
 

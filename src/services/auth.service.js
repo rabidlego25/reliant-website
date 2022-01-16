@@ -1,15 +1,14 @@
 import axios from "axios";
+import BASE_URL from "./config";
 
-const BASE_URL = "http://localhost:8080/api/auth/";
+// const BASE_URL = "http://localhost:8080/api/auth/";
 
 export let loginErrors = [];
 export let RegistrationErrors = [];
 
-export const fetchData = async () => {};
-
 export const login = async ({ ...data }) => {
   axios
-    .post(BASE_URL + "signin", {
+    .post(BASE_URL + "auth/signin", {
       data,
     })
     .then((res) => {
@@ -25,7 +24,7 @@ export const login = async ({ ...data }) => {
 
 export const register = async ({ ...data }) => {
   return axios
-    .post(BASE_URL + "register", {
+    .post(BASE_URL + "auth/register", {
       data,
     })
     .then((res) => {

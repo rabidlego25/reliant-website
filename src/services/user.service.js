@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api/admin";
+import BASE_URL from "./config";
 
 export const deleteCompany = async (com, id) => {
   console.log("deleteCompany");
 
   return axios
-    .delete(BASE_URL + `/deleteCompany/${id}`)
+    .delete(BASE_URL + `admin/deleteCompany/${id}`)
     .then((res) => {
       return res;
     })
@@ -17,7 +17,7 @@ export const deleteCompany = async (com, id) => {
 
 export const loadCompanies = async () => {
   return axios
-    .get(BASE_URL + "/companies")
+    .get(BASE_URL + "admin/companies")
     .then((res) => {
       return res;
     })
@@ -26,7 +26,7 @@ export const loadCompanies = async () => {
 
 export const getCompany = async (id) => {
   return axios
-    .get(BASE_URL + `/company/${id}`)
+    .get(BASE_URL + `admin/company/${id}`)
     .then((res) => {
       return res.data;
     })
@@ -39,7 +39,7 @@ export const updateCompany = async (formData) => {
   console.log("formData: ", formData);
   const { id } = formData;
   return axios
-    .patch(BASE_URL + `/updateCompany/${id}`, formData)
+    .patch(BASE_URL + `admin/updateCompany/${id}`, formData)
     .then((res) => {
       return res;
     })
@@ -51,7 +51,7 @@ export const updateCompany = async (formData) => {
 export const addCompany = async (formData) => {
   console.log("formData: ", formData);
   return axios
-    .post(BASE_URL + `/addCompany`, formData)
+    .post(BASE_URL + `admin/addCompany`, formData)
     .then((res) => {
       return res;
     })

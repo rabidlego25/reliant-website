@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { Div, ErrorBox, Form } from "./auth-login.styles";
+import { Wrapper, ErrorBox, Form, CustomLink } from "./auth-login.styles";
 import axios from "axios";
 
 const initialFormData = Object.freeze({
@@ -56,41 +56,48 @@ const LoginPage = () => {
   }, [submit]);
 
   return (
-    <Div className="center-flex">
-      <Form onSubmit={handleSubmit}>
-        <div className="image-container center-flex">
-          <img
-            src={require("./../../assets/user.png").default}
-            alt="generic user logo"
-          />
-        </div>
-        <div className="form-details">
-          <div>
-            <label htmlFor="username">Username </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              onChange={handleChange}
+    <Wrapper className="center-flex">
+      <div className="login-wrapper">
+        <Form onSubmit={handleSubmit}>
+          <div className="image-container center-flex">
+            <img
+              src={require("./../../assets/user.png").default}
+              alt="generic user logo"
             />
+            <h2>User Login</h2>
           </div>
-          <div>
-            <label htmlFor="password">Password </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={handleChange}
-            />
+          <div className="form-details">
+            <div className="input-section">
+              <label htmlFor="email">Email </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="input-section">
+              <label htmlFor="password">Password </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                onChange={handleChange}
+              />
+            </div>
           </div>
-        </div>
-        <div className="submit center-flex">
-          <button type="submit">Submit</button>
-        </div>
-        <Link to="/register">Register</Link>
-      </Form>
-      <ErrorBox className="center-flex">{status}</ErrorBox>
-    </Div>
+          <div className="submit center-flex">
+            <button type="submit">Submit</button>
+          </div>
+          <div className="link-container">
+            <CustomLink to="/register">
+              Don't Have an Account? Click Here
+            </CustomLink>
+          </div>
+        </Form>
+        <ErrorBox className="center-flex">{status}</ErrorBox>
+      </div>
+    </Wrapper>
   );
 };
 

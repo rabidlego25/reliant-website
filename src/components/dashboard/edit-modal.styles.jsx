@@ -1,78 +1,110 @@
 import styled from "styled-components";
 
-import { GrClose } from "react-icons/gr";
+import { AiOutlineClose } from "react-icons/ai";
 
-export const Div = styled.div`
-  position: fixed;
+export const Wrapper = styled.div`
   height: calc(100% - 60px);
-  width: 100vw;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  position: fixed;
   top: 60px;
   left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 10;
+  z-index: 2;
+
+  button {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 
   .modal {
-    display: flex;
-    background: white;
-    flex-direction: column;
-    justify-content: center;
+    width: 320px;
     height: 400px;
-    width: 300px;
-    overflow: scroll;
-    color: blue;
+    display: flex;
+    flex-direction: column;
+    overflow-x: scroll;
     position: relative;
-  }
+    border-radius: 25px;
+    background: #4285f4;
 
-  form {
-    background: #72c5f2;
-    height: 100%;
-
-    .form-item {
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-
-      #name-header {
-        margin-bottom: 1rem;
-      }
-      .name-input {
-        width: 100%;
-        height: 50px;
-        padding-left: 1rem;
-        font-size: 150%;
-        color: grey;
-
-        &:focus {
-          color: black;
-        }
-      }
-    }
-
-    .btn-container {
-      height: 35px;
-
-      button {
-        height: 100%;
-      }
-    }
-
-    .radio-container {
+    .title-container {
+      height: 100px;
+      padding: 0 1rem;
       display: flex;
       flex-direction: column;
-    }
-  }
+      justify-content: space-evenly;
+      flex-wrap: wrap;
 
-  .close-icon {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    height: 24px;
-    width: 24px;
+      .title {
+        width: 100%;
+      }
+    }
+
+    form {
+      height: 75%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      .form-item {
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+
+        #name-header {
+          margin-bottom: 1rem;
+        }
+        .name-input {
+          width: 100%;
+          height: 50px;
+          padding-left: 1rem;
+          font-size: 150%;
+          color: grey;
+
+          &:focus {
+            color: black;
+          }
+        }
+      }
+
+      .btn-container {
+        height: auto;
+
+        button {
+          height: 100%;
+          background: white;
+          border: none;
+          padding: 4px 6px;
+          transition: 0.3s;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+
+      .radio-container {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .icon-container {
+      width: calc(100% - 1rem);
+      height: 50px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: absolute;
+    }
   }
 `;
 
-export const CloseIcon = styled(GrClose)`
-  height: 100%;
-  width: 100%;
+export const CloseIcon = styled(AiOutlineClose)`
+  height: 25px;
+  width: 25px;
+  transform: translateX(-10px);
+  color: white;
 
   &:hover {
     cursor: pointer;
@@ -82,5 +114,5 @@ export const CloseIcon = styled(GrClose)`
 export const StatusBox = styled.div`
   width: 100%;
   height: 50px;
-  color: lightcoral;
+  color: white;
 `;

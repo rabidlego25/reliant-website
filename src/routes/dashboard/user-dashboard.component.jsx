@@ -16,7 +16,6 @@ import EmployeesTable from "../../components/dashboard/employees-table.component
 import AdminHub from "../../components/dashboard/admin-hub.component";
 
 const Dashboard = () => {
-  const [loggedIn, setLoggedIn] = useState();
   const [activeComponent, setActiveComponent] = useState("employees");
 
   const menu = useRef();
@@ -48,8 +47,6 @@ const Dashboard = () => {
     if (location.state === null) {
       // if nobody is logged in (we set location.state after successful login) then redirect to dashboard
       navigate("/login", { state: null, replace: true });
-    } else {
-      setLoggedIn(true);
     }
     //eslint-disable-next-line
   }, []);
