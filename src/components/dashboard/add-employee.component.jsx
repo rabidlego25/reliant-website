@@ -59,17 +59,20 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    addEmployee(formData)
+    const PostData = new FormData();
+    console.log("formData: ", formData); //companyId, companyName, firstName, lastName
+    PostData.append("employee[]", JSON.stringify(formData));
+    console.log(PostData.getAll("employee[]"));
+    addEmployee(PostData)
       .then((res) => {
         console.log(res);
-        setAddEmpModal(false);
+        // setAddEmpModal(false);
       })
       .catch((err) => {
         console.log("ERROR: ", err);
         setStatus(err);
       });
-    setAddEmpModal(false);
+    // setAddEmpModal(false);
   };
 
   const handleAddClick = (e) => {
@@ -121,21 +124,9 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
         companyName: companyName,
       };
     });
-    console.log("newArr: ", newArr);
+    // console.log("newArr: ", newArr);
     setFormData((data) => [...newArr]);
   };
-
-  useEffect(() => {
-    // console.log("formData: ", formData);
-  }, [formData]);
-
-  useEffect(() => {
-    // console.log("company: ", company);
-  }, [company]);
-
-  useEffect(() => {
-    // console.log("companies: ", companies);
-  }, []);
 
   useEffect(() => {
     if (!initialLoad) return;
@@ -160,7 +151,7 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
             <CloseIcon onClick={handleCloseClick} />
           </div>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="form-title center-flex">
             <h1>Employee Onboard</h1>
           </div>

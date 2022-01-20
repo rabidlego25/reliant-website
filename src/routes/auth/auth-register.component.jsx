@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useNavigate, useLocation } from "react-router";
 
-import { Div, Form, ErrorBox } from "./auth-register.styles";
+import { Wrapper, ErrorBox, CustomLink } from "./auth-register.styles";
 
 import axios from "axios";
 
@@ -70,63 +70,83 @@ const RegisterPage = () => {
   }, [success]);
 
   return (
-    <Div className="center-flex">
-      <Form onSubmit={handleSubmit}>
-        <div className="field-container">
-          <div className="field">
-            <label htmlFor="first-name">First Name: </label>
-            <input
-              name="firstName"
-              id="first-name"
-              type="text"
-              onChange={handleChange}
+    <Wrapper className="center-flex">
+      <div className="register-wrapper">
+        <form onSubmit={handleSubmit}>
+          <div className="image-container center-flex">
+            <img
+              src={require("./../../assets/user.png").default}
+              alt="generic user logo"
             />
+            <h2 className="header">User Registration</h2>
           </div>
-          <div className="field">
-            <label htmlFor="last-name">Last Name: </label>
-            <input
-              name="lastName"
-              id="last-name"
-              type="text"
-              onChange={handleChange}
-            />
+          <div className="field-container">
+            <div className="field">
+              <label htmlFor="first-name">First Name: </label>
+              <input
+                name="firstName"
+                id="first-name"
+                type="text"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="last-name">Last Name: </label>
+              <input
+                name="lastName"
+                id="last-name"
+                type="text"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="email">Email: </label>
+              <input
+                name="email"
+                id="email"
+                type="email"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="company">Company Name: </label>
+              <input name="company" id="company" type="text" />
+            </div>
+            <div className="field">
+              <label htmlFor="password">Password: </label>
+              <input
+                name="password"
+                id="password"
+                type="password"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="confirm-password">Confirm Password: </label>
+              <input
+                name="confirmPassword"
+                id="confirm-password"
+                type="password"
+                onChange={handleChange}
+              />
+            </div>
           </div>
-          <div className="field">
-            <label htmlFor="email">Email: </label>
-            <input
-              name="email"
-              id="email"
-              type="email"
-              onChange={handleChange}
-            />
+          <div className="btn-container center-flex">
+            <button type="submit" onClick={handleSubmit}>
+              Submit Request
+            </button>
           </div>
-          <div className="field">
-            <label htmlFor="password">Password: </label>
-            <input
-              name="password"
-              id="password"
-              type="password"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="confirm-password">Confirm Password: </label>
-            <input
-              name="confirmPassword"
-              id="confirm-password"
-              type="password"
-              onChange={handleChange}
-            />
-          </div>
+        </form>
+        <div className="link-container">
+          <CustomLink to="/login">
+            Already Have an Account? Click Here
+          </CustomLink>
         </div>
-        <button type="submit" onClick={handleSubmit}>
-          Submit Request
-        </button>
-      </Form>
-      <ErrorBox className="center-flex">
-        <div>{status}</div>
-      </ErrorBox>
-    </Div>
+        <ErrorBox className="center-flex">
+          <div>{status}</div>
+        </ErrorBox>
+      </div>
+    </Wrapper>
   );
 };
 

@@ -16,7 +16,7 @@ import EmployeesTable from "../../components/dashboard/employees-table.component
 import AdminHub from "../../components/dashboard/admin-hub.component";
 
 const Dashboard = () => {
-  const [activeComponent, setActiveComponent] = useState("employees");
+  const [activeComponent, setActiveComponent] = useState("admin");
 
   const menu = useRef();
   const tabContainer = useRef();
@@ -56,13 +56,13 @@ const Dashboard = () => {
       <SideNav ref={menu} className="">
         <ToggleSideNav onClick={handleToggleSideNav}>&#9654;</ToggleSideNav>
         <TabContainer onClick={handleTabClick} ref={tabContainer}>
-          <Tab className="tab" data-active="admin">
+          <Tab className="tab active" data-active="admin">
             <h4 onClick={handleNavClick}>Admin Hub</h4>
           </Tab>
           <Tab className="tab" data-active="company">
             <h4 onClick={handleNavClick}>Company Data</h4>
           </Tab>
-          <Tab className="tab active" data-active="employees">
+          <Tab className="tab" data-active="employees">
             <h4 onClick={handleNavClick}>Employee Trainings</h4>
           </Tab>
         </TabContainer>

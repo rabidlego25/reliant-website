@@ -64,7 +64,7 @@ const LoginPage = () => {
               src={require("./../../assets/user.png").default}
               alt="generic user logo"
             />
-            <h2>User Login</h2>
+            <h2 className="header">Portal Login</h2>
           </div>
           <div className="form-details">
             <div className="input-section">

@@ -6,7 +6,7 @@ export const deleteCompany = async (com, id) => {
   console.log("deleteCompany");
 
   return axios
-    .delete(BASE_URL + `admin/deleteCompany/${id}`)
+    .delete(BASE_URL + `admin/delete_company/${id}`)
     .then((res) => {
       return res;
     })
@@ -39,7 +39,7 @@ export const updateCompany = async (formData) => {
   console.log("formData: ", formData);
   const { id } = formData;
   return axios
-    .patch(BASE_URL + `admin/updateCompany/${id}`, formData)
+    .patch(BASE_URL + `admin/update_company/${id}`, formData)
     .then((res) => {
       return res;
     })
@@ -51,7 +51,7 @@ export const updateCompany = async (formData) => {
 export const addCompany = async (formData) => {
   console.log("formData: ", formData);
   return axios
-    .post(BASE_URL + `admin/addCompany`, formData)
+    .post(BASE_URL + `admin/add_company`, formData)
     .then((res) => {
       return res;
     })

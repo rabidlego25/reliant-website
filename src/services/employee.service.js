@@ -5,7 +5,7 @@ import BASE_URL from "./config";
 export const addEmployee = async (formData) => {
   console.log("addEmployee axios: ");
   return axios
-    .post(BASE_URL + `admin/addEmployee`, formData)
+    .post(BASE_URL + `admin/add_employee`, formData)
     .then((res) => {
       return res;
     })
@@ -41,7 +41,7 @@ export const getEmployee = async (empNo) => {
 export const updateEmployee = async (emp) => {
   console.log("updateEmployees");
   return axios
-    .patch(BASE_URL + `admin/updateEmployee/${emp.empNo}`, { emp })
+    .patch(BASE_URL + `admin/update_employee/${emp.empNo}`, { emp })
     .then((res) => {
       return res;
     })
@@ -53,7 +53,7 @@ export const updateEmployee = async (emp) => {
 export const updateEmployees = async (...props) => {
   console.log("updateEmployees");
   return axios
-    .patch(BASE_URL + "admin/updateEmployees", { ...props })
+    .patch(BASE_URL + "admin/update_employees", { ...props })
     .then((res) => {
       return res;
     })
@@ -65,7 +65,7 @@ export const updateEmployees = async (...props) => {
 export const deleteEmployee = async (empNo) => {
   let obj = { id: empNo };
   return axios
-    .delete(BASE_URL + "admin/deleteEmployee", { data: obj })
+    .delete(BASE_URL + "admin/delete_employee", { data: obj })
     .then((res) => {
       return res;
     })

@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, forwardRef } from "react";
 
-import { Wrapper, CloseIcon } from "./edit-employee.styles";
+import {
+  Wrapper,
+  CloseIcon,
+  WarningIcon,
+  ReturnIcon,
+} from "./edit-employee.styles";
 
 import {
   updateEmployee,
@@ -13,38 +18,58 @@ const initialFormData = Object.freeze({
   lastName: "",
 });
 
-const DeleteMessage = ({ handleDeleteConfirmation }) => {
-  return (
-    <div className="delete-popup">
-      <h1 className="center-flex">WARNING</h1>
-      <h4 className="center-flex">
-        Are you Sure you want to delete? Data for this employee will be
-        permenantly erased.
-      </h4>
-      <div className="center-flex popup-btn-container">
-        <button
-          style={{
-            background: "lightcoral",
-            border: "none",
-            width: "50px",
-            height: "25px",
-            borderRadius: "12px",
-            marginTop: "8px",
-          }}
-          onClick={handleDeleteConfirmation}
-          type="button"
-        >
-          Yes
-        </button>
+const DeleteMessage = forwardRef(
+  ({ handleDeleteConfirmation, handleReturnClick }, ref) => {
+    return (
+      <div ref={ref} className="delete-popup">
+        <h1 className="center-flex header-warning">WARNING</h1>
+        <div className="icon-container center-flex warning">
+          <WarningIcon />
+        </div>
+        <h4 className="header-content center-flex">
+          Are you Sure you want to delete? Data for this employee will be
+          permenantly erased.
+        </h4>
+        <div className="center-flex popup-btn-container">
+          <button
+            className="center-flex"
+            style={{
+              background: "lightgreen",
+              border: "none",
+              width: "75px",
+              height: "36px",
+              borderRadius: "12px",
+            }}
+            onClick={handleReturnClick}
+            type="button"
+          >
+            <ReturnIcon />
+          </button>
+          <button
+            className="center-flex"
+            style={{
+              background: "lightcoral",
+              border: "none",
+              width: "75px",
+              height: "36px",
+              borderRadius: "12px",
+            }}
+            onClick={handleDeleteConfirmation}
+            type="button"
+          >
+            Yes
+          </button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
   const [formData, setFormData] = useState(initialFormData);
   const [hasChanged, setHasChanged] = useState(false); // check if state has changed. upon submit do not send request to backend if no change made
-  const [showDelete, setShowDelete] = useState(false);
+
+  const deleteRef = useRef();
 
   const handleCloseClick = () => {
     console.log("handleCloseClick");
@@ -74,6 +99,17 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
     setHasChanged(true);
   };
 
+  const handleDeleteClick = (e) => {
+    console.log("handleDeleteConfirmation");
+    deleteRef.current.classList.add("active");
+    // deleteEmployee(editEmpData.empNo)
+    //   .then((res) => {
+    //     console.log(res);
+    //     setEditEmpModal(false);
+    //   })
+    //   .catch((err) => console.log("ERROR"));
+  };
+
   const handleDeleteConfirmation = (e) => {
     console.log("handleDeleteConfirmation");
     deleteEmployee(editEmpData.empNo)
@@ -82,6 +118,11 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
         setEditEmpModal(false);
       })
       .catch((err) => console.log("ERROR"));
+  };
+
+  const handleReturnClick = (e) => {
+    console.log("handleReturnClick");
+    deleteRef.current.classList.remove("active");
   };
 
   useEffect(() => {
@@ -101,7 +142,7 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
   return (
     <Wrapper className="center-flex">
       <div className="modal">
-        <div className="icon-container">
+        <div className="icon-container close">
           <CloseIcon onClick={handleCloseClick} />
         </div>
         <div className="title-container">
@@ -136,7 +177,7 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
               </button>
               <button
                 className="form-btn delete"
-                onClick={() => setShowDelete(true)}
+                onClick={handleDeleteClick}
                 type="button"
               >
                 Delete
@@ -144,9 +185,11 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
             </div>
           </form>
         </div>
-        {showDelete ? (
-          <DeleteMessage handleDeleteConfirmation={handleDeleteConfirmation} />
-        ) : null}
+        <DeleteMessage
+          ref={deleteRef}
+          handleDeleteConfirmation={handleDeleteConfirmation}
+          handleReturnClick={handleReturnClick}
+        />
       </div>
     </Wrapper>
   );

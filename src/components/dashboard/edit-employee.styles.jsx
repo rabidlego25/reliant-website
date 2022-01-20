@@ -1,6 +1,13 @@
 import styled from "styled-components";
 
-import { AiOutlineEdit, AiOutlineDelete, AiOutlineClose } from "react-icons/ai";
+import {
+  AiOutlineEdit,
+  AiOutlineDelete,
+  AiOutlineClose,
+  AiOutlineWarning,
+} from "react-icons/ai";
+
+import { IoMdArrowBack } from "react-icons/io";
 
 export const Wrapper = styled.div`
   height: calc(100% - 60px);
@@ -23,18 +30,20 @@ export const Wrapper = styled.div`
     height: 400px;
     display: flex;
     flex-direction: column;
-    overflow-x: scroll;
+    overflow: scroll;
     position: relative;
     border-radius: 25px;
     background: #a52a2a;
 
     .icon-container {
-      width: calc(100% - 1rem);
-      height: 50px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      position: absolute;
+      &.close {
+        width: calc(100% - 1rem);
+        height: 50px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        position: absolute;
+      }
     }
 
     .title-container {
@@ -105,14 +114,44 @@ export const Wrapper = styled.div`
 
     .delete-popup {
       position: absolute;
-      color: white;
-      top: 70%;
-      height: 25%;
+      background: #f0e68c;
+      top: 0;
+      left: 0;
+      height: 400px;
+      width: 320px;
       padding: 0rem 1rem;
       font-size: 85%;
+      transform: translateX(-320px);
+      transition: 0.3s;
+      padding: 1rem;
+
+      .header-warning {
+        letter-spacing: 2px;
+        color: #ff6700;
+        font-weight: 800;
+      }
+
+      .header-content {
+        padding: 2rem 0;
+        color: #ff6700;
+      }
+
+      .icon-container {
+        &.warning {
+          height: 75px;
+          width: 100%;
+        }
+      }
+
+      &.active {
+        color: white;
+        transform: translateX(0);
+      }
 
       .popup-btn-container {
-        width: 100%;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 100px;
       }
     }
   }
@@ -145,4 +184,15 @@ export const DeleteIcon = styled(AiOutlineDelete)`
   &:hover {
     cursor: pointer;
   }
+`;
+
+export const WarningIcon = styled(AiOutlineWarning)`
+  height: 75px;
+  width: 75px;
+  color: orange;
+`;
+
+export const ReturnIcon = styled(IoMdArrowBack)`
+  height: 20px;
+  width: 20px;
 `;

@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
     rgba(0, 93, 255, 1) 100%
   );
   height: calc(100vh);
-  flex-direction: column;
 
   .login-wrapper {
     height: 525px;
@@ -39,6 +38,10 @@ export const Form = styled.form`
     img {
       max-height: 50px;
       max-width: 100%;
+    }
+
+    .header {
+      letter-spacing: 1.5px;
     }
   }
   .form-details {
@@ -99,4 +102,9 @@ export const CustomLink = styled(Link)`
   font-size: 75%;
   margin: 1rem 0;
   color: blue;
+
+  &:hover {
+    cursor: pointer;
+    color: #ffa500;
+  }
 `;
