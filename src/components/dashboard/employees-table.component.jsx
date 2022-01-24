@@ -28,11 +28,10 @@ import { getEmployees } from "../../services/employee.service";
 import { generateHeaders } from "../../services/helpers.service";
 
 let columnArray = [
-  { header: "Emp No", attribute: "empNo", index: 0, type: "main" },
+  { header: "Emp Id", attribute: "uuid", index: 0, type: "main" },
   { header: "First Name", attribute: "firstName", index: 1, type: "main" },
   { header: "Last Name", attribute: "lastName", index: 2, type: "main" },
-  { header: "Comp Id", attribute: "companyId", index: 3, type: "main" },
-  { header: "Comp Name", attribute: "companyName", index: 4, type: "main" },
+  { header: "Company Name", attribute: "companyName", index: 3, type: "main" },
 ];
 
 const EmployeesTable = () => {
@@ -77,11 +76,12 @@ const EmployeesTable = () => {
     if (!initalLoad) return;
     loadCompanies()
       .then(({ data }) => {
+        console.log("data: ", data);
         let compNames = [];
         let nameStrings = ["All"];
         data.forEach((arr) => {
           let obj = {};
-          obj["id"] = arr.companyId;
+          obj["uuid"] = arr.uuid;
           obj["companyName"] = arr.companyName;
           compNames.push(obj);
           nameStrings.push(arr.companyName);
@@ -94,15 +94,6 @@ const EmployeesTable = () => {
       })
       .catch((err) => console.log(err));
   }, [initalLoad]);
-
-  //When chagning selectTraining, update columns for display and employee data
-  // useEffect(() => {
-  //   if (selectTrainings.length === 0) {
-  //     setColumnData(columnArray);
-  //     return;
-  //   }
-  //   // setColumnData(selectTrainings);
-  // }, [selectTrainings]);
 
   useLayoutEffect(() => {
     console.log("useLayoutEffect");
@@ -135,8 +126,6 @@ const EmployeesTable = () => {
           }
           copy.push(row);
         });
-        // console.log(copy);
-        // console.log("columnData: ", columnData);
         setColumnData(copy);
         setOriginalColumns(copy);
         setEmployeeData(data);
@@ -193,7 +182,7 @@ const EmployeesTable = () => {
               <MenuItem value="All">All</MenuItem>
               {companyData.map((comp, idx) => {
                 return (
-                  <MenuItem key={comp.id} value={comp}>
+                  <MenuItem key={comp.uuid} value={comp}>
                     {comp.companyName}
                   </MenuItem>
                 );
@@ -235,7 +224,7 @@ const EmployeesTable = () => {
             employees={employeeData}
             company={currentCompany}
             training={columnData}
-            setEditEmpModal={setEditEmpModal}
+            setModal={setEditEmpModal}
             setEditEmpData={setEditEmpData}
           />
         </Table>

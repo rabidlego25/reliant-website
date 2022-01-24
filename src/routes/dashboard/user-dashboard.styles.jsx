@@ -1,17 +1,20 @@
 import styled from "styled-components";
 
+import { Link } from "react-router-dom";
+
 export const DashContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 72px 2.5rem 1.5rem 2.5rem;
+  padding: 12px;
   position: relative;
-  overflow: hidden;
+  overflow: scroll;
   display: flex;
   }
 `;
 
 export const SideNav = styled.div`
-  width: 270px;
+  width: 270px !important;
+  min-width: 270px;
   height: 100%;
   background: rgb(145, 71, 191);
   background: linear-gradient(
@@ -19,9 +22,12 @@ export const SideNav = styled.div`
     rgba(145, 71, 191, 1) 25%,
     rgba(169, 0, 255, 1) 75%
   );
-  transform: translateX(-2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translateX(-12px);
+  margin-right: 1.5rem;
   padding: 1rem 0;
-  position: relative;
   transition: 0.7s ease-in-out;
   border-radius: 0 25px 25px 0;
   color: #ccc;
@@ -74,5 +80,22 @@ export const Tab = styled.div`
     &:hover {
       cursor: pointer;
     }
+  }
+`;
+
+export const Logout = styled(Link)`
+  width: 100%;
+  height: 48px;
+  padding-right: 12px;
+  font-size: 125%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  transition: font-size 0.3s;
+
+  &:hover {
+    font-size: 150%;
   }
 `;

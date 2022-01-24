@@ -10,12 +10,12 @@ import {
 import { IoMdArrowBack } from "react-icons/io";
 
 export const Wrapper = styled.div`
-  height: calc(100% - 60px);
+  height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(2px);
   position: fixed;
-  top: 60px;
+  top: 0;
   left: 0;
   z-index: 2;
 

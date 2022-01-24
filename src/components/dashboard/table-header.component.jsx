@@ -17,16 +17,7 @@ const TableHeader = ({ columns }) => {
       <colgroup>
         {columnData
           ? columnData.map((column, idx) => {
-              return (
-                <col
-                  key={column.index}
-                  style={
-                    column.header === "Emp No" || column.header === "Comp Id"
-                      ? { width: "45px" }
-                      : { width: "115px" }
-                  }
-                />
-              );
+              return <col key={column.index} style={{ width: "115px" }} />;
             })
           : null}
       </colgroup>
@@ -37,21 +28,23 @@ const TableHeader = ({ columns }) => {
                 return (
                   <TableCell
                     sx={
-                      column.attribute === "empNo" ||
-                      column.attribute === "companyId"
+                      column.attribute === "uuid" ||
+                      column.attribute === "companyName" ||
+                      column.attribute === "firstName" ||
+                      column.attribute === "lastName"
                         ? {
                             color: "blue",
                             fontWeight: "bold",
                             bgcolor: "lightgreen",
                             textAlign: "start",
-                            padding: 0.5,
+                            padding: 1,
                           }
                         : {
                             color: "blue",
                             fontWeight: "bold",
                             textAlign: "center",
                             bgcolor: "lightgreen",
-                            padding: 0.5,
+                            padding: 0.75,
                           }
                     }
                     key={column.index}

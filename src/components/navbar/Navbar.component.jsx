@@ -15,7 +15,7 @@ const Navbar = () => {
   }, [location]);
 
   return (
-    <Nav>
+    <Nav style={loggedIn ? { display: "none" } : null}>
       <DivLeft>
         <HeaderLink>
           <img

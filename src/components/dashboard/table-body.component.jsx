@@ -12,7 +12,7 @@ const TableBod = ({
   employees,
   company,
   training,
-  setEditEmpModal,
+  setModal,
   setEditEmpData,
 }) => {
   const [rowData, setRowData] = useState(null);
@@ -21,26 +21,31 @@ const TableBod = ({
   const handleEditClick = (e) => {
     let emp = e.currentTarget.dataset.emp;
     console.log("empNo: ", emp);
-    const employee = employees.find((employee) => employee.empNo === emp);
+    const employee = employees.find((employee) => employee.uuid === emp);
     setEditEmpData(employee);
-    setEditEmpModal(true);
+    setModal(true);
   };
 
   useEffect(() => {
+    console.log("company: ", company);
     if (!employees) return;
     setRowData(employees);
+    //eslint-disable-next-line
   }, [employees]);
 
   useEffect(() => {
     if (!training) return;
+    console.log("training: ", training);
     let result = training.map((a) => {
       let obj = {};
       obj["index"] = a.index;
       obj["attribute"] = a.attribute;
+      obj["type"] = a.type;
       // {index: #, attribute: S}
       return obj;
     });
     // result: [obj1, obj2, ... objn]
+    console.log(result);
     setTrainings(result);
   }, [training]);
 
@@ -50,19 +55,18 @@ const TableBod = ({
         {rowData && trainings
           ? // eslint-disable-next-line array-callback-return
             rowData.map((row, idx) => {
-              // row: {empNo: #, firstName: S, ...}
               // trainings [{index: #, attribute: S}... {}]
               if (company === "All")
                 return (
-                  <TableRow key={row.empNo}>
+                  <TableRow key={row.uuid}>
                     {trainings.map((cell, idex) => {
                       // cell is a string - ex: "empNo" or "aerialLift"
                       return (
                         <TableCell
                           key={idex}
-                          data-emp={row.empNo}
+                          data-emp={row.uuid}
                           onClick={
-                            cell.attribute === "empNo" ? handleEditClick : null
+                            cell.attribute === "uuid" ? handleEditClick : null
                           }
                           style={
                             cell.attribute === "firstName" ||
@@ -88,17 +92,18 @@ const TableBod = ({
                               : { textAlign: "center", padding: 0.5 }
                           }
                         >
-                          {idex < 5 && cell.attribute !== "companyName"
+                          {cell.attribute === "companyName" ||
+                          cell.attribute === "uuid"
+                            ? row[cell.attribute].slice(0, 8).concat("", "...")
+                            : idex < 3
                             ? row[cell.attribute]
-                            : cell.attribute === "companyName"
-                            ? row[cell.attribute].slice(0, 9).concat("", "...")
-                            : row[cell.attribute]
+                            : cell.attribute === "createdAt" ||
+                              (cell.type === "training" && row[cell.attribute])
                             ? format(
                                 parseISO(row[cell.attribute]),
                                 "MM/dd/yyyy"
                               )
-                            : // null
-                              null}
+                            : null}
                         </TableCell>
                       );
                     })}
@@ -107,16 +112,14 @@ const TableBod = ({
               else {
                 if (row.companyName === company.companyName)
                   return (
-                    <TableRow key={row.empNo}>
+                    <TableRow key={row.uuid}>
                       {trainings.map((cell, idex) => {
                         return (
                           <TableCell
                             key={idex}
                             data-emp={row.empNo}
                             onClick={
-                              cell.attribute === "empNo"
-                                ? handleEditClick
-                                : null
+                              cell.attribute === "uuid" ? handleEditClick : null
                             }
                             style={
                               cell.attribute === "firstName" ||
@@ -142,15 +145,21 @@ const TableBod = ({
                                 : { textAlign: "center", padding: 0.5 }
                             }
                           >
-                            {idex < 5
+                            {cell.attribute === "companyName" ||
+                            cell.attribute === "uuid"
                               ? row[cell.attribute]
-                              : row[cell.attribute]
+                                  .slice(0, 8)
+                                  .concat("", "...")
+                              : idex < 3
+                              ? row[cell.attribute]
+                              : cell.attribute === "createdAt" ||
+                                (cell.type === "training" &&
+                                  row[cell.attribute])
                               ? format(
                                   parseISO(row[cell.attribute]),
                                   "MM/dd/yyyy"
                                 )
-                              : // null
-                                null}
+                              : null}
                           </TableCell>
                         );
                       })}

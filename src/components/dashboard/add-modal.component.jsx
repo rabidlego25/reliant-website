@@ -6,8 +6,6 @@ import { addCompany, loadCompanies } from "../../services/user.service";
 
 const initialFormData = Object.freeze({
   companyName: "",
-  type: "",
-  owner: "",
 });
 
 const AddModal = ({
@@ -23,11 +21,6 @@ const AddModal = ({
   const [initialLoad, setInitialLoad] = useState(true);
 
   const closeRef = useRef();
-
-  const onValueChange = (e) => {
-    console.log(e.target.value);
-    setFormData({ ...formData, type: e.target.value });
-  };
 
   const handleCloseClick = (e) => {
     console.log("close click");
@@ -87,28 +80,6 @@ const AddModal = ({
             className="company-input"
             placeholder="Company Name"
           />
-          <div className="radio-container">
-            <div className="center-flex">
-              <input
-                type="radio"
-                name="type"
-                id="agricultural"
-                value="Agricultural"
-                onChange={onValueChange}
-              />
-              <label htmlFor="agricultural">Agricultural</label>
-            </div>
-            <div className="center-flex">
-              <input
-                type="radio"
-                name="type"
-                value="Industrial"
-                id="industrial"
-                onChange={onValueChange}
-              />
-              <label htmlFor="industrial">Industrial</label>
-            </div>
-          </div>
           <div className="btn-container center-flex">
             <button type="submit">Submit Request</button>
           </div>

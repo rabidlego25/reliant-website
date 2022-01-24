@@ -13,7 +13,7 @@ import {
 } from "../../services/employee.service";
 
 const initialFormData = Object.freeze({
-  empNo: "",
+  uuid: "",
   firstName: "",
   lastName: "",
 });
@@ -112,7 +112,7 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
 
   const handleDeleteConfirmation = (e) => {
     console.log("handleDeleteConfirmation");
-    deleteEmployee(editEmpData.empNo)
+    deleteEmployee(editEmpData.uuid)
       .then((res) => {
         console.log(res);
         setEditEmpModal(false);
@@ -128,7 +128,7 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
   useEffect(() => {
     console.log("editEmpData: ", editEmpData);
     setFormData({
-      empNo: editEmpData.empNo,
+      uuid: editEmpData.uuid,
       firstName: editEmpData.firstName,
       lastName: editEmpData.lastName,
     });
@@ -147,7 +147,7 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
         </div>
         <div className="title-container">
           <h2 className="title">Edit Employee</h2>
-          <span>Employee ID: {editEmpData.empNo}</span>
+          <span>Employee ID: {editEmpData.uuid}</span>
         </div>
         <div className="form-container">
           <form onSubmit={handleSubmit}>

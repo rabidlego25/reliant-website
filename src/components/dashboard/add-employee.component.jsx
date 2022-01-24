@@ -66,7 +66,7 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
     addEmployee(PostData)
       .then((res) => {
         console.log(res);
-        // setAddEmpModal(false);
+        if (res.status < 400) setAddEmpModal(false);
       })
       .catch((err) => {
         console.log("ERROR: ", err);

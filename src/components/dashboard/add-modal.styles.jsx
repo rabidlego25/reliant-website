@@ -5,11 +5,11 @@ export const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
-  /* background: yellow; */
+  backdrop-filter: blur(2px);
   position: fixed;
-  top: 60px;
+  top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 2;
 
   .modal-container {
     width: 300px;

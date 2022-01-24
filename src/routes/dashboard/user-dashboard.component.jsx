@@ -8,6 +8,7 @@ import {
   ToggleSideNav,
   Tab,
   TabContainer,
+  Logout,
 } from "./user-dashboard.styles";
 
 import CompaniesTable from "./../../components/dashboard/companies-table.component";
@@ -41,6 +42,8 @@ const Dashboard = () => {
 
   const handleTabClick = (e) => {};
 
+  const handleLogout = (e) => {};
+
   //eslint-disable-next-line
   useEffect(() => {
     console.log("dashboard useEffect");
@@ -66,6 +69,9 @@ const Dashboard = () => {
             <h4 onClick={handleNavClick}>Employee Trainings</h4>
           </Tab>
         </TabContainer>
+        <Logout to="/" style={{ border: "none" }}>
+          <h4 onClick={handleLogout}>Logout</h4>
+        </Logout>
       </SideNav>
       {activeComponent === "employees" ? (
         <EmployeesTable />

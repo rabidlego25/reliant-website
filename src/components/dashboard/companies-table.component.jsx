@@ -16,7 +16,6 @@ import EditModal from "./edit-modal.component";
 import AddModal from "./add-modal.component";
 
 const CompaniesTable = () => {
-
   const [status, setStatus] = useState(""); // success or failure display after action
   const [company, setCompany] = useState([]); // all companies
   const [editData, setEditData] = useState([]); // data sent to edit modal
@@ -27,7 +26,9 @@ const CompaniesTable = () => {
   const handleDeleteClick = (e) => {
     console.log("handleDeleteClick");
     const companyElement = e.target.closest(".company");
-    const companyId = companyElement.id;
+    const companyId = companyElement.dataset.id;
+    console.log("companyElement: ", companyElement);
+    console.log("companyId: ", companyId);
     deleteCompany(companyElement, companyId)
       .then((res) => {
         console.log("deleteCompany res:", res);
@@ -109,29 +110,26 @@ const CompaniesTable = () => {
       </div>
       <div className="main-container">
         {company.map((data, idx) => {
+          console.log(data);
           return (
             <div
               className="company"
               name={`${data.companyName}`}
               key={idx}
-              id={data.companyId}
+              data-id={data.uuid}
             >
               <div>
                 {idx + 1}. {data.companyName}
               </div>{" "}
               <div className="icons">
-                <div
-                  className="icon-container"
-                >
+                <div className="icon-container">
                   <MdEdit
                     onClick={handleEditClick}
                     className="icon edit"
                     alt="edit"
                   />
                 </div>
-                <div
-                  className="icon-container"
-                >
+                <div className="icon-container">
                   <IoTrashBin
                     onClick={handleDeleteClick}
                     className="icon trash"

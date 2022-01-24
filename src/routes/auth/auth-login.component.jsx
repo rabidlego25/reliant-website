@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 import { Wrapper, ErrorBox, Form, CustomLink } from "./auth-login.styles";
 import axios from "axios";
 

@@ -18,7 +18,7 @@ import {
   ErrorBox,
 } from "./conduct-modal.styles";
 
-const comp = { id: null, companyName: null };
+const comp = { uuid: null, companyName: null };
 
 const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
   const [company, setCompany] = useState(comp);
@@ -44,6 +44,7 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
     const {
       target: { value },
     } = e;
+    console.log("e.target: ", e.target);
 
     setEmployeeSelect(typeof value === "string" ? value.split(",") : value);
   };
@@ -59,7 +60,7 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
   const handleSubmit = (e) => {
     if (
       !date ||
-      !company.id ||
+      !company.uuid ||
       employeeSelect.length === 0 ||
       trainingSelect.length === 0
     ) {
@@ -69,7 +70,7 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
 
       updateEmployees({
         date: date,
-        companyId: company,
+        compUuid: company.uuid,
         employees: employeeSelect,
         trainings: trainingSelect,
       })
@@ -102,7 +103,7 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
   useEffect(() => {
     console.log("date: ", date);
     console.log("company: ", company);
-    console.log("employeeIds: ", employeeSelect);
+    console.log("employees: ", employeeSelect);
     console.log("trainings: ", trainingSelect);
   }, [date, company, employeeSelect, trainingSelect]);
 
@@ -158,9 +159,9 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
               {
                 // eslint-disable-next-line array-callback-return
                 empData.map((emp) => {
-                  if (emp.companyId === company.id)
+                  if (emp.companyName === company.companyName)
                     return (
-                      <MenuItem key={emp.empNo} value={emp.empNo}>
+                      <MenuItem key={emp.uuid} value={emp.uuid}>
                         {emp.lastName}, {emp.firstName}
                       </MenuItem>
                     );
@@ -193,6 +194,7 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
               })}
             </Select>
           </FormControl>
+          <input type="file" />
           <div className="btn-container form-item center-flex">
             <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
           </div>

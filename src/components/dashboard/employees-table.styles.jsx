@@ -6,7 +6,7 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 
 export const TableWrapper = styled.div`
   width: 100%;
-
+  min-width: 600px;
   height: 100%;
   background: white;
   color: blue;

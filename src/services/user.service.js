@@ -2,11 +2,11 @@ import axios from "axios";
 
 import BASE_URL from "./config";
 
-export const deleteCompany = async (com, id) => {
+export const deleteCompany = async (com, uuid) => {
   console.log("deleteCompany");
 
   return axios
-    .delete(BASE_URL + `admin/delete_company/${id}`)
+    .delete(BASE_URL + `admin/delete_company/${uuid}`)
     .then((res) => {
       return res;
     })
