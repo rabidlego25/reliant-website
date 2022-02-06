@@ -16,6 +16,7 @@
     "ansi-html": "^0.0.7",
     "axios": "^0.24.0",
     "date-fns": "^2.27.0",
+    "glob-parent": "^5.1.2",
     "lodash": "^4.17.21",
     "node-forge": "^1.0.0",
     "postcss": "^8.2.13",
@@ -50,5 +51,19 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "Web app for managing safety compliance in workplace. Bootstrapped with create-react-app. PERN Stack.",
+  "main": "aboutData.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tabbdevelopment/reliant-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tabbdevelopment/reliant-website/issues"
+  },
+  "homepage": "https://github.com/tabbdevelopment/reliant-website#readme"
 }
