@@ -10,7 +10,7 @@ import {
 import {
   updateEmployee,
   deleteEmployee,
-} from "../../services/employee.service";
+} from "../../../services/employee.service.js";
 
 const initialFormData = Object.freeze({
   uuid: "",

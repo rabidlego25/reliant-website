@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { Wrapper, Title, Form, CloseIcon, ErrorBox } from "./add-modal.styles";
 
-import { addCompany, loadCompanies } from "../../services/user.service";
+import { addCompany, loadCompanies } from "../../../services/user.service";
 
 const initialFormData = Object.freeze({
   companyName: "",

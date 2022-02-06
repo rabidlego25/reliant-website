@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
@@ -7,6 +10,16 @@ import TableCell from "@mui/material/TableCell";
 // import { getEmployee } from "../../services/employee.service";
 
 import { format, parseISO } from "date-fns";
+
+const EditIcon = styled(MdOutlineModeEditOutline)`
+  height: 20px;
+  width: 20px;
+  color: black;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const TableBod = ({
   employees,
@@ -29,13 +42,13 @@ const TableBod = ({
   useEffect(() => {
     console.log("company: ", company);
     if (!employees) return;
+    console.log("employees: ", employees);
     setRowData(employees);
     //eslint-disable-next-line
   }, [employees]);
 
   useEffect(() => {
     if (!training) return;
-    console.log("training: ", training);
     let result = training.map((a) => {
       let obj = {};
       obj["index"] = a.index;
@@ -45,7 +58,7 @@ const TableBod = ({
       return obj;
     });
     // result: [obj1, obj2, ... objn]
-    console.log(result);
+    console.log("trainings: ", result);
     setTrainings(result);
   }, [training]);
 
@@ -60,14 +73,10 @@ const TableBod = ({
                 return (
                   <TableRow key={row.uuid}>
                     {trainings.map((cell, idex) => {
-                      // cell is a string - ex: "empNo" or "aerialLift"
+                      // cell is a string - ex: "uuid" or "aerialLift"
                       return (
                         <TableCell
                           key={idex}
-                          data-emp={row.uuid}
-                          onClick={
-                            cell.attribute === "uuid" ? handleEditClick : null
-                          }
                           style={
                             cell.attribute === "firstName" ||
                             cell.attribute === "lastName" ||
@@ -93,17 +102,20 @@ const TableBod = ({
                           }
                         >
                           {cell.attribute === "companyName" ||
-                          cell.attribute === "uuid"
-                            ? row[cell.attribute].slice(0, 8).concat("", "...")
-                            : idex < 3
-                            ? row[cell.attribute]
-                            : cell.attribute === "createdAt" ||
-                              (cell.type === "training" && row[cell.attribute])
-                            ? format(
-                                parseISO(row[cell.attribute]),
-                                "MM/dd/yyyy"
-                              )
-                            : null}
+                          cell.attribute === "uuid" ? (
+                            row[cell.attribute]?.slice(0, 8).concat("", "...")
+                          ) : cell.attribute === "action" ? (
+                            <EditIcon
+                              onClick={handleEditClick}
+                              data-emp={row.uuid}
+                            />
+                          ) : idex < 4 && cell.attribute !== "action" ? (
+                            row[cell.attribute]
+                          ) : cell.attribute === "createdAt" ||
+                            (cell.type === "training" &&
+                              row[cell.attribute]) ? (
+                            format(parseISO(row[cell.attribute]), "MM/dd/yyyy")
+                          ) : null}
                         </TableCell>
                       );
                     })}
@@ -117,10 +129,6 @@ const TableBod = ({
                         return (
                           <TableCell
                             key={idex}
-                            data-emp={row.empNo}
-                            onClick={
-                              cell.attribute === "uuid" ? handleEditClick : null
-                            }
                             style={
                               cell.attribute === "firstName" ||
                               cell.attribute === "lastName" ||
@@ -146,20 +154,23 @@ const TableBod = ({
                             }
                           >
                             {cell.attribute === "companyName" ||
-                            cell.attribute === "uuid"
-                              ? row[cell.attribute]
-                                  .slice(0, 8)
-                                  .concat("", "...")
-                              : idex < 3
-                              ? row[cell.attribute]
-                              : cell.attribute === "createdAt" ||
-                                (cell.type === "training" &&
-                                  row[cell.attribute])
-                              ? format(
-                                  parseISO(row[cell.attribute]),
-                                  "MM/dd/yyyy"
-                                )
-                              : null}
+                            cell.attribute === "uuid" ? (
+                              row[cell.attribute].slice(0, 8).concat("", "...")
+                            ) : cell.attribute === "action" ? (
+                              <EditIcon
+                                onClick={handleEditClick}
+                                data-emp={row.uuid}
+                              />
+                            ) : idex < 4 && cell.attribute !== "action" ? (
+                              row[cell.attribute]
+                            ) : cell.attribute === "createdAt" ||
+                              (cell.type === "training" &&
+                                row[cell.attribute]) ? (
+                              format(
+                                parseISO(row[cell.attribute]),
+                                "MM/dd/yyyy"
+                              )
+                            ) : null}
                           </TableCell>
                         );
                       })}

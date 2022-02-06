@@ -81,5 +81,5 @@ export const SubmitButton = styled.button`
 `;
 
 export const ErrorBox = styled.div`
-  color: "red" !important;
+  color: red;
 `;

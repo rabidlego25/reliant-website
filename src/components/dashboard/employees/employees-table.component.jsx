@@ -23,15 +23,16 @@ import TableBod from "./table-body.component";
 import AddEmployee from "./add-employee.component";
 import ConductModal from "./conduct-modal.component";
 
-import { loadCompanies } from "../../services/user.service";
-import { getEmployees } from "../../services/employee.service";
-import { generateHeaders } from "../../services/helpers.service";
+import { loadCompanies } from "../../../services/user.service";
+import { getEmployees } from "../../../services/employee.service";
+import { generateHeaders } from "../../../services/helpers.service";
 
 let columnArray = [
-  { header: "Emp Id", attribute: "uuid", index: 0, type: "main" },
-  { header: "First Name", attribute: "firstName", index: 1, type: "main" },
-  { header: "Last Name", attribute: "lastName", index: 2, type: "main" },
-  { header: "Company Name", attribute: "companyName", index: 3, type: "main" },
+  { header: "Action", index: 0, attribute: "action", type: "action" },
+  { header: "Emp Id", attribute: "uuid", index: 1, type: "main" },
+  { header: "First Name", attribute: "firstName", index: 2, type: "main" },
+  { header: "Last Name", attribute: "lastName", index: 3, type: "main" },
+  { header: "Company Name", attribute: "companyName", index: 4, type: "main" },
 ];
 
 const EmployeesTable = () => {
@@ -105,11 +106,10 @@ const EmployeesTable = () => {
         }
         const copy = columnArray.slice();
         const activeLength = copy.length;
-        const mapEmployeeColumns = Object.keys(data[0]).slice(activeLength);
+        const mapEmployeeColumns = Object.keys(data[0]).slice(activeLength - 1); // -1 accomodates the action column which is not desired to be mappable
         // eslint-disable-next-line array-callback-return
         mapEmployeeColumns.map((att, idx) => {
           let display = generateHeaders(att);
-          // console.log(att, display, idx + activeLength);
           let row = {
             header: display,
             attribute: att,
@@ -161,60 +161,66 @@ const EmployeesTable = () => {
     <TableWrapper>
       <HeaderSection>
         <div className="btn-container">
-          <button className="btn-modal-toggle" onClick={handleAddClick}>
-            <EmpAdd />
-            Add Employee
-          </button>
-          <button className="btn-modal-toggle" onClick={handleConductClick}>
-            <Hammer /> Conduct Training
-          </button>
-          <FormControl sx={{ width: 300 }}>
-            <InputLabel sx={{ color: "blue" }} id="sort-by-company">
-              Sort by Company:{" "}
-            </InputLabel>
-            <Select
-              sx={{ bgcolor: "white", height: 50 }}
-              labelId="sort-by-company"
-              value={currentCompany}
-              onChange={handleSelectCompany}
-              input={<OutlinedInput label="Sort by Company:" />}
-            >
-              <MenuItem value="All">All</MenuItem>
-              {companyData.map((comp, idx) => {
-                return (
-                  <MenuItem key={comp.uuid} value={comp}>
-                    {comp.companyName}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ width: 300, height: "100%" }}>
-            <InputLabel sx={{ color: "blue" }} id="sort-by-training">
-              Sort by Training:{" "}
-            </InputLabel>
-            <Select
-              sx={{ bgcolor: "white", height: 50 }}
-              labelId="sort-by-training"
-              multiple
-              value={selectTrainings}
-              onChange={handleSelectTraining}
-              input={<OutlinedInput label="Sort by Training:" />}
-            >
-              {originalColumns.map((column, idx) => {
-                if (column.index < 5) return;
-                return (
-                  <MenuItem
-                    key={column.index}
-                    data-id={column.index}
-                    value={column.attribute}
-                  >
-                    {column.header}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
+          <div className="btn-modal-container">
+            <button className="btn-modal-toggle" onClick={handleAddClick}>
+              <EmpAdd />
+              Add Employee
+            </button>
+            <button className="btn-modal-toggle" onClick={handleConductClick}>
+              <Hammer /> Conduct Training
+            </button>
+          </div>
+          <div className="input-filter-container">
+            <FormControl sx={{ width: 300 }}>
+              {
+                // <InputLabel sx={{ color: "blue" }} id="sort-by-company">
+                //   Sort by Company:
+                // </InputLabel>
+              }
+              <Select
+                sx={{ bgcolor: "white", height: 50 }}
+                // labelId="sort-by-company"
+                value={currentCompany}
+                onChange={handleSelectCompany}
+                // input={<OutlinedInput label="Sort by Company:" />}
+              >
+                <MenuItem value="All">All</MenuItem>
+                {companyData.map((comp, idx) => {
+                  return (
+                    <MenuItem key={comp.uuid} value={comp}>
+                      {comp.companyName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: 300, height: "100%" }}>
+              <InputLabel sx={{ color: "black" }} id="sort-by-training">
+                Sort by Training:{" "}
+              </InputLabel>
+              <Select
+                sx={{ bgcolor: "white", height: 50, color: "black" }}
+                labelId="sort-by-training"
+                multiple
+                value={selectTrainings}
+                onChange={handleSelectTraining}
+                input={<OutlinedInput label="Sort by Training:" />}
+              >
+                {originalColumns.map((column, idx) => {
+                  if (column.index < 5) return;
+                  return (
+                    <MenuItem
+                      key={column.index}
+                      data-id={column.index}
+                      value={column.attribute}
+                    >
+                      {column.header}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </div>
         </div>
       </HeaderSection>
       <div className="table-main">

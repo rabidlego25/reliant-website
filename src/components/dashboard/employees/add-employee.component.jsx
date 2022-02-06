@@ -7,7 +7,7 @@ import {
   ErrorBox,
 } from "./add-employee.styles";
 
-import { addEmployee } from "../../services/employee.service";
+import { addEmployee } from "../../../services/employee.service";
 
 const initialFormData = Object.freeze({
   firstName: "",

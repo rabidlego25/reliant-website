@@ -9,6 +9,7 @@ export const DashContainer = styled.div`
   position: relative;
   overflow: scroll;
   display: flex;
+  background: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
   }
 `;
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 
 import DatePicker from "@mui/lab/DatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -9,7 +9,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
-import { updateEmployees } from "../../services/employee.service";
+import { conductTraining } from "../../../services/employee.service";
 
 import {
   Wrapper,
@@ -20,19 +20,24 @@ import {
 
 const comp = { uuid: null, companyName: null };
 
+const success = () => {};
+
 const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
   const [company, setCompany] = useState(comp);
   // const [trainingData, setTrainingData] = useState(trainData);
-  const [date, setDate] = useState(null);
-  const [employeeSelect, setEmployeeSelect] = useState([]);
-  const [trainingSelect, setTrainingSelect] = useState([]);
-  const [status, setStatus] = useState("");
+  const [date, setDate] = useState(null); // the date to be updated
+  const [employeeSelect, setEmployeeSelect] = useState([]); // employees to be updated
+  const [trainingSelect, setTrainingSelect] = useState([]); // trainings to be updated
+  const [file, setFile] = useState(null); // file to be updated - not required
+  const [status, setStatus] = useState(""); // error message upon failed validation
+
+  const fileRef = useRef(); // to be reset if file validation fails
 
   //empData = [{empNo, firstName... lastAtt}... {empNo, firstName, lastAtt}]
   //trainData =[{header, attribute, index, type }... {}]
 
   const handleCloseClick = (e) => {
-    setConductModal(false);
+    setConductModal(false); // false closes modal
   };
 
   // const handleCompanyChange = (e) => {
@@ -57,7 +62,27 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
     setTrainingSelect(typeof value === "string" ? value.split(", ") : value);
   };
 
+  const handleFileUpload = (e) => {
+    const thisFile = e.target.files[0];
+    const ext = thisFile?.name.substring(thisFile.name.lastIndexOf(".") + 1);
+    if (ext === "pdf") {
+      console.log("pdf");
+      setFile(thisFile);
+
+      if (status?.startsWith("File")) {
+        setStatus(null);
+      }
+    } else {
+      setStatus("File must be PDF");
+      fileRef.current.value = null;
+    }
+    // console.log(ext);
+    // setFile(thisFile);
+    // console.log("handleFileUpload: ", e.target.files[0]);
+  };
+
   const handleSubmit = (e) => {
+    e.preventDefault();
     if (
       !date ||
       !company.uuid ||
@@ -67,20 +92,26 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
       setStatus("Please ensure all fields are entered");
     } else {
       setStatus("Sending Data Now");
+      const PostData = new FormData();
+      PostData.append(
+        "training[]",
+        JSON.stringify({
+          date: date,
+          company: company,
+          employees: employeeSelect,
+          trainings: trainingSelect,
+        })
+      );
+      PostData.append("training_file", file);
 
-      updateEmployees({
-        date: date,
-        compUuid: company.uuid,
-        employees: employeeSelect,
-        trainings: trainingSelect,
-      })
+      let x = conductTraining(PostData)
         .then((res) => {
           console.log(res);
           if (res.status === 204) {
             // setDate(null);
             // setCompany(comp);
             // setTrainingSelect([]);
-            setConductModal(false);
+            // setConductModal(false);
           } else setStatus(res.data.message);
         })
         .catch((err) => {
@@ -105,11 +136,12 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
     console.log("company: ", company);
     console.log("employees: ", employeeSelect);
     console.log("trainings: ", trainingSelect);
-  }, [date, company, employeeSelect, trainingSelect]);
+    console.log("file: ", file);
+  }, [date, company, employeeSelect, trainingSelect, file]);
 
   return (
     <Wrapper className="center-flex">
-      <div className="modal">
+      <form className="modal" encType="multipart/form-data">
         <div className="icon-container">
           <CloseIcon onClick={handleCloseClick} />
         </div>
@@ -194,13 +226,21 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
               })}
             </Select>
           </FormControl>
-          <input type="file" />
+          <label htmlFor="fileInput">PDF Upload: </label>
+          <input
+            ref={fileRef}
+            type="file"
+            name="conduct_training_file"
+            id="fileInput"
+            placeholder="PDF File"
+            onChange={handleFileUpload}
+          />
           <div className="btn-container form-item center-flex">
             <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
           </div>
           <ErrorBox className="center-flex">{status}</ErrorBox>
         </div>
-      </div>
+      </form>
     </Wrapper>
   );
 };

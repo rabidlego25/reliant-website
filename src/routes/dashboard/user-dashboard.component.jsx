@@ -11,13 +11,14 @@ import {
   Logout,
 } from "./user-dashboard.styles";
 
-import CompaniesTable from "./../../components/dashboard/companies-table.component";
-import EmployeesTable from "../../components/dashboard/employees-table.component";
+import CompaniesTable from "../../components/dashboard/companies/companies-table.component";
+import EmployeesTable from "../../components/dashboard/employees/employees-table.component";
 
-import AdminHub from "../../components/dashboard/admin-hub.component";
+import AdminHub from "../../components/dashboard/admin-hub/admin-hub.component";
 
 const Dashboard = () => {
   const [activeComponent, setActiveComponent] = useState("admin");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const menu = useRef();
   const tabContainer = useRef();
@@ -50,6 +51,8 @@ const Dashboard = () => {
     if (location.state === null) {
       // if nobody is logged in (we set location.state after successful login) then redirect to dashboard
       navigate("/login", { state: null, replace: true });
+    } else {
+      setLoggedIn(true);
     }
     //eslint-disable-next-line
   }, []);
@@ -73,11 +76,11 @@ const Dashboard = () => {
           <h4 onClick={handleLogout}>Logout</h4>
         </Logout>
       </SideNav>
-      {activeComponent === "employees" ? (
+      {activeComponent === "employees" && loggedIn ? (
         <EmployeesTable />
-      ) : activeComponent === "company" ? (
+      ) : activeComponent === "company" && loggedIn ? (
         <CompaniesTable />
-      ) : activeComponent === "admin" ? (
+      ) : activeComponent === "admin" && loggedIn ? (
         <AdminHub />
       ) : (
         <div>Error</div>

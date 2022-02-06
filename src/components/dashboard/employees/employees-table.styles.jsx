@@ -6,14 +6,13 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 
 export const TableWrapper = styled.div`
   width: 100%;
-  min-width: 600px;
+  min-width: 1120px;
   height: 100%;
   background: white;
-  color: blue;
+  /* color: blue; */
   overflow: hidden;
   box-shadow: 0px 2px 10px 2px rgba(87, 99, 230, 1);
   border-radius: 25px;
-  padding-bottom: 1rem;
 
   .table-main {
     width: 100%;
@@ -38,7 +37,10 @@ export const HeaderSection = styled.div`
   padding: 0.5rem;
   display: flex;
   align-content: center;
-  background: lightgreen;
+  /* background-color: #ff4e00;
+  background-image: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%); */
+  background: #4c8bf5;
+  /* background: lightgreen; */
   /* background: yellow; */
 
   .btn-container {
@@ -48,22 +50,34 @@ export const HeaderSection = styled.div`
     justify-content: space-evenly;
     align-items: center;
 
-    button {
-      padding: 0.5rem;
-      border-radius: 15px;
-      background: #4dc95f;
-      color: blue;
-      border: none;
-      transition: all 0.3s;
+    .btn-modal-container {
+      width: 34%;
+      height: 100%;
       display: flex;
-      align-items: center;
       justify-content: space-evenly;
 
-      &:hover {
-        cursor: pointer;
-        background: #63c772;
-        transform: scale(1.05);
+      button {
+        padding: 0.5rem;
+        width: 156px;
+        border-radius: 15px;
+        background-color: #bbf0f3;
+        background-image: linear-gradient(315deg, #bbf0f3 0%, #f6d285 74%);
+        font-weight: 600;
+        color: #4c8bf5;
+        border: none;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+          cursor: pointer;
+          background: #63c772;
+          transform: scale(1.05);
+        }
       }
+    }
+
+    .input-filter-container {
     }
   }
 `;

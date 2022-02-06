@@ -50,10 +50,15 @@ export const updateEmployee = async (emp) => {
     });
 };
 
-export const updateEmployees = async (...props) => {
-  console.log("updateEmployees");
+export const conductTraining = async (formData) => {
+  console.log("conductTraining");
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  };
   return axios
-    .patch(BASE_URL + "admin/update_employees", { ...props })
+    .patch(BASE_URL + "admin/conduct_training", formData, config)
     .then((res) => {
       return res;
     })

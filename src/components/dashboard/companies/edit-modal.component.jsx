@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 
 import { CloseIcon, Wrapper, StatusBox } from "./edit-modal.styles";
 
-import { updateCompany, loadCompanies } from "../../services/user.service";
+import { updateCompany, loadCompanies } from "../../../services/user.service";
 
 const initialFormData = Object.freeze({
   companyName: "",
@@ -20,7 +20,6 @@ const EditModal = ({ editData, setEditModal, setCompany, setStatus }) => {
   const type = useRef(
     editData.type === "Agricultural" ? "Agricultural" : "Industrial"
   );
-  const closeIcon = useRef();
   const industrialRadio = useRef();
   const agriculturalRadio = useRef();
 

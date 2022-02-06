@@ -12,6 +12,8 @@ export const Wrapper = styled.div`
     rgba(0, 93, 255, 1) 100%
   );
   height: calc(100vh);
+  background-color: #f7b42c;
+  background-image: linear-gradient(315deg, #f7b42c 0%, #fc575e 74%);
 
   .login-wrapper {
     height: 525px;

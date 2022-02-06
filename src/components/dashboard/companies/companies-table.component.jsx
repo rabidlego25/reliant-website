@@ -10,7 +10,7 @@ import {
   deleteCompany,
   loadCompanies,
   getCompany,
-} from "../../services/user.service";
+} from "../../../services/user.service";
 
 import EditModal from "./edit-modal.component";
 import AddModal from "./add-modal.component";
