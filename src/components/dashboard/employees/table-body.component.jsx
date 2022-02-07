@@ -33,16 +33,16 @@ const TableBod = ({
 
   const handleEditClick = (e) => {
     let emp = e.currentTarget.dataset.emp;
-    console.log("empNo: ", emp);
+    // console.log("empNo: ", emp);
     const employee = employees.find((employee) => employee.uuid === emp);
     setEditEmpData(employee);
     setModal(true);
   };
 
   useEffect(() => {
-    console.log("company: ", company);
+    // console.log("company: ", company);
     if (!employees) return;
-    console.log("employees: ", employees);
+    // console.log("employees: ", employees);
     setRowData(employees);
     //eslint-disable-next-line
   }, [employees]);
@@ -58,7 +58,7 @@ const TableBod = ({
       return obj;
     });
     // result: [obj1, obj2, ... objn]
-    console.log("trainings: ", result);
+    // console.log("trainings: ", result);
     setTrainings(result);
   }, [training]);
 

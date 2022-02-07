@@ -27,7 +27,11 @@ import ConductModal from "./conduct-modal.component";
 
 import { loadCompanies } from "../../../services/company.service";
 import { getEmployees } from "../../../services/employee.service";
-import { generateHeaders } from "../../../services/helpers.service";
+import {
+  generateHeaders,
+  createColumnData,
+  formatCompData,
+} from "../../../services/helpers.service";
 
 let columnArray = [
   { header: "Action", index: 0, attribute: "action", type: "action" },
@@ -38,27 +42,35 @@ let columnArray = [
 ];
 
 const EmployeesTable = () => {
-  const [initalLoad, setInitialLoad] = useState(true);
   const [companyData, setCompanyData] = useState([]);
   const [columnData, setColumnData] = useState([]);
   const [originalColumns, setOriginalColumns] = useState([]);
   const [employeeData, setEmployeeData] = useState([]);
   const [selectTrainings, setSelectTrainings] = useState([]);
   const [currentCompany, setCurrentCompany] = useState("All");
+
+  // state for toggling display of modals
   const [addEmpModal, setAddEmpModal] = useState(false);
   const [conductModal, setConductModal] = useState(false);
   const [editEmpModal, setEditEmpModal] = useState(false);
-  const [editEmpData, setEditEmpData] = useState(null);
-  const [sectionStatus, setSectionStatus] = useState(null);
 
+  // state for editing existing employee - will pass to modal
+  const [editEmpData, setEditEmpData] = useState(null);
+
+  // data for formatting functions and updating state
+  const { employees, companies } = useContext(InitialContext);
+
+  // toggle display of add employee modal
   const handleAddClick = (e) => {
     setAddEmpModal(true);
   };
 
+  // toggle display of conduct training modal
   const handleConductClick = (e) => {
     setConductModal(true);
   };
 
+  // process selection of trainings from dropdown - will affect columns displayed
   const handleSelectTraining = (e) => {
     const {
       target: { value },
@@ -67,6 +79,7 @@ const EmployeesTable = () => {
     setSelectTrainings(typeof value === "string" ? value.split(",") : value);
   };
 
+  // process selection of company whose employees to display - will affect rows displayed
   const handleSelectCompany = (e) => {
     const {
       target: { value },
@@ -75,74 +88,32 @@ const EmployeesTable = () => {
     setCurrentCompany(value);
   };
 
-  useEffect(() => {
-    if (!initalLoad) return;
-    loadCompanies()
-      .then(({ data }) => {
-        console.log("data: ", data);
-        let compNames = [];
-        let nameStrings = ["All"];
-        data.forEach((arr) => {
-          let obj = {};
-          obj["uuid"] = arr.uuid;
-          obj["companyName"] = arr.companyName;
-          compNames.push(obj);
-          nameStrings.push(arr.companyName);
-        });
-        // console.log("compNames: ", compNames);
-        // console.log("nameStrings: ", nameStrings);
-
-        setCompanyData(compNames);
-        setInitialLoad(false);
-      })
-      .catch((err) => console.log(err));
-  }, [initalLoad]);
-
   useLayoutEffect(() => {
     console.log("useLayoutEffect");
-    getEmployees()
-      .then(({ data }) => {
-        if (data.err) {
-          setSectionStatus(data.message);
-          return;
-        }
-        const copy = columnArray.slice();
-        const activeLength = copy.length;
-        const mapEmployeeColumns = Object.keys(data[0]).slice(activeLength - 1); // -1 accomodates the action column which is not desired to be mappable
-        // eslint-disable-next-line array-callback-return
-        mapEmployeeColumns.map((att, idx) => {
-          let display = generateHeaders(att);
-          let row = {
-            header: display,
-            attribute: att,
-            index: idx + activeLength,
-            type: "training",
-          };
-          if (row.attribute === "createdAt" || row.attribute === "updatedAt") {
-            row = {
-              header: display,
-              attribute: att,
-              index: idx + activeLength,
-              type: "main",
-            };
-          }
-          copy.push(row);
-        });
-        setColumnData(copy);
-        setOriginalColumns(copy);
-        setEmployeeData(data);
-      })
-      .catch((err) => console.log("err: ", err));
+    const empData = createColumnData(employees, columnArray);
+    console.log("createColumnData: ", empData);
+    const { compNames } = formatCompData(companies);
+
+    setCompanyData(compNames);
+
+    setColumnData(empData);
+    setOriginalColumns(empData);
+    setEmployeeData(employees);
+    // .catch((err) => console.log("err: ", err));
   }, []);
 
   useEffect(() => {
-    if (!columnData) return;
-  }, [columnData]);
+    // console.log("columnData: ", columnData);
+    // console.log("originalColumns: ", originalColumns);
+    // console.log("employeeData: ", employeeData);
+    console.log("companyData: ", companyData);
+    console.log("companies: ", companies);
+  }, [columnData, originalColumns, employeeData, companyData]);
 
   useEffect(() => {
     if (selectTrainings.length === 0) {
       if (columnData !== originalColumns) {
-        setColumnData(originalColumns);
+        // setColumnData(originalColumns);
       }
       return;
     }
@@ -254,7 +225,6 @@ const EmployeesTable = () => {
           editEmpData={editEmpData}
         />
       ) : null}
-      <div className="center-flex">{sectionStatus}</div>
     </TableWrapper>
   );
 };
