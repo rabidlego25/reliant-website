@@ -104,7 +104,7 @@ const ConductModal = ({ setConductModal, compData, empData, trainData }) => {
       );
       PostData.append("training_file", file);
 
-      let x = conductTraining(PostData)
+      conductTraining(PostData)
         .then((res) => {
           console.log(res);
           if (res.status === 204) {

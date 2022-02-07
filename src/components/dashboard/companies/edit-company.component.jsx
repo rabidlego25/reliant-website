@@ -1,8 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 
-import { CloseIcon, Wrapper, StatusBox } from "./edit-modal.styles";
+import { CloseIcon, Wrapper, StatusBox } from "./edit-company.styles";
 
-import { updateCompany, loadCompanies } from "../../../services/user.service";
+import {
+  updateCompany,
+  loadCompanies,
+} from "../../../services/company.service";
 
 const initialFormData = Object.freeze({
   companyName: "",

@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 
 import Table from "@mui/material/Table";
 import FormControl from "@mui/material/FormControl";
@@ -7,6 +7,8 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
+
+import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
 
 import EditEmpModal from "./edit-employee.component";
 
@@ -23,7 +25,7 @@ import TableBod from "./table-body.component";
 import AddEmployee from "./add-employee.component";
 import ConductModal from "./conduct-modal.component";
 
-import { loadCompanies } from "../../../services/user.service";
+import { loadCompanies } from "../../../services/company.service";
 import { getEmployees } from "../../../services/employee.service";
 import { generateHeaders } from "../../../services/helpers.service";
 
