@@ -8,7 +8,10 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
-import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
+import {
+  InitialContext,
+  UpdateContext,
+} from "../../../routes/dashboard/user-dashboard.component";
 
 import EditEmpModal from "./edit-employee.component";
 
@@ -25,10 +28,7 @@ import TableBod from "./table-body.component";
 import AddEmployee from "./add-employee.component";
 import ConductModal from "./conduct-modal.component";
 
-import { loadCompanies } from "../../../services/company.service";
-import { getEmployees } from "../../../services/employee.service";
 import {
-  generateHeaders,
   createColumnData,
   formatCompData,
 } from "../../../services/helpers.service";
@@ -59,6 +59,7 @@ const EmployeesTable = () => {
 
   // data for formatting functions and updating state
   const { employees, companies } = useContext(InitialContext);
+  const { update, setUpdate } = useContext(UpdateContext);
 
   // toggle display of add employee modal
   const handleAddClick = (e) => {
@@ -88,47 +89,48 @@ const EmployeesTable = () => {
     setCurrentCompany(value);
   };
 
+  // formatting context data for display
   useLayoutEffect(() => {
-    console.log("useLayoutEffect");
+    console.log("useLayoutEffect: ");
     const empData = createColumnData(employees, columnArray);
     console.log("createColumnData: ", empData);
     const { compNames } = formatCompData(companies);
 
+    // sent to modals and drop down for company query
     setCompanyData(compNames);
 
+    // sent to table header and body for processing visualization
     setColumnData(empData);
     setOriginalColumns(empData);
     setEmployeeData(employees);
-    // .catch((err) => console.log("err: ", err));
+    //eslint-disable-next-line
   }, []);
 
+  // fired any time selectTrainings updates
   useEffect(() => {
-    // console.log("columnData: ", columnData);
-    // console.log("originalColumns: ", originalColumns);
-    // console.log("employeeData: ", employeeData);
-    console.log("companyData: ", companyData);
-    console.log("companies: ", companies);
-  }, [columnData, originalColumns, employeeData, companyData]);
-
-  useEffect(() => {
+    // don't run if original columns have not updated
+    if (!originalColumns) return;
+    // selectTrainings = ['hazardCommunication', 'handTools', 'forklift']
     if (selectTrainings.length === 0) {
       if (columnData !== originalColumns) {
-        // setColumnData(originalColumns);
+        setColumnData(originalColumns);
       }
       return;
     }
 
-    console.log(selectTrainings); //['hazardCommunication', 'handTools', 'forklift']
+    // amending data for display in event select training changes
     let trainingArray = [];
     selectTrainings.forEach((att) => {
       const result = originalColumns.filter((obj) => obj.attribute === att);
       trainingArray.push(result[0]);
     });
     console.log(trainingArray);
+
+    // if unselected will revert to original display
+    if (selectTrainings.length !== 0)
+      setColumnData(columnArray.concat(trainingArray));
     //eslint-disable-next-line
-    setColumnData(columnArray.concat(trainingArray));
-    //eslint-disable-next-line
-  }, [selectTrainings]);
+  }, [selectTrainings, originalColumns]);
 
   return (
     <TableWrapper>

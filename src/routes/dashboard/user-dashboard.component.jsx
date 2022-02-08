@@ -15,15 +15,19 @@ import {
 // functions required to set context/state
 import { loadCompanies } from "../../services/company.service";
 import { getEmployees } from "../../services/employee.service";
+import { getTrainings } from "../../services/training.service";
 
 // current pages to display based on state
 import CompaniesFeature from "../../components/dashboard/companies/companies-feature.component";
 import EmployeesTable from "../../components/dashboard/employees/employees-table.component";
 import AdminHub from "../../components/dashboard/admin-hub/admin-hub.component";
-import { getTrainings } from "../../services/training.service";
 
 // company data to be shared across all app components - exception sidebar
 export const InitialContext = createContext();
+export const UpdateContext = createContext({
+  update: "",
+  setUpdate: () => {},
+});
 
 let contextObj = {
   companies: null,
@@ -35,6 +39,9 @@ const Dashboard = () => {
   const [activeComponent, setActiveComponent] = useState("admin"); // chooses what feature to be displayed
   const [loggedIn, setLoggedIn] = useState(false); // assess whether user is logged in - used for authenticating feature display and rerouting
   const [context, setContext] = useState();
+
+  const [update, setUpdate] = useState(null);
+  const willUpdate = { update, setUpdate };
 
   const menu = useRef(); // ref needed for toggling sidebar
   const tabContainer = useRef(); // ref for container in sidebar holding feature nav links
@@ -77,23 +84,23 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!loggedIn) return;
-    console.log("loggedIn useEffect");
+    console.log("loggedIn useEffect: ");
 
     // load companies onto context
     loadCompanies().then(({ data }) => {
-      console.log("companies: ", data);
+      // console.log("companies: ", data);
       contextObj["companies"] = data;
     });
 
     // load employees onto context
     getEmployees().then(({ data }) => {
-      console.log("employees: ", data);
+      // console.log("employees: ", data);
       contextObj["employees"] = data;
     });
 
     //load trainings onto context
     getTrainings().then(({ data }) => {
-      console.log("trainings: ", data);
+      // console.log("trainings: ", data);
       contextObj["trainings"] = data;
     });
 
@@ -101,8 +108,36 @@ const Dashboard = () => {
   }, [loggedIn]);
 
   useEffect(() => {
-    console.log("context useEffect: ", context);
-  }, [context]);
+    if (!update) return;
+    console.log("update: ", update);
+
+    // update employees only
+    if (update === "employees") {
+      getEmployees().then(({ data }) => {
+        console.log("employees: ", data);
+        contextObj["employees"] = data;
+      });
+    }
+
+    // update companies only
+    if (update === "companies") {
+      loadCompanies().then(({ data }) => {
+        console.log("companies: ", data);
+        contextObj["companies"] = data;
+      });
+    }
+
+    // update trainings only
+    if (update === "trainings") {
+      getTrainings().then(({ data }) => {
+        console.log("trainings: ", data);
+        contextObj["trainings"] = data;
+      });
+    }
+
+    setContext(contextObj);
+    setUpdate(null);
+  }, [update]);
 
   return (
     <DashContainer>
@@ -123,16 +158,19 @@ const Dashboard = () => {
           <h4 onClick={handleLogout}>Logout</h4>
         </Logout>
       </SideNav>
+
       <InitialContext.Provider value={context}>
-        {activeComponent === "employees" && loggedIn ? (
-          <EmployeesTable />
-        ) : activeComponent === "company" && loggedIn ? (
-          <CompaniesFeature />
-        ) : activeComponent === "admin" && loggedIn ? (
-          <AdminHub />
-        ) : (
-          <div>Error</div>
-        )}
+        <UpdateContext.Provider value={willUpdate}>
+          {activeComponent === "employees" && loggedIn ? (
+            <EmployeesTable />
+          ) : activeComponent === "company" && loggedIn ? (
+            <CompaniesFeature />
+          ) : activeComponent === "admin" && loggedIn ? (
+            <AdminHub />
+          ) : (
+            <div>Error</div>
+          )}
+        </UpdateContext.Provider>
       </InitialContext.Provider>
     </DashContainer>
   );
