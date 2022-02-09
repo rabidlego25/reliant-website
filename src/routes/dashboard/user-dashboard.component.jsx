@@ -23,7 +23,6 @@ import EmployeesTable from "../../components/dashboard/employees/employees-table
 import AdminHub from "../../components/dashboard/admin-hub/admin-hub.component";
 
 // company data to be shared across all app components - exception sidebar
-export const InitialContext = createContext();
 export const UpdateContext = createContext({
   update: "",
   setUpdate: () => {},
@@ -34,11 +33,24 @@ let contextObj = {
   employees: null,
   trainings: null,
 };
+export const InitialContext = createContext({
+  contextObj: contextObj,
+  setContextObj: () => {},
+});
+
+// const getContextObj = () => {
+//   return {
+//     employees: {},
+//     companies: {},
+//     trainings: {},
+//   };
+// };
 
 const Dashboard = () => {
   const [activeComponent, setActiveComponent] = useState("admin"); // chooses what feature to be displayed
   const [loggedIn, setLoggedIn] = useState(false); // assess whether user is logged in - used for authenticating feature display and rerouting
   const [context, setContext] = useState();
+  const appContext = { context, setContext };
 
   const [update, setUpdate] = useState(null);
   const willUpdate = { update, setUpdate };
@@ -85,39 +97,62 @@ const Dashboard = () => {
   useEffect(() => {
     if (!loggedIn) return;
     console.log("loggedIn useEffect: ");
+    const initialAsyncLoad = async () => {
+      // load companies onto context
+      loadCompanies().then(({ data }) => {
+        // console.log("companies: ", data);
+        contextObj["companies"] = data;
+      });
 
-    // load companies onto context
-    loadCompanies().then(({ data }) => {
-      // console.log("companies: ", data);
-      contextObj["companies"] = data;
-    });
+      // load employees onto context
+      getEmployees().then(({ data }) => {
+        // console.log("employees: ", data);
+        contextObj["employees"] = data;
+      });
 
-    // load employees onto context
-    getEmployees().then(({ data }) => {
-      // console.log("employees: ", data);
-      contextObj["employees"] = data;
-    });
+      //load trainings onto context
+      getTrainings().then(({ data }) => {
+        // console.log("trainings: ", data);
+        contextObj["trainings"] = data;
+      });
 
-    //load trainings onto context
-    getTrainings().then(({ data }) => {
-      // console.log("trainings: ", data);
-      contextObj["trainings"] = data;
-    });
+      setContext(contextObj);
+    };
 
-    setContext(contextObj);
+    initialAsyncLoad();
   }, [loggedIn]);
 
+  // updating data upon succussful completion to backend/db
   useEffect(() => {
     if (!update) return;
     console.log("update: ", update);
 
-    // update employees only
-    if (update === "employees") {
-      getEmployees().then(({ data }) => {
-        console.log("employees: ", data);
+    // promises need to resolve when making db call
+    const asyncFunction = async () => {
+      // update employees only
+      if (update === "employees") {
+        let { data } = await getEmployees();
+        console.log("employees --- update");
         contextObj["employees"] = data;
-      });
-    }
+        console.log("contextObj: ", contextObj);
+        setContext({ ...context, employees: contextObj["employees"] });
+      }
+
+      // update companies only
+      if (update === "companies") {
+        let data = await loadCompanies();
+        console.log("companies --- update");
+        contextObj["companies"] = data;
+        console.log("contextObj: ", contextObj);
+        setContext({ ...context, companies: contextObj["companies"] });
+      }
+
+      // update trainings only
+      if (update === "trainings") {
+      }
+
+      console.log("contextObj");
+    };
 
     // update companies only
     if (update === "companies") {
@@ -135,9 +170,14 @@ const Dashboard = () => {
       });
     }
 
-    setContext(contextObj);
+    console.log("2 --- ", contextObj);
     setUpdate(null);
+    asyncFunction();
   }, [update]);
+
+  useEffect(() => {
+    console.log("context--: ", context);
+  }, [context]);
 
   return (
     <DashContainer>
@@ -159,7 +199,7 @@ const Dashboard = () => {
         </Logout>
       </SideNav>
 
-      <InitialContext.Provider value={context}>
+      <InitialContext.Provider value={appContext}>
         <UpdateContext.Provider value={willUpdate}>
           {activeComponent === "employees" && loggedIn ? (
             <EmployeesTable />

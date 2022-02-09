@@ -6,6 +6,8 @@ export const generateHeaders = (head) => {
 
 // formatting in preparation for employees-table components
 export const createColumnData = (empArr, colArr) => {
+  console.log("empArr: ", empArr);
+  console.log("colArr: ", colArr);
   const copy = colArr.slice();
   const activeLength = copy.length;
   const mapEmployeeColumns = Object.keys(empArr[0]).slice(activeLength - 1); // -1 accomodates the action column which is not desired to be mappable

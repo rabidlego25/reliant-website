@@ -124,6 +124,7 @@ export const Wrapper = styled.div`
       transform: translateX(-320px);
       transition: 0.3s;
       padding: 1rem;
+      border-radius: 25px;
 
       .header-warning {
         letter-spacing: 2px;
@@ -146,6 +147,7 @@ export const Wrapper = styled.div`
       &.active {
         color: white;
         transform: translateX(0);
+        z-index: 2;
       }
 
       .popup-btn-container {
@@ -154,6 +156,32 @@ export const Wrapper = styled.div`
         height: 100px;
       }
     }
+  }
+`;
+
+export const Successful = styled.div`
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  border-radius: 25px;
+  background: lightblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+
+  button {
+    width: 6rem;
+    height: 3rem;
+    border-radius: 1px;
+    border: 0;
+    font-weight: 700;
+  }
+
+  &.hidden {
+    display: none;
   }
 `;
 

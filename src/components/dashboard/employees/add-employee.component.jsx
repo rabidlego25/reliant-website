@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   Wrapper,
   CloseIcon,
@@ -6,6 +6,8 @@ import {
   MinusSign,
   ErrorBox,
 } from "./add-employee.styles";
+
+import { UpdateContext } from "../../../routes/dashboard/user-dashboard.component";
 
 import { addEmployee } from "../../../services/employee.service";
 
@@ -53,6 +55,8 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
   ]);
   const [status, setStatus] = useState("");
 
+  const { setUpdate } = useContext(UpdateContext);
+
   const handleCloseClick = (e) => {
     setAddEmpModal(false);
   };
@@ -66,7 +70,10 @@ const AddEmployee = ({ setAddEmpModal, companies }) => {
     addEmployee(PostData)
       .then((res) => {
         console.log(res);
-        if (res.status < 400) setAddEmpModal(false);
+        if (res.status < 300) {
+          setAddEmpModal(false);
+          setUpdate("employees");
+        }
       })
       .catch((err) => {
         console.log("ERROR: ", err);

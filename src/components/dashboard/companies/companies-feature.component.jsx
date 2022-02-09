@@ -1,20 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
+import { FeatureWrapper, Layout } from "./companies-feature.styles";
 
-import { FeatureWrapper } from "./companies-feature.styles";
+import Feature from "./feature.component";
 
 const CompaniesFeature = () => {
-  const companies = useContext(InitialContext)["companies"]; // [companyData, setCompanyData]
-
-  useEffect(() => {
-    if (!companies) return;
-    console.log("companies: ", companies);
-  }, [companies]);
-
-  if (companies[0].length === 0) {
-    return <div></div>;
-  } else return <FeatureWrapper></FeatureWrapper>;
+  return (
+    <FeatureWrapper>
+      <Layout>
+        <Feature />
+      </Layout>
+    </FeatureWrapper>
+  );
 };
 
 export default React.memo(CompaniesFeature);

@@ -58,8 +58,10 @@ const EmployeesTable = () => {
   const [editEmpData, setEditEmpData] = useState(null);
 
   // data for formatting functions and updating state
-  const { employees, companies } = useContext(InitialContext);
-  const { update, setUpdate } = useContext(UpdateContext);
+  const {
+    context: { employees, companies },
+  } = useContext(InitialContext);
+  const { setUpdate } = useContext(UpdateContext);
 
   // toggle display of add employee modal
   const handleAddClick = (e) => {
@@ -89,9 +91,17 @@ const EmployeesTable = () => {
     setCurrentCompany(value);
   };
 
+  useEffect(() => {}, [employees, companies]);
+
   // formatting context data for display
   useLayoutEffect(() => {
+    // ERROR: If run setUpdate from Child, and window.refresh -> employees is empty
+    // remedy: run setUpdate hook if employees array is empty
     console.log("useLayoutEffect: ");
+    if (!employees || !columnArray) {
+      setUpdate("employees");
+      return;
+    }
     const empData = createColumnData(employees, columnArray);
     console.log("createColumnData: ", empData);
     const { compNames } = formatCompData(companies);
@@ -104,7 +114,7 @@ const EmployeesTable = () => {
     setOriginalColumns(empData);
     setEmployeeData(employees);
     //eslint-disable-next-line
-  }, []);
+  }, [employees, companies]);
 
   // fired any time selectTrainings updates
   useEffect(() => {
@@ -147,11 +157,6 @@ const EmployeesTable = () => {
           </div>
           <div className="input-filter-container">
             <FormControl sx={{ width: 300 }}>
-              {
-                // <InputLabel sx={{ color: "blue" }} id="sort-by-company">
-                //   Sort by Company:
-                // </InputLabel>
-              }
               <Select
                 sx={{ bgcolor: "white", height: 50 }}
                 // labelId="sort-by-company"

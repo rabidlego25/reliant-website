@@ -1,16 +1,24 @@
-import React, { useEffect, useState, useRef, forwardRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  forwardRef,
+  useContext,
+} from "react";
 
 import {
   Wrapper,
   CloseIcon,
   WarningIcon,
   ReturnIcon,
+  Successful,
 } from "./edit-employee.styles";
 
 import {
   updateEmployee,
   deleteEmployee,
 } from "../../../services/employee.service.js";
+import { UpdateContext } from "../../../routes/dashboard/user-dashboard.component";
 
 const initialFormData = Object.freeze({
   uuid: "",
@@ -65,28 +73,62 @@ const DeleteMessage = forwardRef(
   }
 );
 
+const Success = forwardRef(({ message, handleCloseClick }, ref) => {
+  console.log("props: ", message);
+  return (
+    <Successful ref={ref} className="hidden">
+      <button onClick={handleCloseClick} className="exit">
+        {message}
+      </button>
+    </Successful>
+  );
+});
+
 const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
   const [formData, setFormData] = useState(initialFormData);
   const [hasChanged, setHasChanged] = useState(false); // check if state has changed. upon submit do not send request to backend if no change made
+  const [status, setStatus] = useState();
+
+  const { setUpdate } = useContext(UpdateContext);
 
   const deleteRef = useRef();
+  const successRef = useRef();
 
   const handleCloseClick = () => {
     console.log("handleCloseClick");
     setEditEmpModal(false);
   };
 
+  // being called from submit function for handling state
+  // update state being used for context value
+  // setEditEmpModal for toggling display of edit emp modal
+  const runAsyncEdit = async () => {
+    let { status } = await updateEmployee(formData);
+    console.log("data: ", status);
+    if (status === 200) {
+      successRef.current.classList.remove("hidden");
+      setStatus("Success!");
+      setUpdate("employees");
+      // setEditEmpModal(false);
+    }
+  };
+
+  const runAsyncDelete = async () => {
+    let { status } = await deleteEmployee(editEmpData.uuid);
+    console.log("data: ", status);
+    if (status === 200) {
+      successRef.current.classList.remove("hidden");
+      setStatus("Success!");
+      setUpdate("employees");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("handleSubmit");
     if (!hasChanged) return;
-    updateEmployee(formData).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        setFormData(initialFormData);
-        setEditEmpModal(false);
-      }
-    });
+
+    runAsyncEdit();
   };
 
   const handleFirstNameInput = (e) => {
@@ -102,22 +144,12 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
   const handleDeleteClick = (e) => {
     console.log("handleDeleteConfirmation");
     deleteRef.current.classList.add("active");
-    // deleteEmployee(editEmpData.empNo)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setEditEmpModal(false);
-    //   })
-    //   .catch((err) => console.log("ERROR"));
   };
 
   const handleDeleteConfirmation = (e) => {
     console.log("handleDeleteConfirmation");
-    deleteEmployee(editEmpData.uuid)
-      .then((res) => {
-        console.log(res);
-        setEditEmpModal(false);
-      })
-      .catch((err) => console.log("ERROR"));
+
+    runAsyncDelete();
   };
 
   const handleReturnClick = (e) => {
@@ -135,10 +167,6 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log("formData: ", formData);
-  }, [formData]);
-
   return (
     <Wrapper className="center-flex">
       <div className="modal">
@@ -147,7 +175,7 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
         </div>
         <div className="title-container">
           <h2 className="title">Edit Employee</h2>
-          <span>Employee ID: {editEmpData.uuid}</span>
+          <span>Employee ID: {editEmpData.uuid.slice(0, 7)}</span>
         </div>
         <div className="form-container">
           <form onSubmit={handleSubmit}>
@@ -185,6 +213,12 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
             </div>
           </form>
         </div>
+        <Success
+          ref={successRef}
+          className="hidden"
+          message={status}
+          handleCloseClick={handleCloseClick}
+        />
         <DeleteMessage
           ref={deleteRef}
           handleDeleteConfirmation={handleDeleteConfirmation}

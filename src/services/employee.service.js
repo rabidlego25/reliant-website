@@ -14,7 +14,7 @@ export const addEmployee = async (formData) => {
     });
 };
 
-export const getEmployees = async () => {
+export const getEmployees = () => {
   console.log("getEmployees");
   return axios
     .get(BASE_URL + `admin/employees`)
@@ -38,11 +38,12 @@ export const getEmployee = async (empNo) => {
     });
 };
 
-export const updateEmployee = async (emp) => {
-  console.log("updateEmployees");
+export const updateEmployee = (emp) => {
+  console.log("update_employees");
   return axios
     .patch(BASE_URL + `admin/update_employee/${emp.uuid}`, { emp })
     .then((res) => {
+      console.log("res: ", res);
       return res;
     })
     .catch((err) => {
@@ -67,7 +68,7 @@ export const conductTraining = async (formData) => {
     });
 };
 
-export const deleteEmployee = async (uuid) => {
+export const deleteEmployee = (uuid) => {
   let obj = { uuid: uuid };
   return axios
     .delete(BASE_URL + "admin/delete_employee", { data: obj })
