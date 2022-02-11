@@ -1,5 +1,9 @@
 import React from "react";
 
-const BodyDisplay = () => {};
+import { DisplayWrapper } from "./body-display.styles";
+
+const BodyDisplay = () => {
+  return <DisplayWrapper></DisplayWrapper>;
+};
 
 export default BodyDisplay;

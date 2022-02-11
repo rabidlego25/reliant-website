@@ -188,7 +188,7 @@ const Dashboard = () => {
             <h4 onClick={handleNavClick}>Admin Hub</h4>
           </Tab>
           <Tab className="tab" data-active="company">
-            <h4 onClick={handleNavClick}>Company Data</h4>
+            <h4 onClick={handleNavClick}>Client Data</h4>
           </Tab>
           <Tab className="tab" data-active="employees">
             <h4 onClick={handleNavClick}>Employee Trainings</h4>

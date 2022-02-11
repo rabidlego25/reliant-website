@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 
 import { Layout } from "./feature.styles";
 
-import TableBody from "./feature-body.component";
-import TableMenu from "./feature-menu.component";
-import TableFooter from "./feature-footer.component";
+import FeatureMenu from "./feature-menu.component";
+import FeatureBody from "./feature-body.component";
+import FeatureFooter from "./feature-footer.component";
 
 import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
 
@@ -15,9 +15,9 @@ const Feature = () => {
 
   return (
     <Layout>
-      <TableMenu />
-      <TableBody />
-      <TableFooter />
+      <FeatureMenu />
+      <FeatureBody />
+      <FeatureFooter />
     </Layout>
   );
 };

@@ -99,6 +99,13 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
     setEditEmpModal(false);
   };
 
+  // fixing bug where success modal pops up when only 1 employee exists
+  const handleSuccessClick = () => {
+    console.log("handleDeleteClose");
+    setUpdate("employees");
+    setEditEmpModal(false);
+  };
+
   // being called from submit function for handling state
   // update state being used for context value
   // setEditEmpModal for toggling display of edit emp modal
@@ -108,7 +115,6 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
     if (status === 200) {
       successRef.current.classList.remove("hidden");
       setStatus("Success!");
-      setUpdate("employees");
       // setEditEmpModal(false);
     }
   };
@@ -119,7 +125,6 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
     if (status === 200) {
       successRef.current.classList.remove("hidden");
       setStatus("Success!");
-      setUpdate("employees");
     }
   };
 
@@ -217,7 +222,7 @@ const EditEmpModal = ({ setEditEmpModal, editEmpData }) => {
           ref={successRef}
           className="hidden"
           message={status}
-          handleCloseClick={handleCloseClick}
+          handleCloseClick={handleSuccessClick}
         />
         <DeleteMessage
           ref={deleteRef}

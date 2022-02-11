@@ -65,6 +65,7 @@ const EmployeesTable = () => {
 
   // toggle display of add employee modal
   const handleAddClick = (e) => {
+    console.log("handleAddClick");
     setAddEmpModal(true);
   };
 
@@ -142,98 +143,145 @@ const EmployeesTable = () => {
     //eslint-disable-next-line
   }, [selectTrainings, originalColumns]);
 
-  return (
-    <TableWrapper>
-      <HeaderSection>
-        <div className="btn-container">
-          <div className="btn-modal-container">
-            <button className="btn-modal-toggle" onClick={handleAddClick}>
-              <EmpAdd />
-              Add Employee
-            </button>
-            <button className="btn-modal-toggle" onClick={handleConductClick}>
-              <Hammer /> Conduct Training
-            </button>
-          </div>
-          <div className="input-filter-container">
-            <FormControl sx={{ width: 300 }}>
-              <Select
-                sx={{ bgcolor: "white", height: 50 }}
-                // labelId="sort-by-company"
-                value={currentCompany}
-                onChange={handleSelectCompany}
-                // input={<OutlinedInput label="Sort by Company:" />}
-              >
-                <MenuItem value="All">All</MenuItem>
-                {companyData.map((comp, idx) => {
-                  return (
-                    <MenuItem key={comp.uuid} value={comp}>
-                      {comp.companyName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <FormControl sx={{ width: 300, height: "100%" }}>
-              <InputLabel sx={{ color: "black" }} id="sort-by-training">
-                Sort by Training:{" "}
-              </InputLabel>
-              <Select
-                sx={{ bgcolor: "white", height: 50, color: "black" }}
-                labelId="sort-by-training"
-                multiple
-                value={selectTrainings}
-                onChange={handleSelectTraining}
-                input={<OutlinedInput label="Sort by Training:" />}
-              >
-                {originalColumns.map((column, idx) => {
-                  if (column.index < 5) return;
-                  return (
-                    <MenuItem
-                      key={column.index}
-                      data-id={column.index}
-                      value={column.attribute}
-                    >
-                      {column.header}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
-        </div>
-      </HeaderSection>
-      <div className="table-main">
-        <Table stickyHeader style={{ tableLayout: "fixed", zIndex: 1 }}>
-          <TableHeader columns={columnData} />
-          <TableBod
-            employees={employeeData}
-            company={currentCompany}
-            training={columnData}
-            setModal={setEditEmpModal}
-            setEditEmpData={setEditEmpData}
+  if (companies.length === 0) {
+    console.log("employees: ", employees);
+    return (
+      <TableWrapper style={{ padding: "2rem" }}>
+        <h1>Currently no companies to load</h1>
+      </TableWrapper>
+    );
+  } else if (employees.message) {
+    console.log("else if employees.message");
+    return (
+      <TableWrapper
+        className="center-flex"
+        style={{ flexDirection: "column", alignItems: "center" }}
+      >
+        <h1>No Employees to Load. Click Here to Add</h1>
+        <button onClick={handleAddClick}>
+          <EmpAdd />
+          Add Employee
+        </button>
+        {addEmpModal ? (
+          <AddEmployee
+            companies={companyData}
+            setAddEmpModal={setAddEmpModal}
           />
-        </Table>
-      </div>
-      {addEmpModal ? (
-        <AddEmployee companies={companyData} setAddEmpModal={setAddEmpModal} />
-      ) : null}
-      {conductModal ? (
-        <ConductModal
-          compData={companyData}
-          empData={employeeData}
-          trainData={originalColumns}
-          setConductModal={setConductModal}
-        />
-      ) : null}
-      {editEmpModal ? (
-        <EditEmpModal
-          setEditEmpModal={setEditEmpModal}
-          editEmpData={editEmpData}
-        />
-      ) : null}
-    </TableWrapper>
-  );
+        ) : null}
+      </TableWrapper>
+    );
+  } else if (employeeData.err) {
+    console.log("else if employeeData.err");
+    return (
+      <TableWrapper className="center-flex">Waiting for Reload...</TableWrapper>
+    );
+  } else {
+    console.log("employees: ", employees);
+    return (
+      <TableWrapper>
+        <HeaderSection>
+          <div className="btn-container">
+            <div className="btn-modal-container">
+              <button onClick={handleAddClick}>
+                <EmpAdd />
+                Add Employee
+              </button>
+              {companies ? (
+                <button
+                  className="btn-modal-toggle"
+                  onClick={handleConductClick}
+                >
+                  <Hammer /> Conduct Training
+                </button>
+              ) : null}
+            </div>
+            <div className="input-filter-container">
+              <FormControl sx={{ width: 300 }}>
+                <Select
+                  sx={{ bgcolor: "white", height: 50 }}
+                  // labelId="sort-by-company"
+                  value={currentCompany}
+                  onChange={handleSelectCompany}
+                  // input={<OutlinedInput label="Sort by Company:" />}
+                >
+                  <MenuItem value="All">All</MenuItem>
+                  {companyData.map((comp, idx) => {
+                    return (
+                      <MenuItem key={comp.uuid} value={comp}>
+                        {comp.companyName}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              {originalColumns ? (
+                <FormControl sx={{ width: 300, height: "100%" }}>
+                  <InputLabel sx={{ color: "black" }} id="sort-by-training">
+                    Sort by Training:{" "}
+                  </InputLabel>
+                  <Select
+                    sx={{ bgcolor: "white", height: 50, color: "black" }}
+                    labelId="sort-by-training"
+                    multiple
+                    value={selectTrainings}
+                    onChange={handleSelectTraining}
+                    input={<OutlinedInput label="Sort by Training:" />}
+                  >
+                    {console.log("originalColumns: ", originalColumns)}
+                    {originalColumns.map((column, idx) => {
+                      if (column.index < 5) return;
+                      return (
+                        <MenuItem
+                          key={column.index}
+                          data-id={column.index}
+                          value={column.attribute}
+                        >
+                          {column.header}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              ) : null}
+              )
+            </div>
+          </div>
+        </HeaderSection>
+        <div className="table-main">
+          <Table stickyHeader style={{ tableLayout: "fixed", zIndex: 1 }}>
+            <TableHeader columns={columnData} />
+            <TableBod
+              employees={employeeData}
+              company={currentCompany}
+              training={columnData}
+              setModal={setEditEmpModal}
+              setEditEmpData={setEditEmpData}
+            />
+          </Table>
+        </div>
+        {addEmpModal ? (
+          <AddEmployee
+            companies={companyData}
+            setAddEmpModal={setAddEmpModal}
+          />
+        ) : null}
+        {conductModal ? (
+          <ConductModal
+            compData={companyData}
+            empData={employeeData}
+            trainData={originalColumns}
+            setConductModal={setConductModal}
+          />
+        ) : null}
+        {editEmpModal ? (
+          <EditEmpModal
+            setEditEmpModal={setEditEmpModal}
+            editEmpData={editEmpData}
+          />
+        ) : null}
+      </TableWrapper>
+    );
+  }
 };
 
 export default EmployeesTable;

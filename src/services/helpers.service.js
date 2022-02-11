@@ -6,6 +6,7 @@ export const generateHeaders = (head) => {
 
 // formatting in preparation for employees-table components
 export const createColumnData = (empArr, colArr) => {
+  if (empArr.err) return;
   console.log("empArr: ", empArr);
   console.log("colArr: ", colArr);
   const copy = colArr.slice();

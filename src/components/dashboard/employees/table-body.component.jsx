@@ -42,7 +42,7 @@ const TableBod = ({
   useEffect(() => {
     // console.log("company: ", company);
     if (!employees) return;
-    // console.log("employees: ", employees);
+    console.log("employees: ", employees);
     setRowData(employees);
     //eslint-disable-next-line
   }, [employees]);

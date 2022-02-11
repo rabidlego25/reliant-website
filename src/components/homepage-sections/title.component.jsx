@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { Link } from "react-router-dom";
+
 import BusinessBox from "./business-box.component";
 
 import {
@@ -36,9 +38,9 @@ const TitleSection = () => {
           </li>
           <li>
             <div className="btn-container">
-              <button className="learn-more">
-                Learn More <RightArrow className="icon" />
-              </button>
+              <Link className="learn-more" to="/login">
+                Login <RightArrow className="icon" />
+              </Link>
               <button>
                 Contact <RightArrow className="icon" />{" "}
               </button>

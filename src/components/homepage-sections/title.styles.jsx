@@ -1,5 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
+import { Link } from "react-router-dom";
+
 import { AiOutlineCaretRight } from "react-icons/ai";
 
 export const titleKeyframes = keyframes`
@@ -81,6 +83,20 @@ export const TitleBox = styled.div`
 
       .learn-more {
         margin-right: 48px;
+        width: 108px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 36px;
+        border-radius: 24px;
+        color: white;
+        background: #1a65c8;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        margin-top: 1rem;
+        padding-left: 4px;
+        text-decoration: none;
       }
 
       button {

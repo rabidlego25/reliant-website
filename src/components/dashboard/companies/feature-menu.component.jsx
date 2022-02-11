@@ -1,9 +1,16 @@
 import React from "react";
 
-import { MenuWrapper } from "./feature-menu.styles";
+import { MenuWrapper, CompAdd } from "./feature-menu.styles";
 
 const FeatureMenu = () => {
-  return <MenuWrapper></MenuWrapper>;
+  return (
+    <MenuWrapper>
+      <button>
+        <CompAdd />
+        Add Client
+      </button>
+    </MenuWrapper>
+  );
 };
 
 export default FeatureMenu;
