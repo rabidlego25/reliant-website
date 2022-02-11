@@ -105,10 +105,24 @@ const EmployeesTable = () => {
     }
     const empData = createColumnData(employees, columnArray);
     console.log("createColumnData: ", empData);
-    const { compNames } = formatCompData(companies);
+    console.log("companies: ", companies);
+
+    const { data } = companies;
+    let compNameData;
+
+    // when adding new company, context has updated in the form of a return obj from server,rather than company
+    if (data !== undefined) {
+      console.log("data");
+      const { compNames } = formatCompData(data);
+      compNameData = compNames;
+    } else {
+      console.log("!data");
+      const { compNames } = formatCompData(companies);
+      compNameData = compNames;
+    }
 
     // sent to modals and drop down for company query
-    setCompanyData(compNames);
+    setCompanyData(compNameData);
 
     // sent to table header and body for processing visualization
     setColumnData(empData);
@@ -243,7 +257,6 @@ const EmployeesTable = () => {
                   </Select>
                 </FormControl>
               ) : null}
-              )
             </div>
           </div>
         </HeaderSection>

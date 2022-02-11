@@ -5,7 +5,7 @@ import { CloseIcon, Wrapper, StatusBox } from "./edit-company.styles";
 import {
   updateCompany,
   loadCompanies,
-} from "../../../services/company.service";
+} from "../../../../services/company.service";
 
 const initialFormData = Object.freeze({
   companyName: "",

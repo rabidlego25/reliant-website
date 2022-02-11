@@ -48,7 +48,7 @@ export const updateCompany = async (formData) => {
     });
 };
 
-export const addCompany = async (formData) => {
+export const addCompany = (formData) => {
   console.log("formData: ", formData);
   return axios
     .post(BASE_URL + `admin/add_company`, formData)
