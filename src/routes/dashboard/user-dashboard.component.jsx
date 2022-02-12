@@ -132,7 +132,7 @@ const Dashboard = () => {
       // update employees only
       if (update === "employees") {
         let { data } = await getEmployees();
-        console.log("employees --- update");
+        console.log("employees --- update: ", data);
         contextObj["employees"] = data;
         console.log("contextObj: ", contextObj);
         setContext({ ...context, employees: contextObj["employees"] });
@@ -140,8 +140,8 @@ const Dashboard = () => {
 
       // update companies only
       if (update === "companies") {
-        let data = await loadCompanies();
-        console.log("companies --- update");
+        let { data } = await loadCompanies();
+        console.log("companies --- update: ", data);
         contextObj["companies"] = data;
         console.log("contextObj: ", contextObj);
         setContext({ ...context, companies: contextObj["companies"] });
@@ -153,14 +153,6 @@ const Dashboard = () => {
 
       console.log("contextObj");
     };
-
-    // update companies only
-    if (update === "companies") {
-      loadCompanies().then(({ data }) => {
-        console.log("companies: ", data);
-        contextObj["companies"] = data;
-      });
-    }
 
     // update trainings only
     if (update === "trainings") {

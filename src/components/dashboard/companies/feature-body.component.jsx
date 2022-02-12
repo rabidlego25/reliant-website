@@ -9,7 +9,6 @@ const FeatureBody = () => {
   return (
     <BodyWrapper>
       <BodyTable />
-      <BodyDisplay />
     </BodyWrapper>
   );
 };

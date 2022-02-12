@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { MdAddBusiness } from "react-icons/md";
+import { MdAddBusiness, MdFactCheck } from "react-icons/md";
 
 export const MenuWrapper = styled.div`
   height: 15%;
@@ -10,7 +10,7 @@ export const MenuWrapper = styled.div`
   align-items: center;
 
   .btn-modal-container {
-    width: 25%;
+    width: 40%;
     height: 50%;
     display: flex;
     justify-content: space-evenly;
@@ -37,7 +37,13 @@ export const MenuWrapper = styled.div`
   }
 `;
 
-export const CompAdd = styled(MdAddBusiness)`
+export const AddIcon = styled(MdAddBusiness)`
+  height: 25px;
+  width: 25px;
+  margin-right: 8px;
+`;
+
+export const InspectIcon = styled(MdFactCheck)`
   height: 25px;
   width: 25px;
   margin-right: 8px;

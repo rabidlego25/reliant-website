@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import { MenuWrapper, CompAdd } from "./feature-menu.styles";
+import { MenuWrapper, AddIcon, InspectIcon } from "./feature-menu.styles";
 
 import AddModal from "./add-company/add-company.component";
 
 const FeatureMenu = () => {
-  const [addModal, setAddModal] = useState(true);
+  const [addModal, setAddModal] = useState(false);
 
   const handleAddClick = () => {
     console.log("handleAddClick");
@@ -16,8 +16,12 @@ const FeatureMenu = () => {
     <MenuWrapper>
       <div className="btn-modal-container">
         <button onClick={handleAddClick}>
-          <CompAdd />
+          <AddIcon />
           <h3>Add Client</h3>
+        </button>
+        <button>
+          <InspectIcon />
+          <h3>Conduct Inspection</h3>
         </button>
       </div>
       {addModal ? <AddModal setModal={setAddModal} /> : null}

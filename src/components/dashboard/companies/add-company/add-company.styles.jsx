@@ -63,7 +63,7 @@ export const TitleContainer = styled.div`
   width: 100%;
   height: 6rem;
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   &:after {
     content: "";
@@ -91,7 +91,6 @@ export const InputContainer = styled.div`
   align-items: center;
 
   label {
-    font-size: 115%;
     width: 4rem;
   }
 
@@ -99,7 +98,7 @@ export const InputContainer = styled.div`
     width: 60%;
     height: 35px;
     background: lightblue;
-    font-size: 150%;
+    font-size: 125%;
     padding-left: 1rem;
     border: none;
   }
@@ -111,7 +110,7 @@ export const InputContainer = styled.div`
     align-items: center;
 
     > input {
-      width: 10%;
+      width: 1rem;
     }
 
     > label {
@@ -121,22 +120,22 @@ export const InputContainer = styled.div`
 `;
 
 export const HelpIconContainer = styled.div`
-  height: 35px;
-  width: 35px;
+  height: 30px;
+  width: 30px;
   position: relative;
 `;
 
 export const HelpIcon = styled(GrStatusInfo)`
-  height: 35px;
+  height: 30px;
   width: auto;
 `;
 
 export const HelpBox = styled.div`
   position: absolute;
   top: -110px;
-  left: -57.5px;
+  left: -72.5px;
   height: 0px;
-  width: 150px;
+  width: 180px;
   background: white;
   overflow: hidden;
   transition: all 0.7s;
@@ -170,7 +169,7 @@ export const MessageContainer = styled.div`
   padding-top: 1rem;
 
   > h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 `;
 

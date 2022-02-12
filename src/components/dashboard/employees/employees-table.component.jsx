@@ -107,19 +107,11 @@ const EmployeesTable = () => {
     console.log("createColumnData: ", empData);
     console.log("companies: ", companies);
 
-    const { data } = companies;
     let compNameData;
 
     // when adding new company, context has updated in the form of a return obj from server,rather than company
-    if (data !== undefined) {
-      console.log("data");
-      const { compNames } = formatCompData(data);
-      compNameData = compNames;
-    } else {
-      console.log("!data");
-      const { compNames } = formatCompData(companies);
-      compNameData = compNames;
-    }
+    const { compNames } = formatCompData(companies);
+    compNameData = compNames;
 
     // sent to modals and drop down for company query
     setCompanyData(compNameData);
