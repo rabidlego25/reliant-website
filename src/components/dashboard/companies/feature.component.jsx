@@ -17,7 +17,6 @@ const Feature = () => {
     <Layout>
       <FeatureMenu />
       <FeatureBody />
-      <FeatureFooter />
     </Layout>
   );
 };

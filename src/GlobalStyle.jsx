@@ -32,17 +32,17 @@ body {
     align-items: center;
   }
 
-  @media (max-width: 480px) {
-    html {
-      font-size: 62.5%;
-    }
-  }
+  // @media (max-width: 480px) {
+  //   html {
+  //     font-size: 62.5%;
+  //   }
+  // }
 
-  @media (max-width: 1120px) {
-    html {
-      font-size: 85%;
-    }
-  }
+  // @media (max-width: 1120px) {
+  //   html {
+  //     font-size: 85%;
+  //   }
+  // }
 `;
 
 export default GlobalStyle;

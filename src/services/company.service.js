@@ -2,7 +2,7 @@ import axios from "axios";
 
 import BASE_URL from "./config";
 
-export const deleteCompany = async (com, uuid) => {
+export const deleteCompany = (uuid) => {
   console.log("deleteCompany");
 
   return axios

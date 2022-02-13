@@ -1,6 +1,13 @@
 import React, { useContext, useState } from "react";
 
-import { TableWrapper, FilterIcon } from "./body-table.styles";
+import {
+  TableWrapper,
+  FilterIcon,
+  EditIcon,
+  DeleteIcon,
+} from "./body-table.styles";
+
+import DeleteCompany from "./delete-company/delete-company.component";
 
 import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
 
@@ -20,26 +27,31 @@ import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
 
 const headCells = [
-  { att: "uuid", label: "Id" },
+  { att: "uuid", label: "Id", sortable: false },
   {
     att: "companyName",
     label: "Company Name",
+    sortable: true,
   },
   {
     att: "owner",
     label: "Owner",
+    sortable: true,
   },
   {
     att: "phone",
     label: "Phone",
+    sortable: false,
   },
   {
     att: "lastTrained",
     label: "Last Trained",
+    sortable: true,
   },
   {
     att: "lastInspected",
     label: "Last Inspected",
+    sortable: true,
   },
 ];
 
@@ -81,7 +93,7 @@ const EnhancedTableHead = (props) => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">Action</TableCell>
+        <TableCell>Action</TableCell>
         {headCells.map((headCell, idx) => {
           return (
             <TableCell
@@ -140,6 +152,9 @@ const BodyTable = () => {
   const [orderBy, setOrderBy] = useState("companyName");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [deleteCompany, setDeleteCompany] = useState(false);
+  const [editCompany, setEditCompany] = useState(false);
+  const [compData, setComp] = useState();
 
   const {
     context: { companies },
@@ -160,6 +175,19 @@ const BodyTable = () => {
     setPage(0);
   };
 
+  const handleDeleteInquiry = (e) => {
+    console.log("handleDeleteInquiry");
+    // extract uuid from target row
+    const { uuid } = e.target.closest(".company").dataset;
+    // run find function to get company details
+    const company = companies.find((company) => company.uuid === uuid);
+
+    setComp(company);
+    setDeleteCompany(true);
+  };
+
+  const handleEditInquiry = (e) => {};
+
   // avoid a layout jump when reaching the last page with empty rows
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - companies.length) : 0;
@@ -169,11 +197,7 @@ const BodyTable = () => {
   return (
     <TableWrapper>
       <EnhancedTableToolbar />
-      <Table
-        sx={{ minWidth: 750 }}
-        aria-labelledby="tableCompany"
-        size="medium"
-      >
+      <Table sx={{ minWidth: 750 }} aria-labelledby="tableCompany" size="small">
         <EnhancedTableHead
           order={order}
           orderBy={orderBy}
@@ -185,8 +209,23 @@ const BodyTable = () => {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((company, idx) => {
               return (
-                <TableRow>
-                  <TableCell>Icon</TableCell>
+                <TableRow
+                  className="company"
+                  data-uuid={company.uuid}
+                  key={company.uuid}
+                >
+                  <TableCell sx={{ p: 0 }}>
+                    <Tooltip title="Edit Company">
+                      <IconButton size="small">
+                        <EditIcon onClick={() => alert("clicked")} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Company">
+                      <IconButton size="small">
+                        <DeleteIcon onClick={handleDeleteInquiry} />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>{company.uuid.slice(0, 6)}</TableCell>
                   <TableCell>{company.companyName}</TableCell>
                   <TableCell>{company.owner}</TableCell>
@@ -199,7 +238,7 @@ const BodyTable = () => {
         </TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[5, 10]}
         component="div"
         count={companies.length}
         page={page}
@@ -207,6 +246,10 @@ const BodyTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      {deleteCompany ? (
+        <DeleteCompany compData={compData} setDeleteModal={setDeleteCompany} />
+      ) : null}
+      {editCompany ? null : null}
     </TableWrapper>
   );
 };

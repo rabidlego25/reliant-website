@@ -2,13 +2,12 @@ import styled from "styled-components";
 
 import { BiFilter } from "react-icons/bi";
 
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 
 export const TableWrapper = styled.div`
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: auto;
   background: orange;
-  overflow: scroll;
 `;
 
 export const FilterIcon = styled(BiFilter)`
@@ -21,8 +20,17 @@ export const FilterIcon = styled(BiFilter)`
 `;
 
 export const DeleteIcon = styled(MdDeleteOutline)`
-  height: 25px;
-  width: 25px;
+  height: 20px;
+  width: 20px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const EditIcon = styled(MdOutlineModeEditOutline)`
+  height: 20px;
+  width: 20px;
 
   &:hover {
     cursor: pointer;
