@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 
-import { FeatureWrapper } from "./companies-feature.styles";
+import {
+  FeatureWrapper,
+  Layout,
+  FeatureBody,
+} from "./companies-feature.styles";
 
-import Feature from "./feature.component";
+import FeatureMenu from "./feature-menu.component";
+
+import BodyTable from "./body-table.component";
+
+import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
 
 const CompaniesFeature = () => {
   return (
     <FeatureWrapper>
-      <Feature />
+      <Layout>
+        <FeatureMenu />
+        <FeatureBody>
+          <BodyTable />
+        </FeatureBody>
+      </Layout>
     </FeatureWrapper>
   );
 };

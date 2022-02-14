@@ -9,8 +9,29 @@ export const DashContainer = styled.div`
   position: relative;
   overflow: scroll;
   display: flex;
-  background: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
-  }
+  /* background: #ffcba4; */
+
+  /* background: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%); */
+  /* background-image: linear-gradient(to right bottom, #516e98, #5780a0, #6491a7, #78a1ac, #90b0b3);
+  } */
+  /* background: rgb(217, 112, 6);
+  background: linear-gradient(
+    90deg,
+    rgba(217, 112, 6, 1) 0%,
+    rgba(227, 218, 154, 1) 100%
+  ); */
+  /* background: rgb(120, 204, 246);
+  background: linear-gradient(
+    90deg,
+    rgba(120, 204, 246, 1) 0%,
+    rgba(170, 188, 205, 1) 100%
+  ); */
+  background: rgb(161, 180, 245);
+  background: linear-gradient(
+    90deg,
+    rgba(161, 180, 245, 1) 0%,
+    rgba(170, 188, 205, 1) 100%
+  );
 `;
 
 export const SideNav = styled.div`

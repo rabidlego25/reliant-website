@@ -2,12 +2,14 @@ import React, { useContext, useState } from "react";
 
 import {
   TableWrapper,
+  TableSubWrapper,
   FilterIcon,
   EditIcon,
   DeleteIcon,
 } from "./body-table.styles";
 
 import DeleteCompany from "./delete-company/delete-company.component";
+import EditCompany from "./edit-company/edit-company.component";
 
 import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
 
@@ -25,33 +27,39 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
 import { visuallyHidden } from "@mui/utils";
+import { textAlign } from "@mui/system";
 
 const headCells = [
-  { att: "uuid", label: "Id", sortable: false },
+  { att: "type", label: "Type", sortable: false, align: "start" },
   {
     att: "companyName",
-    label: "Company Name",
+    label: "Company",
     sortable: true,
+    align: "start",
   },
   {
     att: "owner",
     label: "Owner",
     sortable: true,
+    align: "start",
   },
   {
     att: "phone",
     label: "Phone",
     sortable: false,
+    align: "start",
   },
   {
     att: "lastTrained",
     label: "Last Trained",
     sortable: true,
+    align: "end",
   },
   {
     att: "lastInspected",
     label: "Last Inspected",
     sortable: true,
+    align: "end",
   },
 ];
 
@@ -91,34 +99,47 @@ const EnhancedTableHead = (props) => {
   };
 
   return (
-    <TableHead>
-      <TableRow>
-        <TableCell>Action</TableCell>
-        {headCells.map((headCell, idx) => {
-          return (
-            <TableCell
-              key={idx}
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
+    <React.Fragment>
+      <colgroup>
+        <col style={{ width: "10%" }}></col>
+        <col style={{ width: "5%" }}></col>
+        <col style={{ width: "20%" }}></col>
+        <col style={{ width: "20%" }}></col>
+      </colgroup>
+      <TableHead>
+        <TableRow>
+          <TableCell
+            sx={{ color: "orange", fontWeight: "bold", textAlign: "start" }}
+          >
+            Action
+          </TableCell>
+          {headCells.map((headCell, idx) => {
+            return (
+              <TableCell
+                key={idx}
+                sortDirection={orderBy === headCell.id ? order : false}
+                sx={{ color: "orange", fontWeight: "bold" }}
               >
-                {" "}
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          );
-        })}
-      </TableRow>
-    </TableHead>
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                >
+                  {" "}
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              </TableCell>
+            );
+          })}
+        </TableRow>
+      </TableHead>
+    </React.Fragment>
   );
 };
 
@@ -128,10 +149,12 @@ const EnhancedTableToolbar = () => {
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, s: 1 },
+        bgcolor: "#4c8BF5",
+        color: "orange",
       }}
     >
       <Typography
-        sx={{ flex: "1 1 100%" }}
+        sx={{ flex: "1 1 100%", fontWeight: "bold" }}
         variant="h6"
         id="tableTitle"
         component="div"
@@ -186,7 +209,16 @@ const BodyTable = () => {
     setDeleteCompany(true);
   };
 
-  const handleEditInquiry = (e) => {};
+  const handleEditInquiry = (e) => {
+    console.log("handleDeleteInquiry");
+    // extract uuid from target row
+    const { uuid } = e.target.closest(".company").dataset;
+    // run find function to get company details
+    const company = companies.find((company) => company.uuid === uuid);
+
+    setComp(company);
+    setEditCompany(true);
+  };
 
   // avoid a layout jump when reaching the last page with empty rows
   const emptyRows =
@@ -195,62 +227,105 @@ const BodyTable = () => {
   console.log("companies -- BodyTable: ", companies);
 
   return (
-    <TableWrapper>
-      <EnhancedTableToolbar />
-      <Table sx={{ minWidth: 750 }} aria-labelledby="tableCompany" size="small">
-        <EnhancedTableHead
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-          rowCount={companies.length}
-        />
-        <TableBody>
-          {stableSort(companies, getComparator(order, orderBy))
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((company, idx) => {
-              return (
-                <TableRow
-                  className="company"
-                  data-uuid={company.uuid}
-                  key={company.uuid}
-                >
-                  <TableCell sx={{ p: 0 }}>
-                    <Tooltip title="Edit Company">
-                      <IconButton size="small">
-                        <EditIcon onClick={() => alert("clicked")} />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete Company">
-                      <IconButton size="small">
-                        <DeleteIcon onClick={handleDeleteInquiry} />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>{company.uuid.slice(0, 6)}</TableCell>
-                  <TableCell>{company.companyName}</TableCell>
-                  <TableCell>{company.owner}</TableCell>
-                  <TableCell>{company.phone}</TableCell>
-                  <TableCell>{company.lastTrained}</TableCell>
-                  <TableCell>{company.lastInspected}</TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10]}
-        component="div"
-        count={companies.length}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      {deleteCompany ? (
-        <DeleteCompany compData={compData} setDeleteModal={setDeleteCompany} />
-      ) : null}
-      {editCompany ? null : null}
-    </TableWrapper>
+    <React.Fragment>
+      <TableWrapper>
+        <TableSubWrapper>
+          <Table
+            sx={{
+              minWidth: 750,
+              borderCollapse: "separate",
+              maxHeight: "215px",
+            }}
+            aria-labelledby="tableCompany"
+            stickyHeader
+            size="small"
+          >
+            <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+              rowCount={companies.length}
+            />
+            <TableBody sx={{ bgcolor: "white", maxHeight: "215px" }}>
+              {stableSort(companies, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((company, idx) => {
+                  return (
+                    <TableRow
+                      className="company"
+                      data-uuid={company.uuid}
+                      key={company.uuid}
+                      sx={{ lineHeight: "48px", whiteSpace: "nowrap" }}
+                    >
+                      <TableCell sx={{ p: 0 }}>
+                        <Tooltip title="Edit Company">
+                          <IconButton
+                            sx={{ p: 1 }}
+                            size="small"
+                            onClick={handleEditInquiry}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete Company">
+                          <IconButton
+                            sx={{ p: 1 }}
+                            size="small"
+                            onClick={handleDeleteInquiry}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+
+                      <TableCell sx={{ textAlign: "start", pl: 3 }}>
+                        {company.type === "agricultural" ? "🌾" : "🏭"}
+                      </TableCell>
+                      <TableCell>
+                        {company.companyName.length > 25
+                          ? company.companyName.slice(0, 24) + "..."
+                          : company.companyName}
+                      </TableCell>
+                      <TableCell>
+                        {company.owner.length > 25
+                          ? company.owner.slice(0, 24) + "..."
+                          : company.owner}
+                      </TableCell>
+                      <TableCell>{company.phone}</TableCell>
+                      <TableCell>{company.lastTrained}</TableCell>
+                      <TableCell>{company.lastInspected}</TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 15, 20]}
+            component="div"
+            count={companies.length}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              color: "orange",
+              fontWeight: "bold",
+              bgcolor: "white",
+              width: "100%",
+            }}
+          />
+          {deleteCompany ? (
+            <DeleteCompany
+              compData={compData}
+              setDeleteModal={setDeleteCompany}
+            />
+          ) : null}
+          {editCompany ? (
+            <EditCompany compData={compData} setEditModal={setEditCompany} />
+          ) : null}
+        </TableSubWrapper>
+      </TableWrapper>
+    </React.Fragment>
   );
 };
 

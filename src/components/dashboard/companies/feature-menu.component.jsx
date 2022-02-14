@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-import { MenuWrapper, AddIcon, InspectIcon } from "./feature-menu.styles";
+import {
+  MenuWrapper,
+  TitleContainer,
+  AddIcon,
+  InspectIcon,
+} from "./feature-menu.styles";
 
 import AddModal from "./add-company/add-company.component";
 
@@ -14,6 +19,10 @@ const FeatureMenu = () => {
 
   return (
     <MenuWrapper>
+      <TitleContainer>
+        <h1 className="title">Companies</h1>
+        <h1 className="title">Table</h1>
+      </TitleContainer>
       <div className="btn-modal-container">
         <button onClick={handleAddClick}>
           <AddIcon />

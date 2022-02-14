@@ -54,12 +54,18 @@ const DeleteCompany = ({ setDeleteModal, compData }) => {
             <li>SDS Compliance</li>
           </ul>
           <div className="icon-container__wrapper">
-            <button className="icon-container confirm">
-              <CheckmarkIcon onClick={handleDeleteConfirm} />
+            <button
+              className="icon-container confirm"
+              onClick={handleDeleteConfirm}
+            >
+              <CheckmarkIcon />
               <h5>Confirm</h5>
             </button>
-            <button className="icon-container delete">
-              <CancelIcon onClick={() => setDeleteModal(false)} />
+            <button
+              className="icon-container delete"
+              onClick={() => setDeleteModal(false)}
+            >
+              <CancelIcon />
               <h5>Cancel</h5>
             </button>
           </div>
