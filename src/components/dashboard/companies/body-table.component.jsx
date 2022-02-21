@@ -27,7 +27,6 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
 import { visuallyHidden } from "@mui/utils";
-import { textAlign } from "@mui/system";
 
 const headCells = [
   { att: "type", label: "Type", sortable: false, align: "start" },
@@ -117,12 +116,13 @@ const EnhancedTableHead = (props) => {
             return (
               <TableCell
                 key={idx}
-                sortDirection={orderBy === headCell.id ? order : false}
                 sx={{ color: "orange", fontWeight: "bold" }}
+                sortDirection={orderBy === headCell.id ? order : false}
               >
                 <TableSortLabel
                   active={orderBy === headCell.id}
                   direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.att)}
                 >
                   {" "}
                   {headCell.label}
@@ -233,7 +233,6 @@ const BodyTable = () => {
           <Table
             sx={{
               minWidth: 750,
-              borderCollapse: "separate",
               maxHeight: "215px",
             }}
             aria-labelledby="tableCompany"
@@ -297,6 +296,15 @@ const BodyTable = () => {
                     </TableRow>
                   );
                 })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: 33 * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
             </TableBody>
           </Table>
           <TablePagination

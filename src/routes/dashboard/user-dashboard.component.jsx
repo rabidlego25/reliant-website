@@ -19,6 +19,7 @@ import { getTrainings } from "../../services/training.service";
 
 // current pages to display based on state
 import CompaniesFeature from "../../components/dashboard/companies/companies-feature.component";
+import EmployeesFeature from "../../components/dashboard/employee/employees-feature.component";
 import EmployeesTable from "../../components/dashboard/employees/employees-table.component";
 import AdminHub from "../../components/dashboard/admin-hub/admin-hub.component";
 
@@ -185,6 +186,9 @@ const Dashboard = () => {
           <Tab className="tab" data-active="employees">
             <h4 onClick={handleNavClick}>Employee Trainings</h4>
           </Tab>
+          <Tab className="tab" data-active="employee">
+            <h4 onClick={handleNavClick}>Employee Trainings</h4>
+          </Tab>
         </TabContainer>
         <Logout to="/" style={{ border: "none" }}>
           <h4 onClick={handleLogout}>Logout</h4>
@@ -199,6 +203,8 @@ const Dashboard = () => {
             <CompaniesFeature />
           ) : activeComponent === "admin" && loggedIn ? (
             <AdminHub />
+          ) : activeComponent === "employee" && loggedIn ? (
+            <EmployeesFeature />
           ) : (
             <div>Error</div>
           )}

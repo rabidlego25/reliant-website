@@ -12,6 +12,7 @@ export const MenuWrapper = styled.div`
 
   .btn-modal-container {
     width: 50%;
+    min-width: 432px;
     height: 50%;
     display: flex;
     justify-content: space-evenly;
@@ -19,7 +20,7 @@ export const MenuWrapper = styled.div`
     button {
       padding: 0.5rem;
       height: 3rem;
-      width: 156px;
+      width: 12rem;
       border-radius: 15px;
       background-color: #bbf0f3;
       background-image: linear-gradient(315deg, #bbf0f3 0%, #f6d285 74%);

@@ -29,7 +29,6 @@ const FeatureMenu = () => {
           <h3>Add Client</h3>
         </button>
         <button>
-          <InspectIcon />
           <h3>Conduct Inspection</h3>
         </button>
       </div>
