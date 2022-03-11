@@ -19,8 +19,6 @@ export const Wrapper = styled.div`
 export const ModalContainer = styled.div`
   width: 300px;
   height: 400px;
-  /* background: #b33a3a; */
-  /* color: white; */
   display: flex;
   flex-direction: column;
   border-radius: 5px;

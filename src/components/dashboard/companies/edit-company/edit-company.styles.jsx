@@ -95,7 +95,7 @@ export const InputContainer = styled.div`
   }
 
   input {
-    width: 60%;
+    width: 75%;
     height: 35px;
     background: lightblue;
     font-size: 125%;

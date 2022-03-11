@@ -1,11 +1,20 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { TableWrapper, TableSubWrapper } from "./body-table.styles";
+import {
+  TableWrapper,
+  TableSubWrapper,
+  EditIcon,
+  DeleteIcon,
+} from "./body-table.styles";
+
+import EditEmployee from "./edit-employee/edit-employee.component";
+import DeleteEmployee from "./delete-employee/delete-employee.component";
 
 import { InitialContext } from "../../../routes/dashboard/user-dashboard.component";
 
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,15 +22,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import TableSortLabel from "@mui/material/TableSortLabel";
+import Tooltip from "@mui/material/Tooltip";
 
 import { visuallyHidden } from "@mui/utils";
 
 import { format, parseISO } from "date-fns";
 
 const headCells = [
-  { att: "firstName", label: "First Name", abbreviate: true },
-  { att: "lastName", label: "Last Name", abbreviate: true },
-  { att: "companyName", label: "Company", abbreviate: true },
+  { att: "firstName", label: "First Name", type: "heading" },
+  { att: "lastName", label: "Last Name", type: "heading" },
+  { att: "companyName", label: "Company", type: "heading" },
   { att: "covid", label: "Covid", type: "training" },
   { att: "firstAid", label: "First Aid", type: "training" },
   { att: "fitTesting", label: "Fit Test", type: "training" },
@@ -87,10 +97,15 @@ const EnhancedTableHead = (props) => {
   return (
     <React.Fragment>
       <colgroup>
-        <col width={"75px"}></col>
+        <col width={"60px"}></col>
+        <col width={"108px"}></col>
         {headCells.map((headCell, idx) => {
           return (
-            <col width={headCell.abbreviate === true ? "125px" : "98px"} />
+            <col
+              style={{
+                width: headCell.type === "heading" ? "9rem" : "7rem",
+              }}
+            />
           );
         })}
       </colgroup>
@@ -104,11 +119,24 @@ const EnhancedTableHead = (props) => {
               inputProps={{ "aria-label": "select all employees" }}
             />
           </TableCell>
+          <TableCell
+            sx={{
+              color: "orange",
+              fontWeight: "bold",
+              p: 2,
+            }}
+          >
+            Action
+          </TableCell>
           {headCells.map((headCell) => {
             return (
               <TableCell
                 key={headCell.att}
-                sx={{ color: "orange", fontWeight: "bold" }}
+                sx={{
+                  color: "orange",
+                  fontWeight: "bold",
+                  p: 1,
+                }}
               >
                 <TableSortLabel
                   active={orderBy === headCell.att}
@@ -139,6 +167,9 @@ const BodyTable = () => {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [editEmp, setEditEmp] = useState(false);
+  const [deleteEmp, setDeleteEmp] = useState(false);
+  const [empData, setEmpData] = useState();
 
   const {
     context: { employees },
@@ -202,6 +233,20 @@ const BodyTable = () => {
     console.log("selected: ", selected);
   }, [selected]);
 
+  const handleEditInquiry = (e) => {
+    const { uuid } = e.target.closest(".employee").dataset;
+    const employee = employees.find((employee) => employee.uuid === uuid);
+    setEditEmp(true);
+    setEmpData(employee);
+  };
+
+  const handleDeleteInquiry = (e) => {
+    const { uuid } = e.target.closest(".employee").dataset;
+    const employee = employees.find((employee) => employee.uuid === uuid);
+    setDeleteEmp(true);
+    setEmpData(employee);
+  };
+
   return (
     <TableWrapper>
       <TableSubWrapper>
@@ -222,15 +267,15 @@ const BodyTable = () => {
             {stableSort(employees, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((emp, idx) => {
-                console.log(emp);
                 const isItemSelected = isSelected(emp.uuid);
-                const labelId = `enhanced-table-checkbox-${idx}`;
 
                 return (
                   <TableRow
                     hover
+                    className="employee"
                     onClick={(e) => handleClick(e, emp.uuid)}
                     role="checkbox"
+                    data-uuid={emp.uuid}
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={emp.uuid}
@@ -239,15 +284,44 @@ const BodyTable = () => {
                     <TableCell padding="checkbox">
                       <Checkbox checked={isItemSelected} />
                     </TableCell>
-                    {headCells.map(({ att, type, abbreviate }, index) => {
-                      if (type !== "training" && abbreviate === true)
-                        return <TableCell>{emp[att]}</TableCell>;
+                    <TableCell sx={{ textAlign: "start", p: 0 }}>
+                      <Tooltip title="Edit Employee">
+                        <IconButton
+                          sx={{ p: 1 }}
+                          size="small"
+                          onClick={handleEditInquiry}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete Employee">
+                        <IconButton
+                          sx={{ p: 1 }}
+                          size="small"
+                          onClick={handleDeleteInquiry}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                    {headCells.map(({ att, type }, index) => {
+                      if (type !== "training")
+                        if (emp[att].length > 15)
+                          return (
+                            <TableCell sx={{ p: 1 }}>
+                              {emp[att].slice(0, 15) + "..."}
+                            </TableCell>
+                          );
+                        else
+                          return (
+                            <TableCell sx={{ p: 1 }}>{emp[att]}</TableCell>
+                          );
                       else {
                         if (emp[att] === null) {
-                          return <TableCell></TableCell>;
+                          return <TableCell sx={{ p: 1 }}></TableCell>;
                         } else
                           return (
-                            <TableCell>
+                            <TableCell sx={{ p: 1 }}>
                               {format(parseISO(emp[att]), "MM/dd/yyyy")}
                             </TableCell>
                           );
@@ -273,6 +347,10 @@ const BodyTable = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableSubWrapper>
+      {editEmp ? <EditEmployee setModal={setEditEmp} data={empData} /> : null}
+      {deleteEmp ? (
+        <DeleteEmployee setModal={setDeleteEmp} data={empData} />
+      ) : null}
     </TableWrapper>
   );
 };

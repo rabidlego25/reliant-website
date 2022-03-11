@@ -21,7 +21,7 @@ const FeatureMenu = () => {
           <AddIcon />
           <h3>Add Employees</h3>
         </button>
-        <button onClick={() => {}}>
+        <button onClick={() => {}} disabled>
           <ConductIcon />
           <h3>Conduct Training</h3>
         </button>
